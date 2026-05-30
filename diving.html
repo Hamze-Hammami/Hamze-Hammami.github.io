@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Hamze Hammami · Diving</title>
+<meta name="description" content="Scuba diving portfolio of Hamze Hammami. PADI Open Water certified. Dive logs, certifications, and underwater stories."/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230a1628'/><text x='50%25' y='46%25' dominant-baseline='middle' text-anchor='middle' font-family='Times New Roman,serif' font-size='13' font-weight='700' fill='white'>H&#x663;</text><text x='50%25' y='76%25' dominant-baseline='middle' text-anchor='middle' font-size='10' fill='rgba(255,255,255,0.7)'>&#x1F93F;</text></svg>"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+:root {
+  --deep: #05111f;
+  --ocean: #0a1e35;
+  --mid: #0d2a46;
+  --surface: #e8f4f8;
+  --foam: #f5fbfd;
+  --ink: #0e0e0e;
+  --muted: #7a9baa;
+  --border: rgba(255,255,255,0.1);
+  --accent: #4eb5d4;
+}
+body {
+  background: var(--foam);
+  color: var(--ink);
+  font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  cursor: none;
+}
+.cursor {
+  position: fixed; width: 12px; height: 12px;
+  background: var(--accent); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: width 0.2s, height 0.2s;
+  mix-blend-mode: multiply;
+}
+.cursor-ring {
+  position: fixed; width: 36px; height: 36px;
+  border: 1.5px solid var(--accent); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%,-50%);
+  transition: width 0.3s, height 0.3s, opacity 0.3s;
+  opacity: 0.4;
+}
+.scroll-progress {
+  position: fixed; top: 0; left: 0; height: 2px; width: 0%;
+  background: var(--accent); z-index: 9999;
+  transition: width 0.1s linear;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 48px;
+  mix-blend-mode: difference;
+  pointer-events: none;
+}
+nav a, nav ul, nav div { pointer-events: all; }
+.nav-logo {
+  cursor: pointer;
+  min-width: 92px;
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  white-space: nowrap;
+  font-family: 'Times New Roman', 'Amiri', 'Noto Naskh Arabic', serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: white;
+  text-decoration: none;
+  direction: rtl;
+  line-height: 1;
+  mix-blend-mode: difference;
+  transition: opacity 0.25s ease, letter-spacing 0.25s ease;
+}
+.nav-logo.typing { letter-spacing: 0.04em; }
+.nav-links { display: flex; gap: 28px; list-style: none; mix-blend-mode: difference; }
+.nav-links a {
+  font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: white; text-decoration: none; transition: opacity 0.2s; font-weight: 500;
+}
+.nav-links a:hover { opacity: 0.6; }
+.nav-back {
+  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(255,255,255,0.7); text-decoration: none;
+  display: flex; align-items: center; gap: 8px;
+  transition: color 0.2s; mix-blend-mode: difference;
+}
+.nav-back:hover { color: white; }
+.nav-hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  cursor: pointer; padding: 4px; pointer-events: all; mix-blend-mode: difference;
+}
+.nav-hamburger span {
+  display: block; width: 22px; height: 1.5px;
+  background: white; transition: transform 0.25s ease, opacity 0.25s ease;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+.nav-mobile-menu {
+  display: none; position: fixed; inset: 0; background: var(--deep); z-index: 99;
+  flex-direction: column; align-items: center; justify-content: center; gap: 36px;
+}
+.nav-mobile-menu.open { display: flex; }
+.nav-mobile-menu a {
+  font-size: 28px; font-family: 'Times New Roman', Times, serif;
+  color: white; text-decoration: none; font-weight: 700; opacity: 0.85;
+}
+
+/* HERO */
+.hero {
+  background: var(--deep);
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(14,80,120,0.4) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(78,181,212,0.12) 0%, transparent 50%);
+  pointer-events: none;
+}
+/* Subtle wave lines */
+.hero::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 180px;
+  background: linear-gradient(to top, rgba(5,17,31,0.6), transparent);
+  pointer-events: none;
+}
+.hero-text {
+  padding: 140px 64px 100px;
+  max-width: 620px;
+  color: white;
+  position: relative; z-index: 2;
+}
+.hero-eyebrow {
+  font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 28px; display: block; font-weight: 500;
+}
+h1.hero-name {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: clamp(64px, 9vw, 116px); line-height: 0.95;
+  letter-spacing: -2px; margin-bottom: 32px; font-weight: 700; color: white;
+}
+h1.hero-name em { font-style: italic; color: rgba(255,255,255,0.65); }
+.hero-bio {
+  color: rgba(255,255,255,0.55); font-size: 16px; line-height: 1.8;
+  margin-bottom: 32px; font-weight: 300; max-width: 440px;
+}
+.hero-photo-col {
+  height: 100%; overflow: hidden; position: relative;
+}
+.hero-photo-col img {
+  width: 100%; height: 100%; object-fit: cover;
+  object-position: center 20%; display: block;
+  filter: grayscale(10%) saturate(1.1);
+}
+.hero-photo-col::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to right, var(--deep) 0%, transparent 30%);
+}
+.hero-stats-bar {
+  background: rgba(255,255,255,0.05);
+  border-top: 1px solid var(--border);
+  display: flex; align-items: stretch;
+  grid-column: 1 / -1;
+}
+.hero-stat {
+  flex: 1; padding: 20px 32px;
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 4px;
+}
+.hero-stat:last-child { border-right: none; }
+.hero-stat-number {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 32px; line-height: 1; color: white; font-weight: 700; font-style: italic;
+}
+.hero-stat-label {
+  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+}
+.hero-cta { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.btn-outline {
+  color: rgba(255,255,255,0.7); font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase; text-decoration: none; padding: 11px 20px;
+  border: 1px solid rgba(255,255,255,0.25); transition: all 0.2s;
+}
+.btn-outline:hover { color: white; border-color: var(--accent); background: rgba(78,181,212,0.1); }
+
+/* SECTIONS */
+section { padding: 100px 64px; }
+.section-label {
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 8px;
+}
+.section-title {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: clamp(36px,5vw,60px); line-height: 1.05;
+  margin-bottom: 56px; letter-spacing: -0.5px; font-weight: 700;
+}
+
+/* ORIGIN STORY */
+.origin-section { background: var(--deep); color: white; }
+.origin-section .section-label { color: var(--accent); }
+.origin-section .section-title { color: white; margin-bottom: 0; }
+.origin-inner {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+}
+.origin-photo {
+  position: relative; overflow: hidden;
+}
+.origin-photo img {
+  width: 100%; display: block; aspect-ratio: 4/5;
+  object-fit: cover; object-position: center top;
+  filter: grayscale(15%) saturate(1.1);
+  transition: transform 0.5s ease;
+}
+.origin-photo:hover img { transform: scale(1.03); }
+.origin-photo-caption {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 20px; background: linear-gradient(to top, rgba(5,17,31,0.9), transparent);
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+}
+.origin-content { padding-top: 16px; }
+.origin-content h2 {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: clamp(32px,4vw,52px); line-height: 1.05;
+  font-weight: 700; color: white; margin-bottom: 32px; letter-spacing: -0.5px;
+}
+.origin-content p {
+  font-size: 17px; line-height: 1.9; color: rgba(255,255,255,0.6);
+  font-weight: 300; margin-bottom: 20px;
+}
+.origin-content p:last-child { margin-bottom: 0; }
+.origin-content strong { color: rgba(255,255,255,0.9); font-weight: 400; }
+
+/* CERTIFICATIONS */
+.certs-section { background: var(--foam); }
+.certs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+.cert-card {
+  background: white; padding: 48px;
+  border: 1px solid #e0ecf2;
+  display: flex; flex-direction: column; gap: 16px;
+  transition: box-shadow 0.2s;
+}
+.cert-card:hover { box-shadow: 0 20px 60px rgba(5,17,31,0.1); }
+.cert-badge {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--accent); font-weight: 600;
+}
+.cert-badge::before {
+  content: ''; display: block; width: 24px; height: 1px;
+  background: var(--accent);
+}
+.cert-title {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 28px; font-weight: 700; line-height: 1.2; color: var(--ink);
+}
+.cert-org { font-size: 14px; color: #6b8a96; font-weight: 300; }
+.cert-date { font-size: 13px; color: #9ab0ba; letter-spacing: 0.04em; }
+.cert-skills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.cert-skill {
+  font-size: 11px; padding: 5px 12px;
+  border: 1px solid #cde4ec; color: #4a7a8a;
+  letter-spacing: 0.06em;
+}
+
+/* DIVE LOG */
+.logs-section { background: var(--ocean); color: white; padding: 100px 64px; }
+.logs-section .section-label { color: var(--accent); }
+.logs-section .section-title { color: white; }
+.log-entry {
+  display: grid; grid-template-columns: 80px 1fr auto;
+  gap: 32px; align-items: start;
+  padding: 32px 0; border-bottom: 1px solid var(--border);
+  transition: background 0.2s, padding 0.2s, margin 0.2s;
+  cursor: default;
+}
+.log-entry:first-child { border-top: 1px solid var(--border); }
+.log-entry:hover {
+  background: rgba(255,255,255,0.03);
+  margin-left: -32px; margin-right: -32px;
+  padding-left: 32px; padding-right: 32px;
+}
+.log-number {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 13px; color: var(--accent); font-style: italic;
+  padding-top: 4px; letter-spacing: 0.04em;
+}
+.log-body {}
+.log-title {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 20px; font-weight: 700; color: white; margin-bottom: 6px;
+}
+.log-location { font-size: 12px; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+.log-stats { display: flex; gap: 24px; flex-wrap: wrap; }
+.log-stat { display: flex; align-items: center; gap: 7px; font-size: 13px; color: rgba(255,255,255,0.55); }
+.log-stat svg { opacity: 0.6; flex-shrink: 0; }
+.log-date { font-size: 12px; color: rgba(255,255,255,0.3); letter-spacing: 0.06em; padding-top: 4px; white-space: nowrap; }
+.log-media { margin-top: 20px; }
+.log-media img { width: 100%; max-width: 480px; display: block; aspect-ratio: 3/2; object-fit: cover; }
+.log-note { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.7; font-weight: 300; margin-top: 10px; max-width: 520px; }
+
+/* PHOTOS */
+.photos-section { background: var(--foam); padding: 100px 64px; }
+.photo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+.photo-item { overflow: hidden; position: relative; }
+.photo-item img {
+  width: 100%; height: 100%; object-fit: cover;
+  display: block; aspect-ratio: 4/3;
+  filter: grayscale(10%) saturate(1.1);
+  transition: transform 0.5s ease, filter 0.4s;
+}
+.photo-item:hover img { transform: scale(1.04); filter: grayscale(0%) saturate(1.2); }
+.photo-caption {
+  position: absolute; bottom: 0; left: 0; right: 0; padding: 20px 24px;
+  background: linear-gradient(to top, rgba(5,17,31,0.85), transparent);
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(255,255,255,0.7); opacity: 0; transition: opacity 0.3s;
+}
+.photo-item:hover .photo-caption { opacity: 1; }
+
+/* BUCKET LIST */
+.bucket-section { background: var(--deep); color: white; padding: 100px 64px; }
+.bucket-section .section-label { color: var(--accent); }
+.bucket-section .section-title { color: white; margin-bottom: 40px; }
+.bucket-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2px; }
+.bucket-item {
+  padding: 36px 32px; background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 10px;
+  transition: background 0.2s, border-color 0.2s;
+}
+.bucket-item:hover { background: rgba(78,181,212,0.08); border-color: rgba(78,181,212,0.3); }
+.bucket-item-icon { font-size: 24px; }
+.bucket-item-title {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 20px; font-weight: 700; color: white;
+}
+.bucket-item-desc { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.6; font-weight: 300; }
+.bucket-status {
+  font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--accent); margin-top: auto; padding-top: 8px;
+}
+
+/* FOOTER */
+footer {
+  background: var(--deep); padding: 0;
+  border-top: 1px solid var(--border);
+}
+.footer-contact {
+  padding: 48px 64px; display: flex; align-items: center;
+  justify-content: space-between; gap: 24px;
+  border-bottom: 1px solid var(--border);
+}
+.footer-contact h2 {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: clamp(24px,3vw,40px); color: white; letter-spacing: -0.5px; font-weight: 700;
+}
+.footer-links { display: flex; gap: 12px; flex-wrap: wrap; }
+.footer-link {
+  background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.8);
+  padding: 10px 20px; font-size: 12px; letter-spacing: 0.1em;
+  text-transform: uppercase; text-decoration: none; font-weight: 500;
+  transition: background 0.2s, color 0.2s; border: 1px solid var(--border);
+}
+.footer-link:hover { background: var(--accent); color: var(--deep); border-color: var(--accent); }
+.footer-bottom {
+  padding: 24px 64px; display: flex; justify-content: space-between;
+  align-items: center; font-size: 12px; color: rgba(255,255,255,0.25);
+}
+
+/* Language switch ocean animation */
+body.language-switching .hero-text,
+body.language-switching .origin-content,
+body.language-switching .cert-card,
+body.language-switching .log-body,
+body.language-switching .bucket-item,
+body.language-switching .section-title,
+body.language-switching .section-label {
+  animation: oceanWave 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+body.language-settling .hero-text,
+body.language-settling .origin-content,
+body.language-settling .cert-card,
+body.language-settling .log-body,
+body.language-settling .bucket-item,
+body.language-settling .section-title,
+body.language-settling .section-label {
+  animation: oceanSettle 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes oceanWave {
+  0%   { opacity: 1; transform: translateY(0) scale(1); }
+  30%  { opacity: 0.3; transform: translateY(-8px) scale(0.98); }
+  60%  { opacity: 0.1; transform: translateY(6px) scale(0.97); }
+  100% { opacity: 0.08; transform: translateY(0) scale(1); }
+}
+@keyframes oceanSettle {
+  from { opacity: 0.08; transform: translateY(12px) scale(0.98); }
+  to   { opacity: 1;    transform: translateY(0)   scale(1); }
+}
+body.arabic-mode { direction: rtl; }
+body.arabic-mode .nav-links,
+body.arabic-mode .hero-cta,
+body.arabic-mode .footer-links { flex-direction: row-reverse; }
+body.arabic-mode .nav-logo { direction: ltr; font-family: 'Times New Roman', 'Helvetica Neue', Arial, sans-serif; letter-spacing: 0.12em; }
+
+
+
+.reveal { opacity:0; transform:translateY(28px); transition:opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+
+@media(max-width:900px){
+  nav { padding: 16px 24px; }
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  .hero { grid-template-columns: 1fr; }
+  .hero-photo-col { height: 360px; }
+  .hero-text { padding: 120px 24px 60px; }
+  section { padding: 72px 24px; }
+  .origin-inner { grid-template-columns: 1fr; gap: 48px; }
+  .certs-grid { grid-template-columns: 1fr; }
+  .bucket-grid { grid-template-columns: 1fr; }
+  .log-entry { grid-template-columns: 60px 1fr; }
+  .log-date { display: none; }
+  .footer-contact { flex-direction: column; align-items: flex-start; padding: 36px 24px; }
+  .footer-bottom { padding: 20px 24px; flex-direction: column; gap: 8px; }
+  .logs-section { padding: 72px 24px; }
+  .bucket-section { padding: 72px 24px; }
+}
+</style>
+</head>
+<body>
+<div class="scroll-progress" id="scrollProgress"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<nav>
+<a class="nav-logo" dir="rtl" href="#" lang="ar" id="divingLogo">حمزة</a>
+<ul class="nav-links">
+<li><a href="index.html">← Portfolio</a></li>
+<li><a href="#origin">Story</a></li>
+<li><a href="#certifications">Certs</a></li>
+<li><a href="#logs">Dive Log</a></li>
+<li><a href="#bucketlist">What's Next</a></li>
+</ul>
+<div class="nav-hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="nav-mobile-menu" id="mobileMenu">
+<a href="index.html" class="mobile-nav-link">← Portfolio</a>
+<a href="#origin" class="mobile-nav-link">Story</a>
+<a href="#certifications" class="mobile-nav-link">Certs</a>
+<a href="#logs" class="mobile-nav-link">Dive Log</a>
+<a href="#bucketlist" class="mobile-nav-link">What's Next</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="top" style="display:flex; flex-direction:column; min-height:100vh; padding:0;">
+<div style="display:grid; grid-template-columns:1fr 210px 210px; align-items:stretch; flex:1; position:relative;">
+<div class="hero-text">
+<span class="hero-eyebrow">Diving Portfolio</span>
+<h1 class="hero-name">Hamze<br/><em>Dives</em></h1>
+<p class="hero-bio">PADI Open Water certified. 2 logged dives, 1h 21min underwater. Based in Dubai.</p>
+<div class="hero-cta">
+<a class="btn-outline" href="#logs">View Dive Log</a>
+<a class="btn-outline" href="#certifications">Certifications</a>
+</div>
+</div>
+<div class="hero-photo-col" style="height:100vh;">
+<img alt="Hamze scuba diving" src="diving_assets/hamze_diving.jpg" style="object-position:center 20%;"/>
+</div>
+<div class="hero-photo-col" style="height:100vh;">
+<img alt="Hamze snorkeling" src="diving_assets/hamze_snorkeling.jpg" style="object-position:center 30%;"/>
+</div>
+</div>
+<div class="hero-stats-bar">
+<div class="hero-stat"><span class="hero-stat-number">2</span><span class="hero-stat-label">Logged Dives</span></div>
+<div class="hero-stat"><span class="hero-stat-number">81</span><span class="hero-stat-label">Minutes Underwater</span></div>
+<div class="hero-stat"><span class="hero-stat-number">18m</span><span class="hero-stat-label">Max Depth</span></div>
+<div class="hero-stat"><span class="hero-stat-number">2026</span><span class="hero-stat-label">PADI Certified</span></div>
+</div>
+</section>
+
+<!-- ORIGIN -->
+<section class="origin-section" id="origin">
+<div class="origin-inner">
+<div class="origin-photo reveal">
+<img alt="Hamze at 13, first dive" src="diving_assets/hamze_13_first_dive.jpg"/>
+<div class="origin-photo-caption">First dive · Age 13</div>
+</div>
+<div class="origin-content reveal">
+<p class="section-label" style="color:var(--accent);">The Beginning</p>
+<h2>The first breath underwater changes something.</h2>
+<p>The first breath underwater changes something. I did my first try dive in Egypt at 13, and by the time I came back up I already wanted to go back down. A few years later, a try dive in the Maldives in 2022 ended with a shark encounter that settled it for good.</p>
+<p>I got my <strong>recent PADI Open Water</strong> in February 2026 through Bermuda Diving Center, Dubai. My first two logged dives were in Khor Fakkan with Dive Campus, the same centre where I did the buoyancy workshop. The plan from here is straightforward: Advanced Open Water, night diving, and eventually a <strong>Rescue Diver</strong> certification.</p>
+</div>
+</div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section class="certs-section" id="certifications">
+<p class="section-label">Training</p>
+<h2 class="section-title">Certifications</h2>
+<div class="certs-grid">
+<div class="cert-card reveal">
+<span class="cert-badge">PADI</span>
+<p class="cert-title">Open Water Diver</p>
+<p class="cert-org">Certified by Baskar A · Bermuda Diving Center</p>
+<p class="cert-date">February 14, 2026 · Dubai, UAE</p>
+<div class="cert-skills">
+<span class="cert-skill">Buoyancy Control</span>
+<span class="cert-skill">Regulator Use</span>
+<span class="cert-skill">Mask Clearing</span>
+<span class="cert-skill">Safe Ascent</span>
+<span class="cert-skill">Dive Planning</span>
+<span class="cert-skill">Emergency Procedures</span>
+</div>
+</div>
+<div class="cert-card reveal">
+<span class="cert-badge">Workshop</span>
+<p class="cert-title">Buoyancy Control Workshop</p>
+<p class="cert-org">Dive Campus · Khor Fakkan</p>
+<p class="cert-date">2025 · UAE</p>
+<div class="cert-skills">
+<span class="cert-skill">Neutral Buoyancy</span>
+<span class="cert-skill">Trim</span>
+<span class="cert-skill">Breathing Discipline</span>
+<span class="cert-skill">Controlled Movement</span>
+<span class="cert-skill">Hover Technique</span>
+</div>
+</div>
+</div>
+</section>
+
+<!-- DIVE LOG -->
+<section class="logs-section" id="logs">
+<p class="section-label">Logbook</p>
+<h2 class="section-title">Dive Log</h2>
+
+<div class="log-entry reveal">
+<div class="log-number">#02</div>
+<div class="log-body">
+<p class="log-title">Martini Rock</p>
+<p class="log-location">Khor Fakkan · UAE</p>
+<div class="log-stats">
+<span class="log-stat">
+<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+38 min
+</span>
+<span class="log-stat">
+<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 3v18M5 8l7 7 7-7"/></svg>
+18 m max depth
+</span>
+<span class="log-stat">
+<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+Training
+</span>
+</div>
+<p class="log-note">Second open water dive. Practiced buoyancy control at depth, explored the rock formation. Visibility around 8–10m.</p>
+</div>
+<div class="log-date">09 May 2026</div>
+</div>
+
+<div class="log-entry reveal">
+<div class="log-number">#01</div>
+<div class="log-body">
+<p class="log-title">Inchape 2</p>
+<p class="log-location">Khor Fakkan · UAE</p>
+<div class="log-stats">
+<span class="log-stat">
+<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+43 min
+</span>
+<span class="log-stat">
+<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 3v18M5 8l7 7 7-7"/></svg>
+18 m max depth
+</span>
+<span class="log-stat">
+<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+Training
+</span>
+</div>
+<p class="log-note">First logged open water dive. Reef entry, descended to 18m. Clear water, coral formations, reef fish. First time holding neutral buoyancy independently.</p>
+</div>
+<div class="log-date">09 May 2026</div>
+</div>
+
+<div class="log-entry reveal">
+<div class="log-number">S</div>
+<div class="log-body">
+<p class="log-title">Snoopy Island</p>
+<p class="log-location">Fujairah · UAE</p>
+<div class="log-stats">
+<span class="log-stat">
+<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+45 min
+</span>
+<span class="log-stat">
+<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 3v18M5 8l7 7 7-7"/></svg>
+Snorkeling
+</span>
+<span class="log-stat">🐢 Sea turtle encounter</span>
+</div>
+<p class="log-note">Snorkeling session off Snoopy Island, Fujairah. Encountered a green sea turtle gliding along the reef; it stayed nearby for several minutes. Dense reef, strong coral cover, plenty of reef fish. One of the best snorkeling spots in the UAE.</p>
+<div class="log-media">
+<img src="diving_assets/turtle_snoopy_island.jpg" alt="Sea turtle at Snoopy Island"/>
+</div>
+</div>
+<div class="log-date">17 May 2026</div>
+</div>
+
+</section>
+
+<!-- BUCKET LIST -->
+<section class="bucket-section" id="bucketlist">
+<p class="section-label">What's Next</p>
+<h2 class="section-title">On the List</h2>
+<div class="bucket-grid">
+<div class="bucket-item reveal">
+<div class="bucket-item-icon">🤿</div>
+<p class="bucket-item-title">Advanced Open Water</p>
+<p class="bucket-item-desc">Deep diving, navigation, peak performance buoyancy, and specialty dives. The next certification.</p>
+<p class="bucket-status">First priority</p>
+</div>
+<div class="bucket-item reveal">
+<div class="bucket-item-icon">🌙</div>
+<p class="bucket-item-title">Night Diving</p>
+<p class="bucket-item-desc">Completely different marine behaviour after dark. Bioluminescence, nocturnal creatures, navigating by torch light.</p>
+<p class="bucket-status">Planned</p>
+</div>
+<div class="bucket-item reveal">
+<div class="bucket-item-icon">🧊</div>
+<p class="bucket-item-title">Ice Diving</p>
+<p class="bucket-item-desc">Diving beneath a frozen surface. Finland or Norway. The opposite of everything about the Gulf.</p>
+<p class="bucket-status">Long-term goal</p>
+</div>
+<div class="bucket-item reveal">
+<div class="bucket-item-icon">🚨</div>
+<p class="bucket-item-title">Rescue Diver</p>
+<p class="bucket-item-desc">PADI Rescue Diver certification. Self-rescue, managing dive emergencies, and looking out for others underwater.</p>
+<p class="bucket-status">Long-term goal</p>
+</div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+<div class="footer-contact">
+<h2>Back to the main portfolio.</h2>
+<div class="footer-links">
+<a class="footer-link" href="index.html">← Portfolio</a>
+</div>
+</div>
+<div class="footer-bottom">
+<span>© 2026 Hamze Hammami · Dubai, UAE</span>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 32" width="44" height="28" style="display:inline-block;vertical-align:middle;border:1px solid rgba(255,255,255,0.25);">
+  <rect width="44" height="32" fill="#05111f"/>
+  <text x="42%" y="54%" dominant-baseline="middle" text-anchor="middle" font-family="Times New Roman,serif" font-size="15" font-weight="700" fill="white">H&#x663;</text>
+  <text x="82%" y="38%" dominant-baseline="middle" text-anchor="middle" font-size="11" fill="rgba(78,181,212,0.85)">&#x1F93F;</text>
+</svg>
+</div>
+</footer>
+
+<script>
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('ring');
+const scrollProgress = document.getElementById('scrollProgress');
+let mx=0,my=0,rx=0,ry=0;
+
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+(function tick(){
+  cursor.style.left=mx+'px'; cursor.style.top=my+'px';
+  rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(tick);
+})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.width='20px';cursor.style.height='20px';ring.style.width='52px';ring.style.height='52px';ring.style.opacity='0.7';});
+  el.addEventListener('mouseleave',()=>{cursor.style.width='12px';cursor.style.height='12px';ring.style.width='36px';ring.style.height='36px';ring.style.opacity='0.4';});
+});
+
+window.addEventListener('scroll', () => {
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  scrollProgress.style.width = (total > 0 ? (window.scrollY / total) * 100 : 0) + '%';
+}, { passive: true });
+
+const obs = new IntersectionObserver((entries)=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);obs.unobserve(e.target);}
+  });
+},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+  document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+});
+document.querySelectorAll('.mobile-nav-link').forEach(link => {
+  link.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  });
+});
+
+// Language switch with ocean animation
+(function(){
+  const logo = document.getElementById('divingLogo');
+  if (!logo) return;
+  let arabic = false;
+  let isSwitching = false;
+  let logoHovering = false;
+  let suppressHoverUntilLeave = false;
+  let typingTimer = null;
+  let logoTypeRun = 0;
+
+  const exactText = {
+    '← Portfolio': '← الملف الشخصي',
+    'Story': 'القصة',
+    'Certs': 'الشهادات',
+    'Dive Log': 'سجل الغطس',
+    "What's Next": 'ما التالي',
+    'Diving Portfolio': 'ملف الغطس',
+    'Hamze': 'حمزة',
+    'Dives': 'يغطس',
+    'PADI Open Water certified. 2 logged dives, 1h 21min underwater. Based in Dubai.': 'حاصل على شهادة PADI للمياه المفتوحة. غطستان مسجلتان، ٨١ دقيقة تحت الماء. مقيم في دبي.',
+    'View Dive Log': 'عرض السجل',
+    'Certifications': 'الشهادات',
+    'Logged Dives': 'غطسات مسجلة',
+    'Minutes Underwater': 'دقيقة تحت الماء',
+    'Max Depth': 'أقصى عمق',
+    'PADI Certified': 'شهادة PADI',
+    'The Beginning': 'البداية',
+    "The first breath underwater changes something.": 'النفس الأول تحت الماء يغيّر شيئاً.',
+    'Training': 'التدريب',
+    'Open Water Diver': 'غواص المياه المفتوحة',
+    'Certified by Baskar A · Bermuda Diving Center': 'معتمد من Baskar A · مركز برمودا للغوص',
+    'February 14, 2026 · Dubai, UAE': '١٤ فبراير ٢٠٢٦ · دبي، الإمارات',
+    'Buoyancy Control': 'التحكم في الطفو',
+    'Regulator Use': 'استخدام المنظم',
+    'Mask Clearing': 'تنظيف القناع',
+    'Safe Ascent': 'الصعود الآمن',
+    'Dive Planning': 'تخطيط الغطسة',
+    'Emergency Procedures': 'إجراءات الطوارئ',
+    'Buoyancy Control Workshop': 'ورشة التحكم في الطفو',
+    'Dive Campus · Khor Fakkan': 'دايف كامبس · خورفكان',
+    '2025 · UAE': '٢٠٢٥ · الإمارات',
+    'Neutral Buoyancy': 'الطفو المتعادل',
+    'Trim': 'الوضعية',
+    'Breathing Discipline': 'انضباط التنفس',
+    'Controlled Movement': 'الحركة المتحكم بها',
+    'Hover Technique': 'تقنية الثبات',
+    'Logbook': 'سجل الغطس',
+    'Martini Rock': 'مارتيني روك',
+    'Khor Fakkan · UAE': 'خورفكان · الإمارات',
+    'Training': 'تدريب',
+    'Inchape 2': 'إنتشيب ٢',
+    'Snoopy Island': 'جزيرة سنوبي',
+    'Fujairah · UAE': 'الفجيرة · الإمارات',
+    'Snorkeling': 'الغطس السطحي',
+    '🐢 Sea turtle encounter': '🐢 لقاء مع سلحفاة بحرية',
+    "On the List": 'على القائمة',
+    'Advanced Open Water': 'المياه المفتوحة المتقدمة',
+    'Deep diving, navigation, peak performance buoyancy, and specialty dives. The next certification.': 'الغطس العميق، الملاحة، الطفو عالي الأداء، والغطسات المتخصصة. الشهادة التالية.',
+    'First priority': 'الأولوية الأولى',
+    'Night Diving': 'الغطس الليلي',
+    'Completely different marine behaviour after dark. Bioluminescence, nocturnal creatures, navigating by torch light.': 'سلوك بحري مختلف كلياً بعد الغروب. تلألؤ حيوي، كائنات ليلية، والتنقل بضوء المصباح.',
+    'Planned': 'مخطط له',
+    'Ice Diving': 'الغطس الجليدي',
+    'Diving beneath a frozen surface. Finland or Norway. The opposite of everything about the Gulf.': 'الغطس تحت سطح متجمد. فنلندا أو النرويج. نقيض كل شيء في الخليج.',
+    'Long-term goal': 'هدف بعيد المدى',
+    'Rescue Diver': 'غواص الإنقاذ',
+    'PADI Rescue Diver certification. Self-rescue, managing dive emergencies, and looking out for others underwater.': 'شهادة PADI لغواص الإنقاذ. الإنقاذ الذاتي، إدارة حالات الطوارئ، والاهتمام بالآخرين تحت الماء.',
+    'Back to the main portfolio.': 'العودة إلى الملف الشخصي.',
+    '© 2026 Hamze Hammami · Dubai, UAE': '© ٢٠٢٦ حمزة حمامي · دبي، الإمارات',
+    '#02': '#٠٢',
+    '#01': '#٠١',
+    'S': 'S',
+    '38 min': '٣٨ دقيقة',
+    '43 min': '٤٣ دقيقة',
+    '45 min': '٤٥ دقيقة',
+    '18 m max depth': 'عمق أقصى ١٨ م',
+    '2': '٢',
+    '81': '٨١',
+    '18m': '١٨م',
+    '2026': '٢٠٢٦',
+    'First dive · Age 13': 'أول غطسة · عمر ١٣ عاماً',
+    'Open Water · Khor Fakkan · May 2026': 'مياه مفتوحة · خورفكان · مايو ٢٠٢٦',
+    'Snorkeling · Snoopy Island · May 2026': 'غطس سطحي · جزيرة سنوبي · مايو ٢٠٢٦',
+    '09 May 2026': '٠٩ مايو ٢٠٢٦',
+    '17 May 2026': '١٧ مايو ٢٠٢٦',
+  };
+
+  function typeLogo(text, dir, done) {
+    const run = ++logoTypeRun;
+    clearInterval(typingTimer);
+    logo.classList.add('typing');
+    logo.dir = dir;
+    const current = logo.textContent;
+    let i = current.length;
+    typingTimer = setInterval(() => {
+      if (run !== logoTypeRun) { clearInterval(typingTimer); return; }
+      if (i > 0) { logo.textContent = current.slice(0, --i); return; }
+      clearInterval(typingTimer);
+      let j = 0;
+      typingTimer = setInterval(() => {
+        if (run !== logoTypeRun) { clearInterval(typingTimer); return; }
+        logo.textContent = text.slice(0, ++j);
+        if (j >= text.length) {
+          clearInterval(typingTimer);
+          logo.classList.remove('typing');
+          if (done) done();
+        }
+      }, 34);
+    }, 24);
+  }
+
+  function setLogoDefault() {
+    logo.textContent = arabic ? 'Hamze' : 'حمزة';
+    logo.lang = arabic ? 'en' : 'ar';
+    logo.dir = arabic ? 'ltr' : 'rtl';
+  }
+
+  function isNearLogo(e) {
+    const rect = logo.getBoundingClientRect();
+    return e.clientX >= rect.left - 44 && e.clientX <= rect.right + 44 &&
+           e.clientY >= rect.top - 22 && e.clientY <= rect.bottom + 22;
+  }
+
+  function beginHover() {
+    if (isSwitching || suppressHoverUntilLeave || logoHovering) return;
+    logoHovering = true;
+    typeLogo(arabic ? 'Change to English?' : 'تغيير إلى العربية؟', arabic ? 'ltr' : 'rtl');
+  }
+
+  function endHover(force = false) {
+    if (isSwitching && !force) return;
+    if (!logoHovering && !force) return;
+    logoHovering = false;
+    typeLogo(arabic ? 'Hamze' : 'حمزة', arabic ? 'ltr' : 'rtl');
+  }
+
+  const paragraphs = [
+    ['The first breath underwater', 'النفس الأول تحت الماء يغيّر شيئاً. قمت بأول غطسة تجريبية في مصر وعمري ١٣ عاماً، وحين عدت إلى السطح كنت أريد العودة. بعد سنوات، غطسة تجريبية في جزر المالديف عام ٢٠٢٢ انتهت بمصادفة قرش حسمت الأمر.'],
+    ['I got my', 'حصلت على شهادة PADI للمياه المفتوحة مؤخراً في فبراير ٢٠٢٦ عبر مركز برمودا للغوص، دبي. أول غطستين مسجلتين كانتا في خورفكان مع دايف كامبس، نفس المركز الذي أجريت فيه ورشة الطفو. الخطة واضحة: المياه المفتوحة المتقدمة، الغطس الليلي، وفي النهاية شهادة غواص الإنقاذ.'],
+    ['Second open water dive', 'الغطسة الثانية في المياه المفتوحة. تدريب على التحكم في الطفو على العمق، واستكشاف التكوين الصخري. الرؤية حوالي ٨ إلى ١٠ أمتار.'],
+    ['First logged open water dive', 'أول غطسة مسجلة في المياه المفتوحة. دخول الشعاب المرجانية، نزول إلى ١٨ متراً. مياه صافية، تكوينات مرجانية، أسماك الشعاب. أول مرة أحافظ على الطفو المتعادل بشكل مستقل.'],
+    ['Snorkeling session off Snoopy Island', 'جلسة غطس سطحي قبالة جزيرة سنوبي، الفجيرة. لقاء مع سلحفاة بحرية خضراء تحلّق على الشعاب؛ بقيت قريبة لعدة دقائق. شعاب كثيفة، غطاء مرجاني قوي، أسماك متنوعة. من أفضل مناطق الغطس السطحي في الإمارات.'],
+    ['Deep diving, navigation', 'الغطس العميق، الملاحة، الطفو عالي الأداء، والغطسات المتخصصة. الشهادة التالية.'],
+    ['Completely different marine', 'سلوك بحري مختلف كلياً بعد الغروب. تلألؤ حيوي، كائنات ليلية، والتنقل بضوء المصباح.'],
+    ['Diving beneath a frozen', 'الغطس تحت سطح متجمد. فنلندا أو النرويج. نقيض كل شيء في الخليج.'],
+    ['PADI Rescue Diver certification', 'شهادة PADI لغواص الإنقاذ. الإنقاذ الذاتي، إدارة حالات الطوارئ، والاهتمام بالآخرين تحت الماء.'],
+  ];
+
+  function applyArabic() {
+    document.documentElement.lang = 'ar';
+    document.documentElement.dir = 'rtl';
+    document.body.classList.add('arabic-mode');
+    document.querySelectorAll('body *').forEach(el => {
+      if (el.children.length === 0 && el.dataset.enText) {
+        const key = el.dataset.enText.trim();
+        if (exactText[key]) el.textContent = el.dataset.enText.replace(key, exactText[key]);
+      }
+    });
+    document.querySelectorAll('p').forEach(p => {
+      const en = p.dataset.enText || p.textContent;
+      const pair = paragraphs.find(([needle]) => en.includes(needle));
+      if (pair) p.textContent = pair[1];
+    });
+  }
+
+  function applyEnglish() {
+    document.documentElement.lang = 'en';
+    document.documentElement.dir = 'ltr';
+    document.body.classList.remove('arabic-mode');
+    document.querySelectorAll('body *').forEach(el => {
+      if (el.dataset.enText && el.children.length === 0) el.textContent = el.dataset.enText;
+    });
+  }
+
+  function storeOriginals() {
+    document.querySelectorAll('body *').forEach(el => {
+      if (!el.dataset.enText && el.children.length === 0) el.dataset.enText = el.textContent;
+    });
+  }
+
+  function runSwitch(nextArabic) {
+    if (isSwitching) return;
+    isSwitching = true; logoHovering = false; suppressHoverUntilLeave = true;
+    ++logoTypeRun; clearInterval(typingTimer); logo.classList.remove('typing');
+    document.body.classList.remove('language-settling');
+    document.body.classList.add('language-switching');
+    setTimeout(() => {
+      arabic = nextArabic;
+      if (arabic) applyArabic(); else applyEnglish();
+      // Ocean-themed confirmation
+      const confirm = arabic ? '🌊 تم التغيير' : '🌊 Switched';
+      typeLogo(confirm, arabic ? 'rtl' : 'ltr', () => {
+        setTimeout(() => {
+          document.body.classList.remove('language-switching');
+          document.body.classList.add('language-settling');
+          typeLogo(arabic ? 'Hamze' : 'حمزة', arabic ? 'ltr' : 'rtl', () => {
+            document.body.classList.remove('language-settling');
+            isSwitching = false; logoHovering = false;
+            setLogoDefault();
+            suppressHoverUntilLeave = true;
+          });
+        }, 850);
+      });
+    }, 320);
+  }
+
+  storeOriginals();
+  setLogoDefault();
+
+  document.addEventListener('mousemove', e => {
+    const inside = isNearLogo(e);
+    if (!inside) { suppressHoverUntilLeave = false; if (logoHovering && !isSwitching) endHover(); return; }
+    if (!isSwitching && !suppressHoverUntilLeave) beginHover();
+  }, { passive: true });
+
+  document.addEventListener('click', e => {
+    if (!isNearLogo(e)) return;
+    e.preventDefault(); e.stopPropagation();
+    runSwitch(!arabic);
+  }, true);
+})();
+</script>
+</body>
+</html>
