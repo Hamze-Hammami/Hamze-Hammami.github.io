@@ -52,8 +52,6 @@ body {
   background: var(--accent); z-index: 9999;
   transition: width 0.1s linear;
 }
-
-/* NAV */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
@@ -114,8 +112,6 @@ nav a, nav ul, nav div { pointer-events: all; }
   font-size: 28px; font-family: 'Times New Roman', Times, serif;
   color: white; text-decoration: none; font-weight: 700; opacity: 0.85;
 }
-
-/* HERO */
 .hero {
   background: var(--deep);
   min-height: 100vh;
@@ -133,7 +129,6 @@ nav a, nav ul, nav div { pointer-events: all; }
     radial-gradient(ellipse at 80% 20%, rgba(78,181,212,0.12) 0%, transparent 50%);
   pointer-events: none;
 }
-/* Subtle wave lines */
 .hero::after {
   content: '';
   position: absolute; bottom: 0; left: 0; right: 0; height: 180px;
@@ -200,8 +195,6 @@ h1.hero-name em { font-style: italic; color: rgba(255,255,255,0.65); }
   border: 1px solid rgba(255,255,255,0.25); transition: all 0.2s;
 }
 .btn-outline:hover { color: white; border-color: var(--accent); background: rgba(78,181,212,0.1); }
-
-/* SECTIONS */
 section { padding: 100px 64px; }
 .section-label {
   font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
@@ -212,17 +205,13 @@ section { padding: 100px 64px; }
   font-size: clamp(36px,5vw,60px); line-height: 1.05;
   margin-bottom: 56px; letter-spacing: -0.5px; font-weight: 700;
 }
-
-/* ORIGIN STORY */
 .origin-section { background: var(--deep); color: white; }
 .origin-section .section-label { color: var(--accent); }
 .origin-section .section-title { color: white; margin-bottom: 0; }
 .origin-inner {
   display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
 }
-.origin-photo {
-  position: relative; overflow: hidden;
-}
+.origin-photo { position: relative; overflow: hidden; }
 .origin-photo img {
   width: 100%; display: block; aspect-ratio: 4/5;
   object-fit: cover; object-position: center top;
@@ -248,8 +237,6 @@ section { padding: 100px 64px; }
 }
 .origin-content p:last-child { margin-bottom: 0; }
 .origin-content strong { color: rgba(255,255,255,0.9); font-weight: 400; }
-
-/* CERTIFICATIONS */
 .certs-section { background: var(--foam); }
 .certs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
 .cert-card {
@@ -274,14 +261,6 @@ section { padding: 100px 64px; }
 }
 .cert-org { font-size: 14px; color: #6b8a96; font-weight: 300; }
 .cert-date { font-size: 13px; color: #9ab0ba; letter-spacing: 0.04em; }
-.cert-skills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-.cert-skill {
-  font-size: 11px; padding: 5px 12px;
-  border: 1px solid #cde4ec; color: #4a7a8a;
-  letter-spacing: 0.06em;
-}
-
-/* DIVE LOG */
 .logs-section { background: var(--ocean); color: white; padding: 100px 64px; }
 .logs-section .section-label { color: var(--accent); }
 .logs-section .section-title { color: white; }
@@ -303,7 +282,6 @@ section { padding: 100px 64px; }
   font-size: 13px; color: var(--accent); font-style: italic;
   padding-top: 4px; letter-spacing: 0.04em;
 }
-.log-body {}
 .log-title {
   font-family: 'Times New Roman', Times, serif;
   font-size: 20px; font-weight: 700; color: white; margin-bottom: 6px;
@@ -316,27 +294,6 @@ section { padding: 100px 64px; }
 .log-media { margin-top: 20px; }
 .log-media img { width: 100%; max-width: 480px; display: block; aspect-ratio: 3/2; object-fit: cover; }
 .log-note { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.7; font-weight: 300; margin-top: 10px; max-width: 520px; }
-
-/* PHOTOS */
-.photos-section { background: var(--foam); padding: 100px 64px; }
-.photo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
-.photo-item { overflow: hidden; position: relative; }
-.photo-item img {
-  width: 100%; height: 100%; object-fit: cover;
-  display: block; aspect-ratio: 4/3;
-  filter: grayscale(10%) saturate(1.1);
-  transition: transform 0.5s ease, filter 0.4s;
-}
-.photo-item:hover img { transform: scale(1.04); filter: grayscale(0%) saturate(1.2); }
-.photo-caption {
-  position: absolute; bottom: 0; left: 0; right: 0; padding: 20px 24px;
-  background: linear-gradient(to top, rgba(5,17,31,0.85), transparent);
-  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
-  color: rgba(255,255,255,0.7); opacity: 0; transition: opacity 0.3s;
-}
-.photo-item:hover .photo-caption { opacity: 1; }
-
-/* BUCKET LIST */
 .bucket-section { background: var(--deep); color: white; padding: 100px 64px; }
 .bucket-section .section-label { color: var(--accent); }
 .bucket-section .section-title { color: white; margin-bottom: 40px; }
@@ -348,7 +305,6 @@ section { padding: 100px 64px; }
   transition: background 0.2s, border-color 0.2s;
 }
 .bucket-item:hover { background: rgba(78,181,212,0.08); border-color: rgba(78,181,212,0.3); }
-.bucket-item-icon { font-size: 24px; }
 .bucket-item-title {
   font-family: 'Times New Roman', Times, serif;
   font-size: 20px; font-weight: 700; color: white;
@@ -358,8 +314,6 @@ section { padding: 100px 64px; }
   font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
   color: var(--accent); margin-top: auto; padding-top: 8px;
 }
-
-/* FOOTER */
 footer {
   background: var(--deep); padding: 0;
   border-top: 1px solid var(--border);
@@ -385,8 +339,6 @@ footer {
   padding: 24px 64px; display: flex; justify-content: space-between;
   align-items: center; font-size: 12px; color: rgba(255,255,255,0.25);
 }
-
-/* Language switch ocean animation */
 body.language-switching .hero-text,
 body.language-switching .origin-content,
 body.language-switching .cert-card,
@@ -420,12 +372,8 @@ body.arabic-mode .nav-links,
 body.arabic-mode .hero-cta,
 body.arabic-mode .footer-links { flex-direction: row-reverse; }
 body.arabic-mode .nav-logo { direction: ltr; font-family: 'Times New Roman', 'Helvetica Neue', Arial, sans-serif; letter-spacing: 0.12em; }
-
-
-
 .reveal { opacity:0; transform:translateY(28px); transition:opacity 0.7s ease, transform 0.7s ease; }
 .reveal.visible { opacity:1; transform:translateY(0); }
-
 @media(max-width:900px){
   nav { padding: 16px 24px; }
   .nav-links { display: none; }
@@ -477,7 +425,7 @@ body.arabic-mode .nav-logo { direction: ltr; font-family: 'Times New Roman', 'He
 <div class="hero-text">
 <span class="hero-eyebrow">Diving Portfolio</span>
 <h1 class="hero-name">Hamze<br/><em>Dives</em></h1>
-<p class="hero-bio">PADI Open Water certified. 2 logged dives, 1h 21min underwater. Based in Dubai.</p>
+<p class="hero-bio">PADI Open Water. 2 dives logged. Based in Dubai.</p>
 <div class="hero-cta">
 <a class="btn-outline" href="#logs">View Dive Log</a>
 <a class="btn-outline" href="#certifications">Certifications</a>
@@ -523,28 +471,13 @@ body.arabic-mode .nav-logo { direction: ltr; font-family: 'Times New Roman', 'He
 <span class="cert-badge">PADI</span>
 <p class="cert-title">Open Water Diver</p>
 <p class="cert-org">Certified by Baskar A · Bermuda Diving Center</p>
-<p class="cert-date">February 14, 2026 · Dubai, UAE</p>
-<div class="cert-skills">
-<span class="cert-skill">Buoyancy Control</span>
-<span class="cert-skill">Regulator Use</span>
-<span class="cert-skill">Mask Clearing</span>
-<span class="cert-skill">Safe Ascent</span>
-<span class="cert-skill">Dive Planning</span>
-<span class="cert-skill">Emergency Procedures</span>
-</div>
+<p class="cert-date">February 14, 2026 · Dubai</p>
 </div>
 <div class="cert-card reveal">
 <span class="cert-badge">Workshop</span>
 <p class="cert-title">Buoyancy Control Workshop</p>
 <p class="cert-org">Dive Campus · Khor Fakkan</p>
-<p class="cert-date">2025 · UAE</p>
-<div class="cert-skills">
-<span class="cert-skill">Neutral Buoyancy</span>
-<span class="cert-skill">Trim</span>
-<span class="cert-skill">Breathing Discipline</span>
-<span class="cert-skill">Controlled Movement</span>
-<span class="cert-skill">Hover Technique</span>
-</div>
+<p class="cert-date">2025</p>
 </div>
 </div>
 </section>
@@ -568,12 +501,9 @@ body.arabic-mode .nav-logo { direction: ltr; font-family: 'Times New Roman', 'He
 <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 3v18M5 8l7 7 7-7"/></svg>
 18 m max depth
 </span>
-<span class="log-stat">
-<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-Training
-</span>
+
 </div>
-<p class="log-note">Second open water dive. Practiced buoyancy control at depth, explored the rock formation. Visibility around 8–10m.</p>
+<p class="log-note">Second dive.</p>
 </div>
 <div class="log-date">09 May 2026</div>
 </div>
@@ -592,12 +522,9 @@ Training
 <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 3v18M5 8l7 7 7-7"/></svg>
 18 m max depth
 </span>
-<span class="log-stat">
-<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-Training
-</span>
+
 </div>
-<p class="log-note">First logged open water dive. Reef entry, descended to 18m. Clear water, coral formations, reef fish. First time holding neutral buoyancy independently.</p>
+<p class="log-note">First logged dive. Descended to 18m, reef entry.</p>
 </div>
 <div class="log-date">09 May 2026</div>
 </div>
@@ -616,9 +543,9 @@ Training
 <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 3v18M5 8l7 7 7-7"/></svg>
 Snorkeling
 </span>
-<span class="log-stat">🐢 Sea turtle encounter</span>
+<span class="log-stat">Sea turtle encounter</span>
 </div>
-<p class="log-note">Snorkeling session off Snoopy Island, Fujairah. Encountered a green sea turtle gliding along the reef; it stayed nearby for several minutes. Dense reef, strong coral cover, plenty of reef fish. One of the best snorkeling spots in the UAE.</p>
+<p class="log-note">Snoopy Island, Fujairah. Ran into a sea turtle, it hung around for a few minutes.</p>
 <div class="log-media">
 <img src="diving_assets/turtle_snoopy_island.jpg" alt="Sea turtle at Snoopy Island"/>
 </div>
@@ -634,28 +561,24 @@ Snorkeling
 <h2 class="section-title">On the List</h2>
 <div class="bucket-grid">
 <div class="bucket-item reveal">
-<div class="bucket-item-icon">🤿</div>
 <p class="bucket-item-title">Advanced Open Water</p>
-<p class="bucket-item-desc">Deep diving, navigation, peak performance buoyancy, and specialty dives. The next certification.</p>
+<p class="bucket-item-desc">Deep diving, navigation, buoyancy specialties. Next certification.</p>
 <p class="bucket-status">First priority</p>
 </div>
 <div class="bucket-item reveal">
-<div class="bucket-item-icon">🌙</div>
 <p class="bucket-item-title">Night Diving</p>
-<p class="bucket-item-desc">Completely different marine behaviour after dark. Bioluminescence, nocturnal creatures, navigating by torch light.</p>
+<p class="bucket-item-desc">Different world after dark. Want to see it.</p>
 <p class="bucket-status">Planned</p>
 </div>
 <div class="bucket-item reveal">
-<div class="bucket-item-icon">🧊</div>
 <p class="bucket-item-title">Ice Diving</p>
-<p class="bucket-item-desc">Diving beneath a frozen surface. Finland or Norway. The opposite of everything about the Gulf.</p>
-<p class="bucket-status">Long-term goal</p>
+<p class="bucket-item-desc">Under a frozen surface somewhere cold. Switzerland or Iceland.</p>
+<p class="bucket-status">Long-term</p>
 </div>
 <div class="bucket-item reveal">
-<div class="bucket-item-icon">🚨</div>
 <p class="bucket-item-title">Rescue Diver</p>
-<p class="bucket-item-desc">PADI Rescue Diver certification. Self-rescue, managing dive emergencies, and looking out for others underwater.</p>
-<p class="bucket-status">Long-term goal</p>
+<p class="bucket-item-desc">PADI Rescue certification. Managing emergencies underwater.</p>
+<p class="bucket-status">Long-term</p>
 </div>
 </div>
 </section>
@@ -723,7 +646,6 @@ document.querySelectorAll('.mobile-nav-link').forEach(link => {
   });
 });
 
-// Language switch with ocean animation
 (function(){
   const logo = document.getElementById('divingLogo');
   if (!logo) return;
@@ -743,7 +665,7 @@ document.querySelectorAll('.mobile-nav-link').forEach(link => {
     'Diving Portfolio': 'ملف الغطس',
     'Hamze': 'حمزة',
     'Dives': 'يغطس',
-    'PADI Open Water certified. 2 logged dives, 1h 21min underwater. Based in Dubai.': 'حاصل على شهادة PADI للمياه المفتوحة. غطستان مسجلتان، ٨١ دقيقة تحت الماء. مقيم في دبي.',
+    'PADI Open Water. 2 dives logged. Based in Dubai.': 'PADI للمياه المفتوحة. غطستان مسجلتان. مقيم في دبي.',
     'View Dive Log': 'عرض السجل',
     'Certifications': 'الشهادات',
     'Logged Dives': 'غطسات مسجلة',
@@ -751,65 +673,57 @@ document.querySelectorAll('.mobile-nav-link').forEach(link => {
     'Max Depth': 'أقصى عمق',
     'PADI Certified': 'شهادة PADI',
     'The Beginning': 'البداية',
-    "The first breath underwater changes something.": 'النفس الأول تحت الماء يغيّر شيئاً.',
     'Training': 'التدريب',
     'Open Water Diver': 'غواص المياه المفتوحة',
     'Certified by Baskar A · Bermuda Diving Center': 'معتمد من Baskar A · مركز برمودا للغوص',
-    'February 14, 2026 · Dubai, UAE': '١٤ فبراير ٢٠٢٦ · دبي، الإمارات',
-    'Buoyancy Control': 'التحكم في الطفو',
-    'Regulator Use': 'استخدام المنظم',
-    'Mask Clearing': 'تنظيف القناع',
-    'Safe Ascent': 'الصعود الآمن',
-    'Dive Planning': 'تخطيط الغطسة',
-    'Emergency Procedures': 'إجراءات الطوارئ',
+    'February 14, 2026 · Dubai': '١٤ فبراير ٢٠٢٦ · دبي',
     'Buoyancy Control Workshop': 'ورشة التحكم في الطفو',
     'Dive Campus · Khor Fakkan': 'دايف كامبس · خورفكان',
-    '2025 · UAE': '٢٠٢٥ · الإمارات',
-    'Neutral Buoyancy': 'الطفو المتعادل',
-    'Trim': 'الوضعية',
-    'Breathing Discipline': 'انضباط التنفس',
-    'Controlled Movement': 'الحركة المتحكم بها',
-    'Hover Technique': 'تقنية الثبات',
+    '2025': '٢٠٢٥',
     'Logbook': 'سجل الغطس',
     'Martini Rock': 'مارتيني روك',
     'Khor Fakkan · UAE': 'خورفكان · الإمارات',
-    'Training': 'تدريب',
     'Inchape 2': 'إنتشيب ٢',
     'Snoopy Island': 'جزيرة سنوبي',
     'Fujairah · UAE': 'الفجيرة · الإمارات',
     'Snorkeling': 'الغطس السطحي',
-    '🐢 Sea turtle encounter': '🐢 لقاء مع سلحفاة بحرية',
-    "On the List": 'على القائمة',
-    'Advanced Open Water': 'المياه المفتوحة المتقدمة',
-    'Deep diving, navigation, peak performance buoyancy, and specialty dives. The next certification.': 'الغطس العميق، الملاحة، الطفو عالي الأداء، والغطسات المتخصصة. الشهادة التالية.',
-    'First priority': 'الأولوية الأولى',
-    'Night Diving': 'الغطس الليلي',
-    'Completely different marine behaviour after dark. Bioluminescence, nocturnal creatures, navigating by torch light.': 'سلوك بحري مختلف كلياً بعد الغروب. تلألؤ حيوي، كائنات ليلية، والتنقل بضوء المصباح.',
-    'Planned': 'مخطط له',
-    'Ice Diving': 'الغطس الجليدي',
-    'Diving beneath a frozen surface. Finland or Norway. The opposite of everything about the Gulf.': 'الغطس تحت سطح متجمد. فنلندا أو النرويج. نقيض كل شيء في الخليج.',
-    'Long-term goal': 'هدف بعيد المدى',
-    'Rescue Diver': 'غواص الإنقاذ',
-    'PADI Rescue Diver certification. Self-rescue, managing dive emergencies, and looking out for others underwater.': 'شهادة PADI لغواص الإنقاذ. الإنقاذ الذاتي، إدارة حالات الطوارئ، والاهتمام بالآخرين تحت الماء.',
-    'Back to the main portfolio.': 'العودة إلى الملف الشخصي.',
-    '© 2026 Hamze Hammami · Dubai, UAE': '© ٢٠٢٦ حمزة حمامي · دبي، الإمارات',
-    '#02': '#٠٢',
-    '#01': '#٠١',
-    'S': 'S',
+    'Sea turtle encounter': 'لقاء مع سلحفاة بحرية',
     '38 min': '٣٨ دقيقة',
     '43 min': '٤٣ دقيقة',
     '45 min': '٤٥ دقيقة',
     '18 m max depth': 'عمق أقصى ١٨ م',
+    '09 May 2026': '٠٩ مايو ٢٠٢٦',
+    '17 May 2026': '١٧ مايو ٢٠٢٦',
+    '#02': '#٠٢',
+    '#01': '#٠١',
     '2': '٢',
     '81': '٨١',
     '18m': '١٨م',
     '2026': '٢٠٢٦',
     'First dive · Age 13': 'أول غطسة · عمر ١٣ عاماً',
-    'Open Water · Khor Fakkan · May 2026': 'مياه مفتوحة · خورفكان · مايو ٢٠٢٦',
-    'Snorkeling · Snoopy Island · May 2026': 'غطس سطحي · جزيرة سنوبي · مايو ٢٠٢٦',
-    '09 May 2026': '٠٩ مايو ٢٠٢٦',
-    '17 May 2026': '١٧ مايو ٢٠٢٦',
+    "On the List": 'على القائمة',
+    'Advanced Open Water': 'المياه المفتوحة المتقدمة',
+    'Deep diving, navigation, buoyancy specialties. Next certification.': 'الغطس العميق، الملاحة، تخصصات الطفو. الشهادة التالية.',
+    'First priority': 'الأولوية الأولى',
+    'Night Diving': 'الغطس الليلي',
+    'Different world after dark. Want to see it.': 'عالم مختلف بعد الغروب. أريد أن أراه.',
+    'Planned': 'مخطط له',
+    'Ice Diving': 'الغطس الجليدي',
+    'Under a frozen surface somewhere cold. Switzerland or Iceland.': 'تحت سطح متجمد في مكان بارد. سويسرا أو آيسلندا.',
+    'Long-term': 'هدف بعيد المدى',
+    'Rescue Diver': 'غواص الإنقاذ',
+    'PADI Rescue certification. Managing emergencies underwater.': 'شهادة PADI للإنقاذ. إدارة حالات الطوارئ تحت الماء.',
+    'Back to the main portfolio.': 'العودة إلى الملف الشخصي.',
+    '© 2026 Hamze Hammami · Dubai, UAE': '© ٢٠٢٦ حمزة حمامي · دبي، الإمارات',
   };
+
+  const paragraphs = [
+    ['The first breath underwater changes something. I did my first try dive', 'النفس الأول تحت الماء يغيّر شيئاً. قمت بأول غطسة تجريبية في مصر وعمري ١٣ عاماً، وحين صعدت كنت أريد العودة. بعد سنوات، غطسة تجريبية في المالديف عام ٢٠٢٢ انتهت بمصادفة قرش حسمت الأمر.'],
+    ['I got my recent PADI Open Water', 'حصلت على شهادة PADI للمياه المفتوحة مؤخراً في فبراير ٢٠٢٦ عبر مركز برمودا للغوص، دبي. أول غطستين مسجلتين كانتا في خورفكان مع دايف كامبس، نفس المركز الذي أجريت فيه ورشة الطفو. الخطة: المياه المفتوحة المتقدمة، الغطس الليلي، وفي النهاية شهادة غواص الإنقاذ.'],
+    ['Second dive.', 'الغطسة الثانية.'],
+    ['First logged dive. Descended to 18m', 'أول غطسة مسجلة. نزلت إلى ١٨ متراً، دخول الشعاب المرجانية.'],
+    ['Snoopy Island, Fujairah. Ran into a sea turtle', 'جزيرة سنوبي، الفجيرة. صادفت سلحفاة بحرية، بقيت قريبة لعدة دقائق.'],
+  ];
 
   function typeLogo(text, dir, done) {
     const run = ++logoTypeRun;
@@ -860,18 +774,6 @@ document.querySelectorAll('.mobile-nav-link').forEach(link => {
     typeLogo(arabic ? 'Hamze' : 'حمزة', arabic ? 'ltr' : 'rtl');
   }
 
-  const paragraphs = [
-    ['The first breath underwater', 'النفس الأول تحت الماء يغيّر شيئاً. قمت بأول غطسة تجريبية في مصر وعمري ١٣ عاماً، وحين عدت إلى السطح كنت أريد العودة. بعد سنوات، غطسة تجريبية في جزر المالديف عام ٢٠٢٢ انتهت بمصادفة قرش حسمت الأمر.'],
-    ['I got my', 'حصلت على شهادة PADI للمياه المفتوحة مؤخراً في فبراير ٢٠٢٦ عبر مركز برمودا للغوص، دبي. أول غطستين مسجلتين كانتا في خورفكان مع دايف كامبس، نفس المركز الذي أجريت فيه ورشة الطفو. الخطة واضحة: المياه المفتوحة المتقدمة، الغطس الليلي، وفي النهاية شهادة غواص الإنقاذ.'],
-    ['Second open water dive', 'الغطسة الثانية في المياه المفتوحة. تدريب على التحكم في الطفو على العمق، واستكشاف التكوين الصخري. الرؤية حوالي ٨ إلى ١٠ أمتار.'],
-    ['First logged open water dive', 'أول غطسة مسجلة في المياه المفتوحة. دخول الشعاب المرجانية، نزول إلى ١٨ متراً. مياه صافية، تكوينات مرجانية، أسماك الشعاب. أول مرة أحافظ على الطفو المتعادل بشكل مستقل.'],
-    ['Snorkeling session off Snoopy Island', 'جلسة غطس سطحي قبالة جزيرة سنوبي، الفجيرة. لقاء مع سلحفاة بحرية خضراء تحلّق على الشعاب؛ بقيت قريبة لعدة دقائق. شعاب كثيفة، غطاء مرجاني قوي، أسماك متنوعة. من أفضل مناطق الغطس السطحي في الإمارات.'],
-    ['Deep diving, navigation', 'الغطس العميق، الملاحة، الطفو عالي الأداء، والغطسات المتخصصة. الشهادة التالية.'],
-    ['Completely different marine', 'سلوك بحري مختلف كلياً بعد الغروب. تلألؤ حيوي، كائنات ليلية، والتنقل بضوء المصباح.'],
-    ['Diving beneath a frozen', 'الغطس تحت سطح متجمد. فنلندا أو النرويج. نقيض كل شيء في الخليج.'],
-    ['PADI Rescue Diver certification', 'شهادة PADI لغواص الإنقاذ. الإنقاذ الذاتي، إدارة حالات الطوارئ، والاهتمام بالآخرين تحت الماء.'],
-  ];
-
   function applyArabic() {
     document.documentElement.lang = 'ar';
     document.documentElement.dir = 'rtl';
@@ -913,8 +815,7 @@ document.querySelectorAll('.mobile-nav-link').forEach(link => {
     setTimeout(() => {
       arabic = nextArabic;
       if (arabic) applyArabic(); else applyEnglish();
-      // Ocean-themed confirmation
-      const confirm = arabic ? '🌊 تم التغيير' : '🌊 Switched';
+      const confirm = arabic ? 'تم التغيير' : 'Switched';
       typeLogo(confirm, arabic ? 'rtl' : 'ltr', () => {
         setTimeout(() => {
           document.body.classList.remove('language-switching');
