@@ -58,7 +58,6 @@ nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
   padding: 20px 48px;
-  mix-blend-mode: difference;
   pointer-events: none;
 }
 nav a, nav ul { pointer-events: all; }
@@ -1039,13 +1038,13 @@ body.arabic-mode .nav-logo {
 
 
 /* Dynamic nav background */
-nav.nav-light { mix-blend-mode: normal; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,0.06); }
+nav.nav-light { background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,0.06); }
 nav.nav-light .nav-links a { color: #111; }
-nav.nav-light .nav-logo { color: #111; mix-blend-mode: normal; }
+nav.nav-light .nav-logo { color: #111; }
 nav.nav-light .nav-hamburger span { background: #111; }
-nav.nav-dark { mix-blend-mode: normal; background: rgba(14,14,14,0.88); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+nav.nav-dark { background: rgba(14,14,14,0.88); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06); }
 nav.nav-dark .nav-links a { color: white; }
-nav.nav-dark .nav-logo { color: white; mix-blend-mode: normal; }
+nav.nav-dark .nav-logo { color: white; }
 nav.nav-dark .nav-hamburger span { background: white; }
 nav { transition: background 0.3s ease, border-color 0.3s ease; }
 </style>
@@ -1498,7 +1497,7 @@ I am a robotics engineer and researcher with a background spanning embedded syst
 <p class="section-label">Beyond Research</p>
 <h2 class="section-title" style="margin-bottom:40px;">Other Interests</h2>
 <div class="interests-grid">
-<a class="interest-card reveal" href="diving.html">
+<a class="interest-card reveal" href="diving.html" data-hobby-page="diving.html">
 <div class="interest-card-bg">
 <img src="diving_assets/hamze_diving.jpg" alt="Scuba Diving" onerror="this.style.display='none'"/>
 </div>
@@ -2041,6 +2040,13 @@ if (tickItems.length) {
   }
 
   storeOriginals();
+
+  const _urlParams = new URLSearchParams(window.location.search);
+  if (_urlParams.get('lang') === 'ar') {
+    arabic = true;
+    applyArabicText();
+  }
+
   setLogoDefault();
 
   document.addEventListener('mousemove', handleLogoProximity, { passive: true });

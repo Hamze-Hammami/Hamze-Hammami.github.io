@@ -56,7 +56,6 @@ nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
   padding: 20px 48px;
-  mix-blend-mode: difference;
   pointer-events: none;
 }
 nav a, nav ul, nav div { pointer-events: all; }
@@ -75,11 +74,10 @@ nav a, nav ul, nav div { pointer-events: all; }
   text-decoration: none;
   direction: rtl;
   line-height: 1;
-  mix-blend-mode: difference;
   transition: opacity 0.25s ease, letter-spacing 0.25s ease;
 }
 .nav-logo.typing { letter-spacing: 0.04em; }
-.nav-links { display: flex; gap: 28px; list-style: none; mix-blend-mode: difference; }
+.nav-links { display: flex; gap: 28px; list-style: none; }
 .nav-links a {
   font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
   color: white; text-decoration: none; transition: opacity 0.2s; font-weight: 500;
@@ -89,12 +87,12 @@ nav a, nav ul, nav div { pointer-events: all; }
   font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
   color: rgba(255,255,255,0.7); text-decoration: none;
   display: flex; align-items: center; gap: 8px;
-  transition: color 0.2s; mix-blend-mode: difference;
+  transition: color 0.2s;
 }
 .nav-back:hover { color: white; }
 .nav-hamburger {
   display: none; flex-direction: column; gap: 5px;
-  cursor: pointer; padding: 4px; pointer-events: all; mix-blend-mode: difference;
+  cursor: pointer; padding: 4px; pointer-events: all;
 }
 .nav-hamburger span {
   display: block; width: 22px; height: 1.5px;
@@ -411,13 +409,13 @@ body.arabic-mode .nav-logo { direction: ltr; font-family: 'Times New Roman', 'He
 }
 
 /* Dynamic nav background */
-nav.nav-light { mix-blend-mode: normal; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,0.06); }
+nav.nav-light { background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,0.06); }
 nav.nav-light .nav-links a { color: #111; }
-nav.nav-light .nav-logo { color: #111; mix-blend-mode: normal; }
+nav.nav-light .nav-logo { color: #111; }
 nav.nav-light .nav-hamburger span { background: #111; }
-nav.nav-dark { mix-blend-mode: normal; background: rgba(14,14,14,0.88); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+nav.nav-dark { background: rgba(14,14,14,0.88); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06); }
 nav.nav-dark .nav-links a { color: white; }
-nav.nav-dark .nav-logo { color: white; mix-blend-mode: normal; }
+nav.nav-dark .nav-logo { color: white; }
 nav.nav-dark .nav-hamburger span { background: white; }
 nav { transition: background 0.3s ease, border-color 0.3s ease; }
 </style>
@@ -431,10 +429,6 @@ nav { transition: background 0.3s ease, border-color 0.3s ease; }
 <a class="nav-logo" dir="rtl" href="#" lang="ar" id="divingLogo">حمزة</a>
 <ul class="nav-links">
 <li><a href="index.html">← Portfolio</a></li>
-<li><a href="#origin">Story</a></li>
-<li><a href="#certifications">Certs</a></li>
-<li><a href="#logs">Dive Log</a></li>
-<li><a href="#bucketlist">What's Next</a></li>
 </ul>
 <div class="nav-hamburger" id="hamburger"><span></span><span></span><span></span></div>
 </nav>
@@ -802,6 +796,14 @@ document.querySelectorAll('.mobile-nav-link').forEach(link => {
     typeLogo(arabic ? 'Hamze' : 'حمزة', arabic ? 'ltr' : 'rtl');
   }
 
+  function updateBackLinks(isArabic) {
+    document.querySelectorAll('a').forEach(link => {
+      if (link.getAttribute('href') === 'index.html' || link.getAttribute('href') === 'index.html?lang=ar') {
+        link.href = isArabic ? 'index.html?lang=ar' : 'index.html';
+      }
+    });
+  }
+
   function applyArabic() {
     document.documentElement.lang = 'ar';
     document.documentElement.dir = 'rtl';
@@ -817,6 +819,7 @@ document.querySelectorAll('.mobile-nav-link').forEach(link => {
       const pair = paragraphs.find(([needle]) => en.includes(needle));
       if (pair) p.textContent = pair[1];
     });
+    updateBackLinks(true);
   }
 
   function applyEnglish() {
@@ -826,6 +829,7 @@ document.querySelectorAll('.mobile-nav-link').forEach(link => {
     document.querySelectorAll('body *').forEach(el => {
       if (el.dataset.enText && el.children.length === 0) el.textContent = el.dataset.enText;
     });
+    updateBackLinks(false);
   }
 
   function storeOriginals() {
@@ -843,7 +847,7 @@ document.querySelectorAll('.mobile-nav-link').forEach(link => {
     setTimeout(() => {
       arabic = nextArabic;
       if (arabic) applyArabic(); else applyEnglish();
-      const confirm = arabic ? 'تم التغيير' : 'Switched';
+      const confirm = arabic ? 'تم تغيير اللغة إلى العربية' : 'Changed language to English';
       typeLogo(confirm, arabic ? 'rtl' : 'ltr', () => {
         setTimeout(() => {
           document.body.classList.remove('language-switching');
@@ -860,6 +864,13 @@ document.querySelectorAll('.mobile-nav-link').forEach(link => {
   }
 
   storeOriginals();
+
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('lang') === 'ar') {
+    arabic = true;
+    applyArabic();
+  }
+
   setLogoDefault();
 
   document.addEventListener('mousemove', e => {
