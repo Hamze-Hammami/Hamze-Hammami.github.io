@@ -409,6 +409,17 @@ body.arabic-mode .nav-logo { direction: ltr; font-family: 'Times New Roman', 'He
   .logs-section { padding: 64px 24px; }
   .bucket-section { padding: 64px 24px; }
 }
+
+/* Dynamic nav background */
+nav.nav-light { mix-blend-mode: normal; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,0.06); }
+nav.nav-light .nav-links a { color: #111; }
+nav.nav-light .nav-logo { color: #111; mix-blend-mode: normal; }
+nav.nav-light .nav-hamburger span { background: #111; }
+nav.nav-dark { mix-blend-mode: normal; background: rgba(14,14,14,0.88); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+nav.nav-dark .nav-links a { color: white; }
+nav.nav-dark .nav-logo { color: white; mix-blend-mode: normal; }
+nav.nav-dark .nav-hamburger span { background: white; }
+nav { transition: background 0.3s ease, border-color 0.3s ease; }
 </style>
 </head>
 <body>
@@ -862,6 +873,40 @@ document.querySelectorAll('.mobile-nav-link').forEach(link => {
     e.preventDefault(); e.stopPropagation();
     runSwitch(!arabic);
   }, true);
+})();
+
+// Dynamic nav background based on section colour
+(function(){
+  const nav = document.querySelector('nav');
+  const darkSections = ['work', 'talks', 'top', 'publications'];
+  const lightSections = ['about', 'education', 'skills', 'volunteering', 'interests'];
+
+  const allSections = document.querySelectorAll('section[id], div[id]');
+
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const id = entry.target.id;
+      const bg = window.getComputedStyle(entry.target).backgroundColor;
+      // Parse RGB
+      const m = bg.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+      if (!m) return;
+      const brightness = (parseInt(m[1]) * 299 + parseInt(m[2]) * 587 + parseInt(m[3]) * 114) / 1000;
+      nav.classList.remove('nav-light', 'nav-dark');
+      if (window.scrollY < 60) { nav.classList.remove('nav-light','nav-dark'); return; }
+      if (brightness < 128) {
+        nav.classList.add('nav-dark');
+      } else {
+        nav.classList.add('nav-light');
+      }
+    });
+  }, { threshold: 0.3, rootMargin: '-60px 0px -60% 0px' });
+
+  allSections.forEach(s => sectionObserver.observe(s));
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY < 60) nav.classList.remove('nav-light','nav-dark');
+  }, { passive: true });
 })();
 </script>
 </body>
