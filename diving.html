@@ -709,7 +709,7 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
     '81': '٨١',
     '18m': '١٨م',
     '2026': '٢٠٢٦',
-    'First dive · Age 13': 'أول غطسة · عمر ١٣ عاماً',
+    'First dive · Age 13': 'أول غطسة · في سن ١٣',
     "On the List": 'على القائمة',
     'Advanced Open Water': 'المياه المفتوحة المتقدمة',
     'Deep diving, navigation, buoyancy specialties. Next certification.': 'الغطس العميق، الملاحة، تخصصات الطفو. الشهادة التالية.',
@@ -727,7 +727,7 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
   };
 
   const paragraphs = [
-    ['First breath underwater, Egypt, age 13.', 'أول نفس تحت الماء، مصر، عمر ١٣ عاماً.'],
+    ['First breath underwater, Egypt, age 13.', 'أول نفس تحت الماء، مصر، في سن ١٣.'],
     ['I did my first try dive in Egypt at 13', 'قمت بأول غطسة تجريبية في مصر وعمري ١٣ عاماً، وحين صعدت كنت أريد العودة. بعد سنوات، غطسة تجريبية في المالديف عام ٢٠٢٢ انتهت بمصادفة قرش حسمت الأمر.'],
     ['I got my PADI Open Water in February 2026', 'حصلت على شهادة PADI للمياه المفتوحة في فبراير ٢٠٢٦ عبر مركز برمودا للغوص، دبي. أول غطستين مسجلتين كانتا في خورفكان مع دايف كامبس. من هنا: المياه المفتوحة المتقدمة، الغطس الليلي، غواص الإنقاذ، وفي النهاية الغطس الجليدي في مكان متجمد، سويسرا أو آيسلندا.'],
     ['First logged dive.', 'أول غطسة مسجلة.'],
@@ -793,6 +793,15 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
     });
   }
 
+  function storeOriginals() {
+    document.querySelectorAll('body *').forEach(el => {
+      if (!el.dataset.enText && el.children.length === 0) el.dataset.enText = el.textContent;
+    });
+    document.querySelectorAll('p, h2').forEach(el => {
+      if (!el.dataset.enHtml) el.dataset.enHtml = el.innerHTML;
+    });
+  }
+
   function applyArabic() {
     document.documentElement.lang = 'ar';
     document.documentElement.dir = 'rtl';
@@ -803,10 +812,10 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
         if (exactText[key]) el.textContent = el.dataset.enText.replace(key, exactText[key]);
       }
     });
-    document.querySelectorAll('p').forEach(p => {
-      const en = p.dataset.enText || p.textContent;
+    document.querySelectorAll('p, h2').forEach(el => {
+      const en = el.dataset.enText || el.textContent;
       const pair = paragraphs.find(([needle]) => en.includes(needle));
-      if (pair) p.textContent = pair[1];
+      if (pair) el.textContent = pair[1];
     });
     updateBackLinks(true);
   }
@@ -818,13 +827,10 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
     document.querySelectorAll('body *').forEach(el => {
       if (el.dataset.enText && el.children.length === 0) el.textContent = el.dataset.enText;
     });
-    updateBackLinks(false);
-  }
-
-  function storeOriginals() {
-    document.querySelectorAll('body *').forEach(el => {
-      if (!el.dataset.enText && el.children.length === 0) el.dataset.enText = el.textContent;
+    document.querySelectorAll('p, h2').forEach(el => {
+      if (el.dataset.enHtml) el.innerHTML = el.dataset.enHtml;
     });
+    updateBackLinks(false);
   }
 
   function runSwitch(nextArabic) {
