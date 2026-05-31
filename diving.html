@@ -465,9 +465,9 @@ nav { transition: background 0.3s ease, border-color 0.3s ease; }
 </div>
 <div class="origin-content reveal">
 <p class="section-label" style="color:var(--accent);">The Beginning</p>
-<h2>The first breath underwater changes something.</h2>
-<p>The first breath underwater changes something. I did my first try dive in Egypt at 13, and by the time I came back up I already wanted to go back down. A few years later, a try dive in the Maldives in 2022 ended with a shark encounter that settled it for good.</p>
-<p>I got my <strong>recent PADI Open Water</strong> in February 2026 through Bermuda Diving Center, Dubai. My first two logged dives were in Khor Fakkan with Dive Campus, the same centre where I did the buoyancy workshop. The plan from here is straightforward: Advanced Open Water, night diving, and eventually a <strong>Rescue Diver</strong> certification.</p>
+<h2 id="origin-h2">First breath underwater, Egypt, age 13.</h2>
+<p>I did my first try dive in Egypt at 13, and by the time I came back up I already wanted to go back down. A few years later, a try dive in the Maldives in 2022 ended with a shark encounter that settled it for good.</p>
+<p>I got my <strong>PADI Open Water</strong> in February 2026 through Bermuda Diving Center, Dubai. First two logged dives were in Khor Fakkan with Dive Campus. From here: Advanced Open Water, night diving, Rescue Diver — and eventually ice diving somewhere frozen, Switzerland or Iceland.</p>
 </div>
 </div>
 </section>
@@ -534,7 +534,7 @@ nav { transition: background 0.3s ease, border-color 0.3s ease; }
 </span>
 
 </div>
-<p class="log-note">First logged dive. Descended to 18m, reef entry.</p>
+<p class="log-note">First logged dive.</p>
 </div>
 <div class="log-date">09 May 2026</div>
 </div>
@@ -565,33 +565,7 @@ Snorkeling
 
 </section>
 
-<!-- BUCKET LIST -->
-<section class="bucket-section" id="bucketlist">
-<p class="section-label">What's Next</p>
-<h2 class="section-title">On the List</h2>
-<div class="bucket-grid">
-<div class="bucket-item reveal">
-<p class="bucket-item-title">Advanced Open Water</p>
-<p class="bucket-item-desc">Deep diving, navigation, buoyancy specialties. Next certification.</p>
-<p class="bucket-status">First priority</p>
-</div>
-<div class="bucket-item reveal">
-<p class="bucket-item-title">Night Diving</p>
-<p class="bucket-item-desc">Different world after dark. Want to see it.</p>
-<p class="bucket-status">Planned</p>
-</div>
-<div class="bucket-item reveal">
-<p class="bucket-item-title">Ice Diving</p>
-<p class="bucket-item-desc">Under a frozen surface somewhere cold. Switzerland or Iceland.</p>
-<p class="bucket-status">Long-term</p>
-</div>
-<div class="bucket-item reveal">
-<p class="bucket-item-title">Rescue Diver</p>
-<p class="bucket-item-desc">PADI Rescue certification. Managing emergencies underwater.</p>
-<p class="bucket-status">Long-term</p>
-</div>
-</div>
-</section>
+
 
 <!-- FOOTER -->
 <footer>
@@ -714,8 +688,9 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
   };
 
   const paragraphs = [
-    ['The first breath underwater changes something. I did my first try dive', 'النفس الأول تحت الماء يغيّر شيئاً. قمت بأول غطسة تجريبية في مصر وعمري ١٣ عاماً، وحين صعدت كنت أريد العودة. بعد سنوات، غطسة تجريبية في المالديف عام ٢٠٢٢ انتهت بمصادفة قرش حسمت الأمر.'],
-    ['I got my recent PADI Open Water', 'حصلت على شهادة PADI للمياه المفتوحة مؤخراً في فبراير ٢٠٢٦ عبر مركز برمودا للغوص، دبي. أول غطستين مسجلتين كانتا في خورفكان مع دايف كامبس، نفس المركز الذي أجريت فيه ورشة الطفو. الخطة: المياه المفتوحة المتقدمة، الغطس الليلي، وفي النهاية شهادة غواص الإنقاذ.'],
+    ['First breath underwater, Egypt, age 13.', 'أول نفس تحت الماء، مصر، عمر ١٣ عاماً.'],
+    ['I did my first try dive in Egypt at 13', 'قمت بأول غطسة تجريبية في مصر وعمري ١٣ عاماً، وحين صعدت كنت أريد العودة. بعد سنوات، غطسة تجريبية في المالديف عام ٢٠٢٢ انتهت بمصادفة قرش حسمت الأمر.'],
+    ['I got my PADI Open Water in February 2026', 'حصلت على شهادة PADI للمياه المفتوحة في فبراير ٢٠٢٦ عبر مركز برمودا للغوص، دبي. أول غطستين مسجلتين كانتا في خورفكان مع دايف كامبس. من هنا: المياه المفتوحة المتقدمة، الغطس الليلي، غواص الإنقاذ — وفي النهاية الغطس الجليدي في مكان متجمد، سويسرا أو آيسلندا.'],
     ['Second dive.', 'الغطسة الثانية.'],
     ['First logged dive. Descended to 18m', 'أول غطسة مسجلة. نزلت إلى ١٨ متراً، دخول الشعاب المرجانية.'],
     ['Snoopy Island, Fujairah. Ran into a sea turtle', 'جزيرة سنوبي، الفجيرة. صادفت سلحفاة بحرية، بقيت قريبة لعدة دقائق.'],
@@ -788,7 +763,7 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
         if (exactText[key]) el.textContent = el.dataset.enText.replace(key, exactText[key]);
       }
     });
-    document.querySelectorAll('p').forEach(p => {
+    document.querySelectorAll('p, h2').forEach(p => {
       const en = p.dataset.enText || p.textContent;
       const pair = paragraphs.find(([needle]) => en.includes(needle));
       if (pair) p.textContent = pair[1];
@@ -802,6 +777,9 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
     document.body.classList.remove('arabic-mode');
     document.querySelectorAll('body *').forEach(el => {
       if (el.dataset.enText && el.children.length === 0) el.textContent = el.dataset.enText;
+    });
+    document.querySelectorAll('p, h2').forEach(el => {
+      if (el.dataset.enText) el.textContent = el.dataset.enText;
     });
     updateBackLinks(false);
   }
