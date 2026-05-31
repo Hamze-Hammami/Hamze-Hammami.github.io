@@ -817,6 +817,8 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
       const pair = paragraphs.find(([needle]) => en.includes(needle));
       if (pair) el.textContent = pair[1];
     });
+    const heroName = document.querySelector('h1.hero-name');
+    if (heroName) heroName.innerHTML = 'حمزة<br/><em>يغطس</em>';
     updateBackLinks(true);
   }
 
@@ -830,6 +832,8 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
     document.querySelectorAll('p, h2').forEach(el => {
       if (el.dataset.enHtml) el.innerHTML = el.dataset.enHtml;
     });
+    const heroName = document.querySelector('h1.hero-name');
+    if (heroName) heroName.innerHTML = 'Hamze<br/><em>Dives</em>';
     updateBackLinks(false);
   }
 
