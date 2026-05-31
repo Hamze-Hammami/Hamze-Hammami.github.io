@@ -238,11 +238,11 @@ section { padding: 100px 64px; }
 }
 .origin-content p:last-child { margin-bottom: 0; }
 .origin-content strong { color: rgba(255,255,255,0.9); font-weight: 400; }
-.certs-section { background: var(--foam); }
+.certs-section { background: #c8e6f0; }
 .certs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
 .cert-card {
-  background: white; padding: 48px;
-  border: 1px solid #e0ecf2;
+  background: #a8d8ea; padding: 48px;
+  border: 1px solid #7fc4dc;
   display: flex; flex-direction: column; gap: 16px;
   transition: box-shadow 0.2s;
 }
@@ -294,7 +294,11 @@ section { padding: 100px 64px; }
 .log-date { font-size: 12px; color: rgba(255,255,255,0.3); letter-spacing: 0.06em; padding-top: 4px; white-space: nowrap; }
 .log-media { margin-top: 20px; }
 .log-media img { width: 100%; max-width: 480px; display: block; aspect-ratio: 3/2; object-fit: cover; }
+.log-media-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; max-width: 600px; }
+.log-media-grid img { max-width: 100%; aspect-ratio: 3/2; object-fit: cover; }
 .log-note { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.7; font-weight: 300; margin-top: 10px; max-width: 520px; }
+.log-site-link { display: inline-block; margin-top: 10px; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(78,181,212,0.35); padding-bottom: 1px; transition: border-color 0.2s, color 0.2s; }
+.log-site-link:hover { color: white; border-color: white; }
 .bucket-section { background: var(--deep); color: white; padding: 100px 64px; }
 .bucket-section .section-label { color: var(--accent); }
 .bucket-section .section-title { color: white; margin-bottom: 40px; }
@@ -394,6 +398,12 @@ body.arabic-mode .nav-logo { direction: ltr; font-family: 'Times New Roman', 'He
   .hero-stat-number { font-size: 24px; }
   section { padding: 64px 24px; }
   .origin-inner { grid-template-columns: 1fr; gap: 40px; }
+  .origin-row-2 .origin-text-second { order: 2; }
+  .origin-row-2 .origin-photo-maldives { order: 1; }
+  section { padding: 64px 24px; }
+  .origin-section { padding: 0 !important; }
+  .origin-section > div:first-child { padding: 64px 24px 32px !important; }
+  .origin-inner { padding: 0 24px 48px !important; }
   .certs-grid { grid-template-columns: 1fr; }
   .cert-card { padding: 32px 24px; }
   .bucket-grid { grid-template-columns: 1fr; }
@@ -406,11 +416,11 @@ body.arabic-mode .nav-logo { direction: ltr; font-family: 'Times New Roman', 'He
 }
 
 /* Dynamic nav background */
-nav.nav-light { background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,0.06); }
-nav.nav-light .nav-links a { color: #111; }
-nav.nav-light .nav-logo { color: #111; }
-nav.nav-light .nav-hamburger span { background: #111; }
-nav.nav-dark { background: rgba(14,14,14,0.88); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+nav.nav-light { background: rgba(10,30,53,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(78,181,212,0.15); }
+nav.nav-light .nav-links a { color: rgba(255,255,255,0.85); }
+nav.nav-light .nav-logo { color: white; }
+nav.nav-light .nav-hamburger span { background: white; }
+nav.nav-dark { background: rgba(5,17,31,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(78,181,212,0.1); }
 nav.nav-dark .nav-links a { color: white; }
 nav.nav-dark .nav-logo { color: white; }
 nav.nav-dark .nav-hamburger span { background: white; }
@@ -457,17 +467,29 @@ nav { transition: background 0.3s ease, border-color 0.3s ease; }
 </section>
 
 <!-- ORIGIN -->
-<section class="origin-section" id="origin">
-<div class="origin-inner">
-<div class="origin-photo reveal">
+<section class="origin-section" id="origin" style="padding-bottom:0;">
+<div style="padding: 100px 64px 48px;">
+<p class="section-label" style="color:var(--accent);">The Beginning</p>
+<h2 id="origin-h2" style="font-family:'Times New Roman',Times,serif; font-size:clamp(32px,4vw,52px); line-height:1.05; font-weight:700; color:white; letter-spacing:-0.5px; margin-top:8px;">First breath underwater, Egypt, age 13.</h2>
+</div>
+
+<div class="origin-inner origin-row-1 reveal" style="padding: 0 64px 80px;">
+<div class="origin-photo">
 <img alt="Hamze at 13, first dive" src="diving_assets/hamze_13_first_dive.jpg"/>
 <div class="origin-photo-caption">First dive · Age 13</div>
 </div>
-<div class="origin-content reveal">
-<p class="section-label" style="color:var(--accent);">The Beginning</p>
-<h2 id="origin-h2">First breath underwater, Egypt, age 13.</h2>
+<div class="origin-content" style="padding-top:0;">
 <p>I did my first try dive in Egypt at 13, and by the time I came back up I already wanted to go back down. A few years later, a try dive in the Maldives in 2022 ended with a shark encounter that settled it for good.</p>
-<p>I got my <strong>PADI Open Water</strong> in February 2026 through Bermuda Diving Center, Dubai. First two logged dives were in Khor Fakkan with Dive Campus. From here: Advanced Open Water, night diving, Rescue Diver — and eventually ice diving somewhere frozen, Switzerland or Iceland.</p>
+</div>
+</div>
+
+<div class="origin-inner origin-row-2 reveal" style="padding: 0 64px 100px;">
+<div class="origin-content origin-text-second" style="padding-top:0;">
+<p>I got my <strong>PADI Open Water</strong> in February 2026 through Bermuda Diving Center, Dubai. First two logged dives were in Khor Fakkan with Dive Campus. From here: Advanced Open Water, night diving, Rescue Diver, and eventually ice diving somewhere frozen, Switzerland or Iceland.</p>
+</div>
+<div class="origin-photo origin-photo-maldives">
+<img alt="Try dive Maldives 2022" src="diving_assets/maldives_2022.jpg" style="object-position: center 30%;"/>
+<div class="origin-photo-caption">Try dive · Maldives · 2022</div>
 </div>
 </div>
 </section>
@@ -498,7 +520,7 @@ nav { transition: background 0.3s ease, border-color 0.3s ease; }
 <h2 class="section-title">Dive Log</h2>
 
 <div class="log-entry reveal">
-<div class="log-number">#02</div>
+<div class="log-number">#01</div>
 <div class="log-body">
 <p class="log-title">Martini Rock</p>
 <p class="log-location">Khor Fakkan · UAE</p>
@@ -511,17 +533,25 @@ nav { transition: background 0.3s ease, border-color 0.3s ease; }
 <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 3v18M5 8l7 7 7-7"/></svg>
 18 m max depth
 </span>
-
+<span class="log-stat">
+<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
+28°C
+</span>
 </div>
-<p class="log-note">Second dive.</p>
+<p class="log-note">First logged dive.</p>
+<a href="https://www.padi.com/dive-site/united-arab-emirates/martini-rock/" target="_blank" class="log-site-link">PADI Dive Site →</a>
+<div class="log-media log-media-grid">
+<img src="diving_assets/martini_1.jpg" alt="Martini Rock"/>
+<img src="diving_assets/martini_2.jpg" alt="Martini Rock"/>
+</div>
 </div>
 <div class="log-date">09 May 2026</div>
 </div>
 
 <div class="log-entry reveal">
-<div class="log-number">#01</div>
+<div class="log-number">#02</div>
 <div class="log-body">
-<p class="log-title">Inchape 2</p>
+<p class="log-title">Inchcape 2</p>
 <p class="log-location">Khor Fakkan · UAE</p>
 <div class="log-stats">
 <span class="log-stat">
@@ -532,9 +562,17 @@ nav { transition: background 0.3s ease, border-color 0.3s ease; }
 <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 3v18M5 8l7 7 7-7"/></svg>
 18 m max depth
 </span>
-
+<span class="log-stat">
+<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
+28°C
+</span>
 </div>
-<p class="log-note">First logged dive.</p>
+<p class="log-note">First shipwreck.</p>
+<a href="https://www.padi.com/dive-site/united-arab-emirates/inchcape-2/" target="_blank" class="log-site-link">PADI Dive Site →</a>
+<div class="log-media log-media-grid">
+<img src="diving_assets/inchcape_1.jpg" alt="Inchcape 2"/>
+<img src="diving_assets/inchcape_2.jpg" alt="Inchcape 2"/>
+</div>
 </div>
 <div class="log-date">09 May 2026</div>
 </div>
@@ -553,11 +591,12 @@ nav { transition: background 0.3s ease, border-color 0.3s ease; }
 <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 3v18M5 8l7 7 7-7"/></svg>
 Snorkeling
 </span>
-<span class="log-stat">Sea turtle encounter</span>
 </div>
-<p class="log-note">Snoopy Island, Fujairah. Ran into a sea turtle, it hung around for a few minutes.</p>
-<div class="log-media">
+<p class="log-note">Sea turtle.</p>
+<a href="https://www.padi.com/dive-site/united-arab-emirates/snoopy-island/" target="_blank" class="log-site-link">PADI Dive Site →</a>
+<div class="log-media log-media-grid">
 <img src="diving_assets/turtle_snoopy_island.jpg" alt="Sea turtle at Snoopy Island"/>
+<img src="diving_assets/snoopy_fish.jpg" alt="Fish at Snoopy Island"/>
 </div>
 </div>
 <div class="log-date">17 May 2026</div>
@@ -653,7 +692,7 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
     'Logbook': 'سجل الغطس',
     'Martini Rock': 'مارتيني روك',
     'Khor Fakkan · UAE': 'خورفكان · الإمارات',
-    'Inchape 2': 'إنتشيب ٢',
+    'Inchcape 2': 'إنتشيب ٢',
     'Snoopy Island': 'جزيرة سنوبي',
     'Fujairah · UAE': 'الفجيرة · الإمارات',
     'Snorkeling': 'الغطس السطحي',
@@ -690,10 +729,11 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
   const paragraphs = [
     ['First breath underwater, Egypt, age 13.', 'أول نفس تحت الماء، مصر، عمر ١٣ عاماً.'],
     ['I did my first try dive in Egypt at 13', 'قمت بأول غطسة تجريبية في مصر وعمري ١٣ عاماً، وحين صعدت كنت أريد العودة. بعد سنوات، غطسة تجريبية في المالديف عام ٢٠٢٢ انتهت بمصادفة قرش حسمت الأمر.'],
-    ['I got my PADI Open Water in February 2026', 'حصلت على شهادة PADI للمياه المفتوحة في فبراير ٢٠٢٦ عبر مركز برمودا للغوص، دبي. أول غطستين مسجلتين كانتا في خورفكان مع دايف كامبس. من هنا: المياه المفتوحة المتقدمة، الغطس الليلي، غواص الإنقاذ — وفي النهاية الغطس الجليدي في مكان متجمد، سويسرا أو آيسلندا.'],
-    ['Second dive.', 'الغطسة الثانية.'],
-    ['First logged dive. Descended to 18m', 'أول غطسة مسجلة. نزلت إلى ١٨ متراً، دخول الشعاب المرجانية.'],
-    ['Snoopy Island, Fujairah. Ran into a sea turtle', 'جزيرة سنوبي، الفجيرة. صادفت سلحفاة بحرية، بقيت قريبة لعدة دقائق.'],
+    ['I got my PADI Open Water in February 2026', 'حصلت على شهادة PADI للمياه المفتوحة في فبراير ٢٠٢٦ عبر مركز برمودا للغوص، دبي. أول غطستين مسجلتين كانتا في خورفكان مع دايف كامبس. من هنا: المياه المفتوحة المتقدمة، الغطس الليلي، غواص الإنقاذ، وفي النهاية الغطس الجليدي في مكان متجمد، سويسرا أو آيسلندا.'],
+    ['First logged dive.', 'أول غطسة مسجلة.'],
+    ['First shipwreck.', 'أول حطام سفينة.'],
+    ['Sea turtle.', 'سلحفاة بحرية.'],
+    ['Snoopy Island, Fujairah', 'جزيرة سنوبي، الفجيرة. سلحفاة بحرية.'],
   ];
 
   function typeLogo(text, dir, done) {
@@ -763,7 +803,7 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
         if (exactText[key]) el.textContent = el.dataset.enText.replace(key, exactText[key]);
       }
     });
-    document.querySelectorAll('p, h2').forEach(p => {
+    document.querySelectorAll('p').forEach(p => {
       const en = p.dataset.enText || p.textContent;
       const pair = paragraphs.find(([needle]) => en.includes(needle));
       if (pair) p.textContent = pair[1];
@@ -777,9 +817,6 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
     document.body.classList.remove('arabic-mode');
     document.querySelectorAll('body *').forEach(el => {
       if (el.dataset.enText && el.children.length === 0) el.textContent = el.dataset.enText;
-    });
-    document.querySelectorAll('p, h2').forEach(el => {
-      if (el.dataset.enText) el.textContent = el.dataset.enText;
     });
     updateBackLinks(false);
   }

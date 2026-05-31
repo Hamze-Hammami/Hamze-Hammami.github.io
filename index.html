@@ -683,11 +683,34 @@ section { padding:100px 48px; }
 }
 
 .about-section { background:var(--cream); padding:100px 64px; }
-.about-section > div { width: 100%; }
+.about-inner {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 64px;
+  align-items: center;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.about-photo {
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+}
+.about-photo img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center 15%;
+  filter: grayscale(10%);
+}
+.about-text {
+  display: flex;
+  align-items: center;
+}
 @media(max-width:900px){
   .about-section { padding:72px 24px; }
-  .about-section > div { grid-template-columns:1fr !important; gap:32px !important; }
-  .about-section > div > div:last-child { grid-template-columns:1fr !important; gap:24px !important; padding-top:0 !important; }
+  .about-inner { grid-template-columns: 1fr; gap: 36px; }
+  .about-photo { display: none; }
 }
 .volunteering-section { background:var(--sand); padding:100px 48px; }
 @media(max-width:900px){ .volunteering-section { padding: 64px 24px; } .conf-talks-grid { grid-template-columns: 1fr; } }
@@ -800,7 +823,6 @@ body.arabic-mode .hero-solid { direction: rtl; }
 body.arabic-mode .hero-text,
 body.arabic-mode .alife-content,
 body.arabic-mode .work-card-info,
-body.arabic-mode .pub-row,
 body.arabic-mode .conf-card-body,
 body.arabic-mode .skills-wrap,
 body.arabic-mode footer { text-align: right; }
@@ -809,10 +831,11 @@ body.arabic-mode .hero-cta,
 body.arabic-mode .conf-links,
 body.arabic-mode .contact-links { flex-direction: row-reverse; }
 body.arabic-mode .hero-interests { flex-direction: row-reverse; justify-content: flex-end; }
-body.arabic-mode .pub-row { grid-template-columns: auto 1fr 48px 80px; }
-body.arabic-mode .pub-year { order: 3; }
-body.arabic-mode .pub-badge { order: 1; }
-body.arabic-mode .alife-inner[style*="direction:rtl"] { direction: ltr !important; }
+body.arabic-mode #publications { direction: ltr; text-align: left; }
+body.arabic-mode #publications .pub-year { text-align: left; }
+body.arabic-mode #publications .pub-title { text-align: left; }
+body.arabic-mode #publications .pub-venue { text-align: left; }
+body.arabic-mode #publications .pub-row { direction: ltr; }
 body.arabic-mode .alife-inner[style*="direction:rtl"] .alife-content,
 body.arabic-mode .alife-inner[style*="direction:rtl"] .alife-photo { direction: rtl !important; }
 body.arabic-mode .work-card-link:hover { gap: 8px; }
@@ -1071,6 +1094,7 @@ nav { transition: background 0.3s ease, border-color 0.3s ease; }
 <a class="btn-icon" href="https://orcid.org/0009-0004-5754-5842" target="_blank"><svg aria-hidden="true" fill="currentColor" height="18" viewbox="0 0 24 24" width="18"><circle cx="12" cy="12" r="10"></circle><text fill="black" font-family="Arial" font-size="9" text-anchor="middle" x="12" y="16">iD</text></svg>ORCID</a>
 <a class="btn-icon" href="https://scholar.google.com/citations?user=Y9fe10gAAAAJ&amp;hl=en" target="_blank"><svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24" width="18"><path d="M22 10L12 4 2 10l10 6 10-6z"></path><path d="M6 12.5V17c0 1.2 2.7 3 6 3s6-1.8 6-3v-4.5"></path><path d="M22 10v6"></path></svg>Google Scholar</a>
 <a class="btn-icon" href="https://www.linkedin.com/in/hamze-hammami-1a8800229/" target="_blank"><svg aria-hidden="true" fill="currentColor" height="18" viewbox="0 0 24 24" width="18"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.4 8h4.2v14H.4V8zm7.4 0h4v1.9h.06c.56-1.06 1.94-2.18 3.98-2.18 4.26 0 5.04 2.8 5.04 6.44V22h-4.18v-7.02c0-1.68-.03-3.84-2.34-3.84-2.34 0-2.7 1.83-2.7 3.72V22H7.8V8z" transform="scale(1.05) translate(1 0)"></path></svg>LinkedIn</a>
+<a class="btn-icon" href="https://hamze-hammami.github.io/" target="_blank"><svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24" width="18"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Portfolio</a>
 <a class="btn-icon" href="portfolio_updated_assets/hamze_hammami_cv.pdf" download target="_blank"><svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24" width="18"><path d="M12 2v10M8 8l4 4 4-4"/><rect x="3" y="14" width="18" height="8" rx="1"/></svg>CV</a>
 </div>
 </div>
@@ -1087,11 +1111,16 @@ nav { transition: background 0.3s ease, border-color 0.3s ease; }
 </div>
 </section>
 <section class="about-section" id="about">
-<p class="section-label" style="text-align:center;">About</p>
-<h2 class="section-title" style="text-align:center; margin-bottom:48px;">Introduction</h2>
-<p style="font-size:20px; line-height:2; color:#333; font-weight:300; max-width:780px; margin:0 auto; text-align:center;">
-I am a robotics engineer and researcher with a background spanning embedded systems, computer vision, autonomous navigation, and machine learning. My work sits at the boundary between engineered systems and biological intelligence, building robots that see, hear, and adapt, while drawing inspiration from how living systems process information. My research interests lean toward the unconventional: event-based vision and neuromorphic sensing, lifetime adaptation in autonomous systems, uninformed reactive navigation, bioacoustics and non-human communication, and what machine learning can reveal about collective biological behaviour.
+<div class="about-inner">
+<div class="about-text">
+<p style="font-size:20px; line-height:2; color:#333; font-weight:300;">
+<strong style="font-family:'Times New Roman',Times,serif; font-size:clamp(36px,5vw,60px); font-weight:700; color:var(--ink); line-height:1.05; letter-spacing:-0.5px; display:block; margin-bottom:24px;">Introduction</strong> I am a robotics engineer and researcher with a background spanning embedded systems, computer vision, autonomous navigation, and machine learning. My core interest is in how robots learn and adapt over their operational lifetime, drawing from neuroscience principles like Hebbian learning and ontogenetic adaptation to build systems that react, reorganise, and improve without retraining. My research sits at the intersection of autonomous systems, reactive navigation, neuromorphic sensing, and artificial life, with a focus on building robots that behave intelligently in unstructured environments.
 </p>
+</div>
+<div class="about-photo reveal">
+<img alt="Hamze Hammami at work" src="portfolio_updated_assets/hamze_intro.jpg"/>
+</div>
+</div>
 </section>
 
 <!-- EXPERIENCE -->
@@ -1306,7 +1335,7 @@ I am a robotics engineer and researcher with a background spanning embedded syst
 <h2 class="section-title" style="margin-bottom:56px;">Key Talks</h2>
 
 <!-- TALK: ESP -->
-<div class="talk-feature reveal">
+<div class="talk-feature reveal" id="talk-esp">
 <div class="talk-feature-img">
 <img alt="ESP Community Deep Dive: BeeVE" src="portfolio_updated_assets/04_esp_community_deep_dive_beeve.jpg" style="object-position:center center;"/>
 </div>
@@ -1321,13 +1350,13 @@ I am a robotics engineer and researcher with a background spanning embedded syst
 </div>
 
 <!-- TALK: ALIFE -->
-<div class="talk-feature reveal">
+<div class="talk-feature reveal" id="talk-alife">
 <div class="talk-feature-img">
 <img alt="ALIFE 2025 Kyoto" src="portfolio_updated_assets/05_alife_2025_kyoto.jpg" style="object-position:62% 12%;"/>
 </div>
 <div class="talk-feature-body">
 <p class="talk-meta">Jul 2025 · Kyoto / Online · Presenter</p>
-<h3 class="talk-title">ALIFE 2025: Why Evolve<br/>When You Can Adapt?</h3>
+<h3 class="talk-title">ALIFE 2025: Why Evolve<br/>When You Can React?</h3>
 <p class="talk-desc">Presented at the 2025 Conference on Artificial Life, SONI Track. Post-evolution lifetime adaptation of genetic memory for on-the-fly robot control in novel environments.</p>
 <div class="talk-links">
 <a class="talk-link" href="https://www.youtube.com/watch?v=-BAIfxOIJxM&amp;t=1649s" target="_blank">Pre-recorded presentation</a>
@@ -1337,7 +1366,7 @@ I am a robotics engineer and researcher with a background spanning embedded syst
 </div>
 
 <!-- TALK: YOLO -->
-<div class="talk-feature reveal">
+<div class="talk-feature reveal" id="talk-yolo">
 <div class="talk-feature-img">
 <img alt="YOLO Workshop" src="portfolio_updated_assets/08_yolo_workshop.jpg" style="object-position:center 20%;"/>
 </div>
@@ -1349,7 +1378,7 @@ I am a robotics engineer and researcher with a background spanning embedded syst
 </div>
 
 <!-- TALK: PATH PLANNING -->
-<div class="talk-feature reveal">
+<div class="talk-feature reveal" id="talk-path">
 <div class="talk-feature-img">
 <img alt="Path Planning Demonstration" src="portfolio_updated_assets/09_path_planning_demonstration.jpg" style="object-position:center 25%;"/>
 </div>
@@ -1463,10 +1492,11 @@ I am a robotics engineer and researcher with a background spanning embedded syst
 <div class="contact-strip" style="border-bottom:1px solid rgba(255,255,255,0.08);">
 <h2>Let's work together.</h2>
 <div class="contact-links">
-<a class="contact-link" href="https://www.linkedin.com/in/hamze-hammami-1a8800229/" target="_blank">LinkedIn</a>
-<a class="contact-link" href="https://github.com/Hamze-Hammami" target="_blank">GitHub</a>
-<a class="contact-link" href="https://orcid.org/0009-0004-5754-5842" target="_blank">ORCID</a>
-<a class="contact-link" href="https://scholar.google.com/citations?user=Y9fe10gAAAAJ&hl=en" target="_blank">Scholar</a>
+<a class="btn-icon" href="https://github.com/Hamze-Hammami" target="_blank"><svg fill="currentColor" height="18" viewbox="0 0 16 16" width="18"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>GitHub</a>
+<a class="btn-icon" href="https://orcid.org/0009-0004-5754-5842" target="_blank"><svg aria-hidden="true" fill="currentColor" height="18" viewbox="0 0 24 24" width="18"><circle cx="12" cy="12" r="10"></circle><text fill="black" font-family="Arial" font-size="9" text-anchor="middle" x="12" y="16">iD</text></svg>ORCID</a>
+<a class="btn-icon" href="https://scholar.google.com/citations?user=Y9fe10gAAAAJ&hl=en" target="_blank"><svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24" width="18"><path d="M22 10L12 4 2 10l10 6 10-6z"></path><path d="M6 12.5V17c0 1.2 2.7 3 6 3s6-1.8 6-3v-4.5"></path><path d="M22 10v6"></path></svg>Scholar</a>
+<a class="btn-icon" href="https://www.linkedin.com/in/hamze-hammami-1a8800229/" target="_blank"><svg aria-hidden="true" fill="currentColor" height="18" viewbox="0 0 24 24" width="18"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.4 8h4.2v14H.4V8zm7.4 0h4v1.9h.06c.56-1.06 1.94-2.18 3.98-2.18 4.26 0 5.04 2.8 5.04 6.44V22h-4.18v-7.02c0-1.68-.03-3.84-2.34-3.84-2.34 0-2.7 1.83-2.7 3.72V22H7.8V8z" transform="scale(1.05) translate(1 0)"></path></svg>LinkedIn</a>
+<a class="btn-icon" href="https://hamze-hammami.github.io/" target="_blank"><svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24" width="18"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Portfolio</a>
 </div>
 </div>
 <div style="padding:24px 48px; display:flex; justify-content:space-between; align-items:center; font-size:12px; color:#555;">
@@ -1625,10 +1655,12 @@ if (tickItems.length) {
     'Niche Topics':'موضوعات بحثية متخصصة',
     'Scuba Diving':'الغوص',
     'Culinary Self-Learning':'تعلم الطهي ذاتياً',
+    'Portfolio':'الموقع الشخصي',
     'CV':'السيرة الذاتية',
     'GitHub':'جيت هب',
+    'ORCID':'ORCID',
+    'Scholar':'الباحث العلمي',
     'Google Scholar':'الباحث العلمي',
-    'Email':'البريد',
     'LinkedIn':'لينكدإن',
     'Selected Work':'أعمال مختارة',
     'Projects':'المشاريع',
@@ -1639,34 +1671,12 @@ if (tickItems.length) {
     'Bachelor Capstone · Robot Audition':'مشروع تخرج البكالوريوس · سمع روبوتي',
     'Computer Vision · Security':'رؤية حاسوبية · أمن',
     'YOLO · Vehicle Perception':'YOLO · إدراك المركبات',
-    'JIRS Q1 · Springer 2026':'JIRS الربع الأول · سبرنغر 2026',
-    'ALIFE 2025 · SONI Track':'ALIFE 2025 · مسار SONI',
-    'MSc Thesis · arXiv 2026':'رسالة ماجستير · arXiv 2026',
     'Related paper →':'البحث المرتبط ←',
     'Video placeholder':'مكان مخصص للفيديو',
     'Replace this block with a project demo video later.':'استبدل هذه المساحة لاحقاً بفيديو تجريبي للمشروع.',
     'Research':'البحث',
     'Publications':'المنشورات',
-    'Q1 Journal':'مجلة الربع الأول',
-    'Conferences':'المؤتمرات',
-    'Preprints':'النسخ الأولية',
     'Talks Given':'العروض المقدمة',
-    '2026':'٢٠٢٦',
-    '2025':'٢٠٢٥',
-    '2024':'٢٠٢٤',
-    '2022':'٢٠٢٢',
-    '2019':'٢٠١٩',
-    '2018':'٢٠١٨',
-    'Preprint':'نسخة أولية',
-    'Published':'منشور',
-    'Poster':'ملصق',
-    'Q1 · Lead':'الربع الأول · المؤلف الرئيسي',
-    'arXiv Preprint · MSc Thesis, Heriot-Watt University Dubai':'نسخة أولية على arXiv · رسالة ماجستير، جامعة هيريوت-وات دبي',
-    'Journal of Intelligent & Robotic Systems · Springer · Lead & Corresponding Author':'مجلة الأنظمة الذكية والروبوتية · سبرنغر · المؤلف الرئيسي والمراسل',
-    'AAAI-SuS-2025 · Symposium on Human-AI Collaboration (HAIC 2025)':'AAAI-SuS-2025 · ندوة التعاون بين الإنسان والذكاء الاصطناعي',
-    'AIMS 2025 · IIT Delhi Abu Dhabi Campus':'AIMS 2025 · آي آي تي دلهي، حرم أبوظبي',
-    'ICSPIS 2024 · IEEE':'ICSPIS 2024 · IEEE',
-    'TechRxiv Preprint':'نسخة أولية على TechRxiv',
     'Presentations':'العروض التقديمية',
     'May 2026 · Online · Invited Speaker':'مايو ٢٠٢٦ · عبر الإنترنت · متحدث مدعو',
     'Jul 2025 · Kyoto / Online · Presenter':'يوليو ٢٠٢٥ · كيوتو / عبر الإنترنت · مقدم',
@@ -1728,7 +1738,6 @@ if (tickItems.length) {
     'Let\'s work together.':'لنتعاون معاً.',
     'Beyond Research':'خارج البحث',
     'Other Interests':'اهتمامات أخرى',
-    'Portfolio':'ملف',
     'Scuba':'غوص',
     'Diving':'',
     'PADI Open Water · 2 logged dives · Arabian Gulf':'PADI للمياه المفتوحة · غطستان مسجلتان · الخليج العربي',
@@ -1765,7 +1774,7 @@ if (tickItems.length) {
     'Earth Species Project':'مشروع الأنواع الأرضية',
     'Community Deep Dive: BeeVE':'استعراض مجتمعي معمّق: BeeVE',
     'ALIFE 2025: Why Evolve':'ALIFE 2025: لماذا نتطور',
-    'When You Can Adapt?':'عندما يمكننا التكيف؟',
+    'When You Can React?':'عندما يمكننا التفاعل؟',
     'The YOLO Workshop':'ورشة YOLO',
     '(Space Theme)':'(ثيم الفضاء)',
     'Path Planning':'تخطيط المسار',
@@ -1778,11 +1787,11 @@ if (tickItems.length) {
 
   const htmlMap = new Map([
     ['h1.hero-name', { ar: 'حمزة<br><em>حمامي</em>' }],
-    ['.about-section p:last-of-type', { ar: 'أنا مهندس روبوتات وباحث، خلفيتي تمتد عبر الأنظمة المضمنة، رؤية الحاسوب، الملاحة الذاتية، وتعلم الآلة. يقع عملي عند حدود الأنظمة الهندسية والذكاء البيولوجي، بناء روبوتات ترى وتسمع وتتكيف، مستلهمةً من طريقة معالجة الأنظمة الحية للمعلومات. تميل اهتماماتي البحثية نحو غير المألوف: الرؤية القائمة على الأحداث والاستشعار العصبي الشكل، التكيف طوال العمر التشغيلي في الأنظمة الذاتية، الملاحة التفاعلية غير المعلّمة، الصوتيات الحيوية والتواصل غير البشري، وما يمكن لتعلم الآلة أن يكشفه عن السلوك البيولوجي الجماعي.' }],
-    ['#project-alife .work-card-title', { ar: 'Post-Evolution Adaptation of Genetic Memory' }],
+    ['.about-section p:last-of-type', { ar: '<strong style="font-family:\'Times New Roman\',Times,serif; font-size:clamp(36px,5vw,60px); font-weight:700; color:var(--ink); line-height:1.05; letter-spacing:-0.5px; display:block; margin-bottom:24px;">مقدمة</strong> أنا مهندس روبوتات وباحث، خلفيتي تمتد عبر الأنظمة المضمنة، رؤية الحاسوب، الملاحة الذاتية، وتعلم الآلة. اهتمامي الجوهري يتمحور حول كيفية تعلم الروبوتات والاستجابة الفورية طوال عمرها التشغيلي، مستلهماً من مبادئ علم الأعصاب كالتعلم الهيبي والاستجابة التطورية التشغيلية، لبناء أنظمة تتفاعل وتُعيد تنظيم نفسها دون إعادة تدريب. يقع بحثي عند تقاطع الأنظمة الذاتية، الملاحة التفاعلية، الاستشعار العصبي الشكل، والحياة الاصطناعية، مع تركيز على بناء روبوتات تتصرف بذكاء في بيئات غير منظمة.' }],
+    ['#project-alife .work-card-title', { ar: 'استجابة ما بعد التطور في الذاكرة الجينية' }],
     ['#project-sushi .work-card-title', { ar: 'SUSHI، ملاحة المركبات السطحية ذاتية القيادة' }],
     ['#project-beeve .work-card-title', { ar: 'BeeVE، اكتشاف الحالات الصوتية لنحل العسل دون إشراف' }],
-    ['#project-alife .work-card-sub', { ar: 'روبوتات E-puck تم تطويرها مسبقاً في بيئات فارغة ثم تكيف أوزان شبكات MLP المعدلة بتعلم هيبي مع عوائق جديدة فورياً داخل Webots، دون إعادة تدريب.' }],
+    ['#project-alife .work-card-sub', { ar: 'روبوتات E-puck تم تطويرها مسبقاً في بيئات فارغة ثم استجابة أوزان شبكات MLP المعدلة بتعلم هيبي مع عوائق جديدة فورياً داخل Webots، دون إعادة تدريب.' }],
     ['#project-sushi .work-card-sub', { ar: 'نظام رؤية للملاحة التفاعلية غير المعلّمة للمركبات السطحية ذاتية القيادة، يجمع بين إدراك المياه، كشف الأجسام، تقدير العمق، تخطيط المسار متعدد الحقول، والتحكم السلوكي.' }],
     ['#project-beeve .work-card-sub', { ar: 'تطبيق VQ-VAE على تمثيلات PaSST المستخرجة من تسجيلات نحل العسل. يفصل قاموس صوتي متقطع بين الخلايا queen-right وqueen-less دون تسميات، ويكشف حالات صوتية فرعية محتملة.' }],
     ['#project-eye-tracking .work-card-title', { ar: 'كاميرا تتبع العين' }],
@@ -1793,22 +1802,20 @@ if (tickItems.length) {
     ['#project-sound-localization .work-card-sub', { ar: 'تطوير نظام سمع روبوتي لتحديد زاوية مصدر الصوت باستخدام معالجة ثنائية الأذن بصفيف ميكروفونين على منصة روبوت EMoRo المبني على Arduino.' }],
     ['#project-facial-recognition .work-card-sub', { ar: 'تنفيذ قاعدة بيانات للتعرف على الوجوه باستخدام Redis للتحقق من المستخدمين مع كشف الحيوية، ونشرها ضمن أنظمة أمن لمساكن خاصة.' }],
     ['#project-anpr .work-card-sub', { ar: 'بناء نظام كشف متعدد لاستخراج لون المركبة ومعلومات لوحة الترخيص عبر كشف YOLO واستخراج الأرقام بتقنية التعرف الضوئي على الحروف.' }],
-    ['#pub-beeve .pub-title', { ar: 'BeeVE: مشفر كمي متجهي لاكتشاف الحالات غير الدلالية في صوتيات نحل العسل دون إشراف' }],
-    ['#pub-sushi .pub-title', { ar: 'SUSHI: نظام رؤية للملاحة التفاعلية غير المعلّمة للمركبات السطحية عبر تخطيط مسار متعدد الحقول واستكشاف بصري' }],
-    ['#pub-alife .pub-title', { ar: 'Why Evolve When You Can Adapt? Post-Evolution Adaptation of Genetic Memory for On-the-Fly Control' }],
-    ['#pub-haic .pub-title', { ar: 'تعزيز الإبداع والكفاءة في تصميم الأثاث من خلال التعاون بين الإنسان والذكاء الاصطناعي' }],
-    ['#pub-carbide .pub-title', { ar: 'تقدير الكسر الحجمي للكربيدات في سبائك الكوبالت باستخدام تقنيات تعلم الآلة' }],
-    ['#pub-beebetter .pub-title', { ar: 'BeeBetter: نظام متعدد الوسائط لمراقبة صحة نحل العسل وكشف المخاطر' }],
-    ['#pub-ssl .pub-title', { ar: 'تحديد موقع مصدر صوتي واحد للروبوت باستخدام معالجة ITD بإشارات سمعية ثنائية وبعدد محدود من الميكروفونات' }],
     ['#talks .section-title', { ar: 'العروض الرئيسية' }],
     ['#education .section-title', { ar: 'الخبرة' }],
     ['.interest-card-title', { ar: 'غوص<br/>بحري' }],
+    ['#talk-esp .talk-title', { ar: 'مشروع الأنواع الأرضية<br/>استعراض مجتمعي معمّق: BeeVE' }],
+    ['#talk-alife .talk-title', { ar: 'ALIFE 2025: لماذا نتطور<br/>عندما يمكننا التفاعل؟' }],
+    ['#talk-yolo .talk-title', { ar: 'ورشة YOLO<br/>(ثيم الفضاء)' }],
+    ['#talk-path .talk-title', { ar: 'عرض تقني:<br/>تخطيط المسار' }],
   ]);
 
   const paragraphs = [
     ['Earth Species Project', 'قدمت مشروع BeeVE لمجتمع Earth Species Project، مع التركيز على التحليل غير الخاضع للإشراف لأزيز نحل العسل، واكتشاف حالات queen-right وqueen-less، وإمكانية وجود حالات صوتية فرعية غير مكتشفة.'],
-    ['Presented at the 2025 Conference on Artificial Life', 'قدمت العمل في مؤتمر الحياة الاصطناعية 2025 ضمن مسار SONI، حول التكيف أثناء العمر التشغيلي للذاكرة الجينية من أجل التحكم الفوري في الروبوتات داخل بيئات جديدة.'],
+    ['Presented at the 2025 Conference on Artificial Life', 'قدمت العمل في مؤتمر الحياة الاصطناعية 2025 ضمن مسار SONI، حول الاستجابة الفورية للذاكرة الجينية عبر العمر التشغيلي من أجل التحكم في الروبوتات داخل بيئات جديدة.'],
     ['Invited by Emirates Students Space Association', 'بدعوة من جمعية الإمارات لطلبة الفضاء، وجمعية الفضاء بجامعة برمنغهام دبي، وفرع ACM في الجامعة، قدمت ورشة عملية عن إطار Ultralytics YOLO ومفاهيم الرؤية الحاسوبية.'],
+    ['Technical demonstration on path planning and motion planning', 'عرض تقني حول خوارزميات تخطيط المسار وتخطيط الحركة لأذرع الروبوت والروبوتات التفاضلية، لطلبة الهندسة الميكانيكية والروبوتات في جامعة هيريوت-وات دبي.'],
     ['Delivered a technical demonstration on path planning', 'قدمت عرضاً تقنياً حول خوارزميات تخطيط المسار وتخطيط الحركة لأذرع الروبوت والروبوتات التفاضلية لطلبة الهندسة الميكانيكية والروبوتات في جامعة هيريوت-وات دبي.'],
     ['Attended a 5-day intensive bootcamp', 'حضرت برنامجاً مكثفاً لمدة خمسة أيام حول MoveIt وSLAM والرسم الخرائطي وOpenCV في ROS2، من تنظيم مختبرات دبي للمستقبل وThe Construct.'],
     ['5-day intensive on MoveIt', 'برنامج مكثف لمدة خمسة أيام حول MoveIt وSLAM والرسم الخرائطي وOpenCV في ROS2، من تنظيم مختبرات دبي للمستقبل وThe Construct.'],
@@ -1818,7 +1825,7 @@ if (tickItems.length) {
     ['Supported hardware-focused demonstrations', 'دعمت عروضاً تقنية تركز على العتاد ومسابقة روبوتية تفاعلية، وساعدت الزوار في التجارب العملية ضمن أحد أبرز مؤتمرات الروبوتات عالمياً.'],
     ['Operated and demonstrated university robots', 'تشغيل وعرض روبوتات الجامعة أمام الزوار في المؤتمر العالمي لأنظمة النقل الذكية، مع تقديم عروض روبوتية مباشرة للجمهور.'],
     ['Volunteered to operate and demonstrate university robots', 'تطوعت لتشغيل وعرض روبوتات الجامعة أمام الزوار في المؤتمر العالمي لأنظمة النقل الذكية، مع تقديم عروض روبوتية مباشرة للجمهور.'],
-    ['I am a robotics engineer', 'أنا مهندس روبوتات وباحث، خلفيتي تمتد عبر الأنظمة المضمنة، رؤية الحاسوب، الملاحة الذاتية، وتعلم الآلة. يقع عملي عند حدود الأنظمة الهندسية والذكاء البيولوجي، بناء روبوتات ترى وتسمع وتتكيف، مستلهمةً من طريقة معالجة الأنظمة الحية للمعلومات. تميل اهتماماتي البحثية نحو غير المألوف: الرؤية القائمة على الأحداث والاستشعار العصبي الشكل، التكيف طوال العمر التشغيلي، الملاحة التفاعلية غير المعلّمة، الصوتيات الحيوية والتواصل غير البشري، وما يمكن لتعلم الآلة أن يكشفه عن السلوك البيولوجي الجماعي.'],
+    ['I am a robotics engineer', 'أنا مهندس روبوتات وباحث، خلفيتي تمتد عبر الأنظمة المضمنة، رؤية الحاسوب، الملاحة الذاتية، وتعلم الآلة. اهتمامي الجوهري يتمحور حول كيفية تعلم الروبوتات والاستجابة الفورية طوال عمرها التشغيلي، مستلهماً من مبادئ علم الأعصاب كالتعلم الهيبي والاستجابة التطورية التشغيلية، لبناء أنظمة تتفاعل وتُعيد تنظيم نفسها دون إعادة تدريب. يقع بحثي عند تقاطع الأنظمة الذاتية، الملاحة التفاعلية، الاستشعار العصبي الشكل، والحياة الاصطناعية، مع تركيز على بناء روبوتات تتصرف بذكاء في بيئات غير منظمة.'],
   ];
 
   function storeOriginals() {
