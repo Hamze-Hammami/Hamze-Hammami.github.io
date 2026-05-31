@@ -1034,6 +1034,23 @@ nav.nav-dark .nav-logo { color: white; }
 nav.nav-dark .nav-hamburger span { background: white; }
 nav { transition: background 0.3s ease, border-color 0.3s ease; }
 
+/* Page hero header */
+.page-hero {
+  background: var(--ink);
+  padding: 140px 64px 80px;
+  text-align: center;
+}
+.page-hero h1 {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: clamp(56px, 9vw, 110px);
+  font-weight: 700;
+  color: var(--cream);
+  letter-spacing: -2px;
+  line-height: 1;
+  margin: 0;
+}
+@media(max-width:768px){ .page-hero { padding: 120px 24px 60px; } }
+
 /* ═══ Section alternation ═══ */
 .section-dark { background: var(--ink) !important; color: var(--cream); }
 .section-dark .section-label { color: rgba(255,255,255,0.45) !important; }
@@ -1095,7 +1112,7 @@ nav { transition: background 0.3s ease, border-color 0.3s ease; }
 /* Footer light */
 footer.footer-light { background: var(--cream) !important; }
 footer.footer-light .contact-strip { background: transparent !important; border-bottom-color: rgba(0,0,0,0.08) !important; }
-footer.footer-light .contact-strip h2 { color: var(--ink) !important; }
+footer.footer-light .contact-strip h2 { color: var(--ink); }
 footer.footer-light .btn-icon { color: rgba(14,14,14,0.7); border-color: rgba(14,14,14,0.2); }
 footer.footer-light .btn-icon:hover { color: var(--ink); border-color: rgba(14,14,14,0.6); background: rgba(0,0,0,0.04); }
 footer.footer-light .footer-copyright { color: #777; }
@@ -1156,12 +1173,12 @@ li.has-dropdown:hover .nav-dropdown {
 <nav>
 <a class="nav-logo" dir="rtl" href="#" lang="ar">حمزة</a>
 <ul class="nav-links">
-<li class="has-dropdown"><a href="index.html" class="nav-page nav-active">About</a>
+<li class="has-dropdown"><a href="index.html" class="nav-page">About</a>
 <ul class="nav-dropdown">
 <li><a href="index.html#about" class="nav-dropdown-link">Introduction</a></li>
 <li><a href="index.html#skills" class="nav-dropdown-link">Skills</a></li>
 </ul></li>
-<li class="has-dropdown"><a href="research.html" class="nav-page">Research</a>
+<li class="has-dropdown"><a href="research.html" class="nav-page nav-active">Research</a>
 <ul class="nav-dropdown">
 <li><a href="research.html#publications" class="nav-dropdown-link">Publications</a></li>
 <li><a href="research.html#talks" class="nav-dropdown-link">Key Talks</a></li>
@@ -1194,108 +1211,126 @@ li.has-dropdown:hover .nav-dropdown {
 <a href="diving.html" class="mobile-nav-link nav-diving nav-ar" data-hobby-page="diving.html">الغوص</a>
 </div>
 
-<!-- HERO -->
-<section class="hero" id="top">
-<div class="hero-solid">
-<div class="hero-text">
-<h1 class="hero-name">Hamze<br/><em>Hammami</em></h1>
-<div class="hero-creds">
-<span>MSc Robotics, Heriot-Watt University Dubai</span>
-<span>BEng Computer Systems Engineering, University of Essex</span>
-</div>
-<p class="hero-bio">Robotics Engineer &amp; Researcher</p>
-<div class="hero-interests">
-<span class="interests-label">Interested in:</span>
-<span class="interests-ticker">
-<span class="tick-item active">Robotics</span>
-<span class="tick-item">Artificial Intelligence</span>
-<span class="tick-item">Artificial Life</span>
-<span class="tick-item">Autonomous Surface Vessels</span>
-<span class="tick-item">Autonomous Systems</span>
-<span class="tick-item">Reactive Navigation</span>
-<span class="tick-item">Lifetime Adaptation</span>
-<span class="tick-item">Neuromorphic Sensing</span>
-<span class="tick-item">Bioacoustics</span>
-<span class="tick-item">Non-Human Communication</span>
-<span class="tick-item">Niche Topics</span>
-</span>
-</div>
-<div class="hero-cta">
-<a class="btn-icon" href="https://github.com/Hamze-Hammami" target="_blank"><svg fill="currentColor" height="18" viewbox="0 0 16 16" width="18"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>GitHub</a>
-<a class="btn-icon" href="https://orcid.org/0009-0004-5754-5842" target="_blank"><svg aria-hidden="true" fill="currentColor" height="18" viewbox="0 0 24 24" width="18"><circle cx="12" cy="12" r="10"></circle><text fill="black" font-family="Arial" font-size="9" text-anchor="middle" x="12" y="16">iD</text></svg>ORCID</a>
-<a class="btn-icon" href="https://scholar.google.com/citations?user=Y9fe10gAAAAJ&amp;hl=en" target="_blank"><svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24" width="18"><path d="M22 10L12 4 2 10l10 6 10-6z"></path><path d="M6 12.5V17c0 1.2 2.7 3 6 3s6-1.8 6-3v-4.5"></path><path d="M22 10v6"></path></svg>Google Scholar</a>
-<a class="btn-icon" href="https://www.linkedin.com/in/hamze-hammami-1a8800229/" target="_blank"><svg aria-hidden="true" fill="currentColor" height="18" viewbox="0 0 24 24" width="18"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.4 8h4.2v14H.4V8zm7.4 0h4v1.9h.06c.56-1.06 1.94-2.18 3.98-2.18 4.26 0 5.04 2.8 5.04 6.44V22h-4.18v-7.02c0-1.68-.03-3.84-2.34-3.84-2.34 0-2.7 1.83-2.7 3.72V22H7.8V8z" transform="scale(1.05) translate(1 0)"></path></svg>LinkedIn</a>
-<a class="btn-icon" href="https://hamze-hammami.github.io/" target="_blank"><svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24" width="18"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Portfolio</a>
-<a class="btn-icon" href="portfolio_updated_assets/hamze_hammami_cv.pdf" download target="_blank"><svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24" width="18"><path d="M12 2v10M8 8l4 4 4-4"/><rect x="3" y="14" width="18" height="8" rx="1"/></svg>CV</a>
-</div>
-</div>
-<div class="hero-photo-col">
-<img alt="Hamze Hammami" src="portfolio_updated_assets/01_hamze_hammami.jpg"/>
-</div>
-</div>
-<div class="hero-stats-bar">
-<div class="hero-stat"><span class="hero-stat-number">4</span><span class="hero-stat-label">Publications</span></div>
-<div class="hero-stat"><span class="hero-stat-number">1</span><span class="hero-stat-label">Q1 Journal</span></div>
-<div class="hero-stat"><span class="hero-stat-number">3</span><span class="hero-stat-label">Conferences</span></div>
-<div class="hero-stat"><span class="hero-stat-number">2</span><span class="hero-stat-label">Preprints</span></div>
-<div class="hero-stat"><span class="hero-stat-number">6</span><span class="hero-stat-label">Talks Given</span></div>
-</div>
+<!-- PAGE HEADER -->
+<section class="page-hero section-dark">
+<h1>Research</h1>
 </section>
-<section class="about-section" id="about">
-<div class="about-inner">
-<div class="about-text">
-<p style="font-size:20px; line-height:2; color:#333; font-weight:300;">
-<strong style="font-family:'Times New Roman',Times,serif; font-size:clamp(36px,5vw,60px); font-weight:700; color:var(--ink); line-height:1.05; letter-spacing:-0.5px; display:block; margin-bottom:24px;">Introduction</strong> I am a robotics engineer and researcher with a background spanning embedded systems, computer vision, autonomous navigation, and machine learning. My core interest is in how robots learn and adapt over their operational lifetime, drawing from neuroscience principles like Hebbian learning and ontogenetic adaptation to build systems that react, reorganise, and improve without retraining. My research sits at the intersection of autonomous systems, reactive navigation, neuromorphic sensing, and artificial life, with a focus on building robots that behave intelligently in unstructured environments.
-</p>
+
+<!-- PUBLICATIONS -->
+<section id="publications">
+<p class="section-label">Papers</p>
+<h2 class="section-title">Publications</h2>
+<div class="pubs-list">
+<!-- Q1 Journal -->
+<a class="pub-row reveal" href="https://link.springer.com/article/10.1007/s10846-026-02379-9" id="pub-sushi" target="_blank">
+<div class="pub-year">2026</div>
+<div><p class="pub-title">SUSHI: A Vision System for Reactive, Uninformed ASV Navigation via Multi-Field Path Planning and Visual Exploration</p><p class="pub-venue">Journal of Intelligent &amp; Robotic Systems · Springer · Lead &amp; Corresponding Author</p></div>
+<div class="pub-logo-wrap"><img alt="JIRS" class="pub-logo" src="publication_logos/JIRS.jpg"/></div>
+<span class="pub-badge badge-q1">Q1 Journal</span>
+</a>
+<!-- Conferences -->
+<a class="pub-row reveal" href="https://direct.mit.edu/isal/proceedings/isal2025/37/15/134065" id="pub-alife" target="_blank">
+<div class="pub-year">2025</div>
+<div><p class="pub-title">Why Evolve When You Can Adapt? Post-Evolution Adaptation of Genetic Memory for On-the-Fly Control</p><p class="pub-venue">ALIFE 2025 · MIT Press · SONI Track</p></div>
+<div class="pub-logo-wrap"><img alt="ALIFE 2025" class="pub-logo" src="publication_logos/ALIFE25.png"/></div>
+<span class="pub-badge badge-pub">Conference</span>
+</a>
+<a class="pub-row reveal" href="https://ojs.aaai.org/index.php/AAAI-SS/article/view/36048" id="pub-haic" target="_blank">
+<div class="pub-year">2025</div>
+<div><p class="pub-title">Enhancing Creativity and Efficiency in Furniture Design through Human-AI Collaboration</p><p class="pub-venue">AAAI-SuS-2025 · Symposium on Human-AI Collaboration (HAIC 2025)</p></div>
+<div class="pub-logo-wrap"><img alt="AAAI" class="pub-logo" src="publication_logos/AAAI-Symposium_SuSS.webp"/></div>
+<span class="pub-badge badge-pub">Conference</span>
+</a>
+<a class="pub-row reveal" href="https://ieeexplore.ieee.org/document/10812634" id="pub-beebetter" target="_blank">
+<div class="pub-year">2024</div>
+<div><p class="pub-title">BeeBetter: A Multi-modal Beehive System for Honeybee Health Monitoring and Hazard Detection</p><p class="pub-venue">ICSPIS 2024 · IEEE</p></div>
+<div class="pub-logo-wrap"><img alt="ICSPIS" class="pub-logo" src="publication_logos/ICSPIS24.png"/></div>
+<span class="pub-badge badge-pub">Conference</span>
+</a>
+<!-- Poster -->
+<div class="pub-row reveal" id="pub-carbide" style="cursor:default;">
+<div class="pub-year">2025</div>
+<div><p class="pub-title">Carbide Volume Fraction in Cobalt-based Alloys using ML Techniques</p><p class="pub-venue">AIMS 2025 · IIT Delhi Abu Dhabi Campus</p></div>
+<div class="pub-logo-wrap"><img alt="AiMS 2025" class="pub-logo" src="publication_logos/aims.png"/></div>
+<span class="pub-badge badge-poster">Poster</span>
 </div>
-<div class="about-photo reveal">
-<img alt="Hamze Hammami at work" src="portfolio_updated_assets/hamze_intro.jpg"/>
-</div>
+<!-- Preprints -->
+<a class="pub-row reveal" href="https://arxiv.org/abs/2605.07903" id="pub-beeve" target="_blank">
+<div class="pub-year">2026</div>
+<div><p class="pub-title">BeeVE: A Vector-Quantized Encoder for Unsupervised Non-Semantic State Discovery in Honeybee Acoustics</p><p class="pub-venue">arXiv Preprint · MSc Thesis, Heriot-Watt University Dubai</p></div>
+<div class="pub-logo-wrap"><img alt="arXiv" class="pub-logo" src="publication_logos/arxiv.png"/></div>
+<span class="pub-badge badge-pre">Preprint</span>
+</a>
+<a class="pub-row reveal" href="https://doi.org/10.36227/techrxiv.175355484.45273307/v1" id="pub-ssl" target="_blank">
+<div class="pub-year">2025</div>
+<div><p class="pub-title">Robot Single Sound Source Localization with ITD Binaural Cue Processing Using Limited Microphone Sensors</p><p class="pub-venue">TechRxiv Preprint</p></div>
+<div class="pub-logo-wrap"><img alt="TechRxiv" class="pub-logo" src="publication_logos/tehcrxiv.jpg"/></div>
+<span class="pub-badge badge-pre">Preprint</span>
+</a>
 </div>
 </section>
 
-<!-- SKILLS -->
-<section class="skills-interactive section-dark" id="skills">
-<div class="skills-wrap">
-<div class="reveal">
-<p class="section-label">Expertise</p>
-<h2 class="section-title">Skills</h2>
+
+<!-- TALKS -->
+<section class="talks-unified" id="talks">
+<p class="section-label">Presentations</p>
+<h2 class="section-title" style="margin-bottom:56px;">Key Talks</h2>
+
+<!-- TALK: ESP -->
+<div class="talk-feature reveal" id="talk-esp">
+<div class="talk-feature-img">
+<img alt="ESP Community Deep Dive: BeeVE" src="portfolio_updated_assets/04_esp_community_deep_dive_beeve.jpg" style="object-position:center center;"/>
 </div>
-<div aria-label="Interactive skills map" class="skills-orbit reveal">
-<div class="skills-orbit-hint">Hover over a skill</div>
-<div class="skill-cluster programming" tabindex="0">
-<div class="skill-main">Programming<br/>Languages</div>
-<div class="skill-subskills">
-<span>Python</span><span>C++</span><span>C</span><span>MATLAB</span><span>C#</span><span>Node.js</span><span>Arduino</span>
+<div class="talk-feature-body">
+<p class="talk-meta">May 2026 · Online · Invited Speaker</p>
+<h3 class="talk-title">Earth Species Project<br/>Community Deep Dive: BeeVE</h3>
+<p class="talk-desc">Presented BeeVE to the Earth Species Project community, covering unsupervised analysis of honeybee buzzing, queen-right/queen-less state discovery, and potential undiscovered acoustic sub-states.</p>
+<div class="talk-links">
+<a class="talk-link" href="#pub-beeve">Related paper</a>
 </div>
-</div>
-<div class="skill-cluster ai" tabindex="0">
-<div class="skill-main">AI / Machine<br/>Learning</div>
-<div class="skill-subskills">
-<span>PyTorch</span><span>TensorFlow</span><span>VQ-VAE</span><span>YOLO</span><span>Hebbian Learning</span><span>RL / PPO</span><span>Representation Learning</span>
-</div>
-</div>
-<div class="skill-cluster robotics" tabindex="0">
-<div class="skill-main">Robotics<br/>Systems</div>
-<div class="skill-subskills">
-<span>ROS2</span><span>SLAM</span><span>MoveIt</span><span>D* Lite</span><span>DWA</span><span>APF / MFS</span><span>Behaviour Control</span>
-</div>
-</div>
-<div class="skill-cluster embedded" tabindex="0">
-<div class="skill-main">Embedded<br/>AI</div>
-<div class="skill-subskills">
-<span>Jetson Orin</span><span>TensorRT</span><span>CUDA</span><span>JetPack 6</span><span>Coral TPU</span><span>micro-ROS</span><span>PlatformIO</span>
-</div>
-</div>
-<div class="skill-cluster simulation" tabindex="0">
-<div class="skill-main">Simulation &amp;<br/>Tools</div>
-<div class="skill-subskills">
-<span>Unity</span><span>Webots</span><span>Isaac Sim</span><span>Gazebo</span><span>OpenCV</span><span>DepthAI</span><span>GitHub</span>
 </div>
 </div>
 
+<!-- TALK: ALIFE -->
+<div class="talk-feature reveal" id="talk-alife">
+<div class="talk-feature-img">
+<img alt="ALIFE 2025 Kyoto" src="portfolio_updated_assets/05_alife_2025_kyoto.jpg" style="object-position:62% 12%;"/>
+</div>
+<div class="talk-feature-body">
+<p class="talk-meta">Jul 2025 · Kyoto / Online · Presenter</p>
+<h3 class="talk-title">ALIFE 2025: Why Evolve<br/>When You Can React?</h3>
+<p class="talk-desc">Presented at the 2025 Conference on Artificial Life, SONI Track. Post-evolution lifetime adaptation of genetic memory for on-the-fly robot control in novel environments.</p>
+<div class="talk-links">
+<a class="talk-link" href="https://www.youtube.com/watch?v=-BAIfxOIJxM&amp;t=1649s" target="_blank">Pre-recorded presentation</a>
+<a class="talk-link" href="https://direct.mit.edu/isal/proceedings/isal2025/37/15/134065" target="_blank">Related paper</a>
 </div>
 </div>
+</div>
+
+<!-- TALK: YOLO -->
+<div class="talk-feature reveal" id="talk-yolo">
+<div class="talk-feature-img">
+<img alt="YOLO Workshop" src="portfolio_updated_assets/08_yolo_workshop.jpg" style="object-position:center 20%;"/>
+</div>
+<div class="talk-feature-body">
+<p class="talk-meta">Mar 2025 · University of Birmingham Dubai · Invited Presenter</p>
+<h3 class="talk-title">The YOLO Workshop<br/>(Space Theme)</h3>
+<p class="talk-desc">Invited by Emirates Students Space Association, University of Birmingham Dubai Space Society, and UoBD ACM Chapter to demonstrate the Ultralytics YOLO framework and computer vision concepts through hands-on activities.</p>
+</div>
+</div>
+
+<!-- TALK: PATH PLANNING -->
+<div class="talk-feature reveal" id="talk-path">
+<div class="talk-feature-img">
+<img alt="Path Planning Demonstration" src="portfolio_updated_assets/09_path_planning_demonstration.jpg" style="object-position:center 25%;"/>
+</div>
+<div class="talk-feature-body">
+<p class="talk-meta">2025 · Heriot-Watt Dubai · Invited Demonstrator</p>
+<h3 class="talk-title">Path Planning<br/>Demonstration</h3>
+<p class="talk-desc">Technical demonstration on path planning and motion planning algorithms for robot arms and differential drive robots to mechanical and robotics engineering students.</p>
+</div>
+</div>
+
 </section>
 
 
@@ -1311,7 +1346,7 @@ li.has-dropdown:hover .nav-dropdown {
 <a class="btn-icon" href="https://hamze-hammami.github.io/" target="_blank"><svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24" width="18"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Portfolio</a>
 </div>
 </div>
-<div class="footer-copyright" style="padding:24px 48px; display:flex; justify-content:space-between; align-items:center; font-size:12px; color:#777;">
+<div style="padding:24px 48px; display:flex; justify-content:space-between; align-items:center; font-size:12px; color:#555;">
 <span>© 2026 Hamze Hammami · Dubai, UAE</span>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="28" height="28" style="display:inline-block;vertical-align:middle;border:1px solid rgba(255,255,255,0.25);"><rect width="32" height="32" fill="#111"/><text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-family="Times New Roman,serif" font-size="15" font-weight="700" fill="white">H&#x663;</text></svg>
 </div>
@@ -1436,6 +1471,7 @@ if (tickItems.length) {
     'Experience':'الخبرة',
     'Volunteering':'التطوع',
     'Introduction':'مقدمة',
+    'Research':'البحث',
     'Papers':'الأبحاث',
     'Key Talks':'العروض الرئيسية',
     'Skills':'المهارات',
@@ -1588,6 +1624,7 @@ if (tickItems.length) {
   };
 
   const htmlMap = new Map([
+    ['h1.page-hero', { ar: 'البحث' }],
     ['h1.hero-name', { ar: 'حمزة<br><em>حمامي</em>' }],
     ['.about-section p:last-of-type', { ar: '<strong style="font-family:\'Times New Roman\',Times,serif; font-size:clamp(36px,5vw,60px); font-weight:700; color:var(--ink); line-height:1.05; letter-spacing:-0.5px; display:block; margin-bottom:24px;">مقدمة</strong> أنا مهندس روبوتات وباحث، خلفيتي تمتد عبر الأنظمة المضمنة، رؤية الحاسوب، الملاحة الذاتية، وتعلم الآلة. اهتمامي الجوهري يتمحور حول كيفية تعلم الروبوتات والاستجابة الفورية طوال عمرها التشغيلي، مستلهماً من مبادئ علم الأعصاب كالتعلم الهيبي والاستجابة التطورية التشغيلية، لبناء أنظمة تتفاعل وتُعيد تنظيم نفسها دون إعادة تدريب. يقع بحثي عند تقاطع الأنظمة الذاتية، الملاحة التفاعلية، الاستشعار العصبي الشكل، والحياة الاصطناعية، مع تركيز على بناء روبوتات تتصرف بذكاء في بيئات غير منظمة.' }],
     ['#project-alife .work-card-title', { ar: 'استجابة ما بعد التطور في الذاكرة الجينية' }],

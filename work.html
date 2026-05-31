@@ -1034,6 +1034,23 @@ nav.nav-dark .nav-logo { color: white; }
 nav.nav-dark .nav-hamburger span { background: white; }
 nav { transition: background 0.3s ease, border-color 0.3s ease; }
 
+/* Page hero header */
+.page-hero {
+  background: var(--ink);
+  padding: 140px 64px 80px;
+  text-align: center;
+}
+.page-hero h1 {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: clamp(56px, 9vw, 110px);
+  font-weight: 700;
+  color: var(--cream);
+  letter-spacing: -2px;
+  line-height: 1;
+  margin: 0;
+}
+@media(max-width:768px){ .page-hero { padding: 120px 24px 60px; } }
+
 /* ═══ Section alternation ═══ */
 .section-dark { background: var(--ink) !important; color: var(--cream); }
 .section-dark .section-label { color: rgba(255,255,255,0.45) !important; }
@@ -1156,7 +1173,7 @@ li.has-dropdown:hover .nav-dropdown {
 <nav>
 <a class="nav-logo" dir="rtl" href="#" lang="ar">حمزة</a>
 <ul class="nav-links">
-<li class="has-dropdown"><a href="index.html" class="nav-page nav-active">About</a>
+<li class="has-dropdown"><a href="index.html" class="nav-page">About</a>
 <ul class="nav-dropdown">
 <li><a href="index.html#about" class="nav-dropdown-link">Introduction</a></li>
 <li><a href="index.html#skills" class="nav-dropdown-link">Skills</a></li>
@@ -1166,7 +1183,7 @@ li.has-dropdown:hover .nav-dropdown {
 <li><a href="research.html#publications" class="nav-dropdown-link">Publications</a></li>
 <li><a href="research.html#talks" class="nav-dropdown-link">Key Talks</a></li>
 </ul></li>
-<li class="has-dropdown"><a href="work.html" class="nav-page">Work</a>
+<li class="has-dropdown"><a href="work.html" class="nav-page nav-active">Work</a>
 <ul class="nav-dropdown">
 <li><a href="work.html#work" class="nav-dropdown-link">Projects</a></li>
 <li><a href="work.html#education" class="nav-dropdown-link">Experience</a></li>
@@ -1194,113 +1211,220 @@ li.has-dropdown:hover .nav-dropdown {
 <a href="diving.html" class="mobile-nav-link nav-diving nav-ar" data-hobby-page="diving.html">الغوص</a>
 </div>
 
-<!-- HERO -->
-<section class="hero" id="top">
-<div class="hero-solid">
-<div class="hero-text">
-<h1 class="hero-name">Hamze<br/><em>Hammami</em></h1>
-<div class="hero-creds">
-<span>MSc Robotics, Heriot-Watt University Dubai</span>
-<span>BEng Computer Systems Engineering, University of Essex</span>
-</div>
-<p class="hero-bio">Robotics Engineer &amp; Researcher</p>
-<div class="hero-interests">
-<span class="interests-label">Interested in:</span>
-<span class="interests-ticker">
-<span class="tick-item active">Robotics</span>
-<span class="tick-item">Artificial Intelligence</span>
-<span class="tick-item">Artificial Life</span>
-<span class="tick-item">Autonomous Surface Vessels</span>
-<span class="tick-item">Autonomous Systems</span>
-<span class="tick-item">Reactive Navigation</span>
-<span class="tick-item">Lifetime Adaptation</span>
-<span class="tick-item">Neuromorphic Sensing</span>
-<span class="tick-item">Bioacoustics</span>
-<span class="tick-item">Non-Human Communication</span>
-<span class="tick-item">Niche Topics</span>
-</span>
-</div>
-<div class="hero-cta">
-<a class="btn-icon" href="https://github.com/Hamze-Hammami" target="_blank"><svg fill="currentColor" height="18" viewbox="0 0 16 16" width="18"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>GitHub</a>
-<a class="btn-icon" href="https://orcid.org/0009-0004-5754-5842" target="_blank"><svg aria-hidden="true" fill="currentColor" height="18" viewbox="0 0 24 24" width="18"><circle cx="12" cy="12" r="10"></circle><text fill="black" font-family="Arial" font-size="9" text-anchor="middle" x="12" y="16">iD</text></svg>ORCID</a>
-<a class="btn-icon" href="https://scholar.google.com/citations?user=Y9fe10gAAAAJ&amp;hl=en" target="_blank"><svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24" width="18"><path d="M22 10L12 4 2 10l10 6 10-6z"></path><path d="M6 12.5V17c0 1.2 2.7 3 6 3s6-1.8 6-3v-4.5"></path><path d="M22 10v6"></path></svg>Google Scholar</a>
-<a class="btn-icon" href="https://www.linkedin.com/in/hamze-hammami-1a8800229/" target="_blank"><svg aria-hidden="true" fill="currentColor" height="18" viewbox="0 0 24 24" width="18"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.4 8h4.2v14H.4V8zm7.4 0h4v1.9h.06c.56-1.06 1.94-2.18 3.98-2.18 4.26 0 5.04 2.8 5.04 6.44V22h-4.18v-7.02c0-1.68-.03-3.84-2.34-3.84-2.34 0-2.7 1.83-2.7 3.72V22H7.8V8z" transform="scale(1.05) translate(1 0)"></path></svg>LinkedIn</a>
-<a class="btn-icon" href="https://hamze-hammami.github.io/" target="_blank"><svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24" width="18"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Portfolio</a>
-<a class="btn-icon" href="portfolio_updated_assets/hamze_hammami_cv.pdf" download target="_blank"><svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24" width="18"><path d="M12 2v10M8 8l4 4 4-4"/><rect x="3" y="14" width="18" height="8" rx="1"/></svg>CV</a>
-</div>
-</div>
-<div class="hero-photo-col">
-<img alt="Hamze Hammami" src="portfolio_updated_assets/01_hamze_hammami.jpg"/>
-</div>
-</div>
-<div class="hero-stats-bar">
-<div class="hero-stat"><span class="hero-stat-number">4</span><span class="hero-stat-label">Publications</span></div>
-<div class="hero-stat"><span class="hero-stat-number">1</span><span class="hero-stat-label">Q1 Journal</span></div>
-<div class="hero-stat"><span class="hero-stat-number">3</span><span class="hero-stat-label">Conferences</span></div>
-<div class="hero-stat"><span class="hero-stat-number">2</span><span class="hero-stat-label">Preprints</span></div>
-<div class="hero-stat"><span class="hero-stat-number">6</span><span class="hero-stat-label">Talks Given</span></div>
-</div>
+<!-- PAGE HEADER -->
+<section class="page-hero">
+<h1>Work</h1>
 </section>
-<section class="about-section" id="about">
-<div class="about-inner">
-<div class="about-text">
-<p style="font-size:20px; line-height:2; color:#333; font-weight:300;">
-<strong style="font-family:'Times New Roman',Times,serif; font-size:clamp(36px,5vw,60px); font-weight:700; color:var(--ink); line-height:1.05; letter-spacing:-0.5px; display:block; margin-bottom:24px;">Introduction</strong> I am a robotics engineer and researcher with a background spanning embedded systems, computer vision, autonomous navigation, and machine learning. My core interest is in how robots learn and adapt over their operational lifetime, drawing from neuroscience principles like Hebbian learning and ontogenetic adaptation to build systems that react, reorganise, and improve without retraining. My research sits at the intersection of autonomous systems, reactive navigation, neuromorphic sensing, and artificial life, with a focus on building robots that behave intelligently in unstructured environments.
-</p>
+
+<!-- WORK -->
+<section class="featured-work section-light" id="work">
+<p class="section-label">Selected Work</p>
+<h2 class="section-title">Projects</h2>
+<div class="work-grid">
+<!-- PROJECT: SUSHI -->
+<div class="work-card featured reveal" id="project-sushi">
+<div class="work-card-media" style="aspect-ratio:21/9;">
+<video autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;filter:grayscale(20%);transition:filter 0.4s,transform 0.4s;">
+<source src="portfolio_updated_assets/sushi_video.mp4" type="video/mp4"/>
+</video>
 </div>
-<div class="about-photo reveal">
-<img alt="Hamze Hammami at work" src="portfolio_updated_assets/hamze_intro.jpg"/>
+<div class="work-card-info">
+<span class="work-card-badge">JIRS Q1 · Springer 2026</span>
+<h3 class="work-card-title">SUSHI, Autonomous Surface Vessel Navigation</h3>
+<p class="work-card-sub">A vision system for reactive, uninformed autonomous surface vessel navigation using water-aware perception, object detection, depth estimation, hybrid multi-field path planning, and behaviour-based control. Lead &amp; corresponding author.</p>
+<a class="work-card-link" href="research.html#pub-sushi">Related paper →</a>
+</div>
+</div>
+<!-- PROJECT: Post-Evolution Adaptation -->
+<div class="work-card reveal" id="project-alife">
+<div class="work-card-media">
+<video autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;filter:grayscale(20%);transition:filter 0.4s,transform 0.4s;">
+<source src="portfolio_updated_assets/alife_video.mp4" type="video/mp4"/>
+</video>
+</div>
+<div class="work-card-info">
+<span class="work-card-badge">ALIFE 2025 · SONI Track</span>
+<h3 class="work-card-title">Post-Evolution Adaptation of Genetic Memory</h3>
+<p class="work-card-sub">E-puck robots pre-evolved in empty environments adapt Hebbian-modified MLP weights to novel obstacles on-the-fly in Webots, without retraining.</p>
+<a class="work-card-link" href="research.html#pub-alife">Related paper →</a>
+</div>
+</div>
+<!-- PROJECT: BeeVE -->
+<div class="work-card reveal" id="project-beeve">
+<div class="work-card-media">
+<video autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;filter:grayscale(20%);transition:filter 0.4s,transform 0.4s;">
+<source src="portfolio_updated_assets/beeve_video.mp4" type="video/mp4"/>
+</video>
+</div>
+<div class="work-card-info">
+<span class="work-card-badge">MSc Thesis · arXiv 2026</span>
+<h3 class="work-card-title">BeeVE, Unsupervised Honeybee Acoustic State Discovery</h3>
+<p class="work-card-sub">VQ-VAE applied to PaSST embeddings of honeybee recordings. A discrete acoustic codebook separates queen-right from queen-less colonies without labels and identifies potential hidden acoustic sub-states.</p>
+<a class="work-card-link" href="research.html#pub-beeve">Related paper →</a>
+</div>
+</div>
+<!-- PROJECT: Eye Tracking Camera -->
+<div class="work-card reveal" id="project-eye-tracking">
+<div class="work-card-media">
+<video autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;filter:grayscale(20%);transition:filter 0.4s,transform 0.4s;">
+<source src="portfolio_updated_assets/eye_tracking_video.mp4" type="video/mp4"/>
+</video>
+</div>
+<div class="work-card-info">
+<span class="work-card-badge">Embedded AI · Camera Servoing</span>
+<h3 class="work-card-title">Eye Tracking Camera</h3>
+<p class="work-card-sub">Designed and implemented a 2-axis camera mechanism for real-time facial tracking with precise motor servoing through 360° servos on embedded hardware, using Google Coral TPU and TensorFlow Lite.</p>
+</div>
+</div>
+<!-- PROJECT: Sound Localization -->
+<div class="work-card reveal" id="project-sound-localization">
+<div class="work-card-media">
+<video autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;filter:grayscale(20%);transition:filter 0.4s,transform 0.4s;">
+<source src="portfolio_updated_assets/sound_localization_video.mp4" type="video/mp4"/>
+</video>
+</div>
+<div class="work-card-info">
+<span class="work-card-badge">Bachelor Capstone · Robot Audition</span>
+<h3 class="work-card-title">Sound Localization</h3>
+<p class="work-card-sub">Developed a robot audition system for sound azimuth localization using binaural processing with a two-microphone array on an Arduino-based EMoRo robot platform.</p>
+<a class="work-card-link" href="research.html#pub-ssl">Related paper →</a>
+</div>
+</div>
+<!-- PROJECT: Facial Recognition -->
+<div class="work-card reveal text-only" id="project-facial-recognition">
+<div class="work-card-info">
+<span class="work-card-badge">Computer Vision · Security</span>
+<h3 class="work-card-title">Facial Recognition Pipeline</h3>
+<p class="work-card-sub">Implemented a facial recognition database using Redis for user verification with liveness detection, deployed across private residence security systems.</p>
+</div>
+</div>
+<!-- PROJECT: ANPR -->
+<div class="work-card reveal text-only" id="project-anpr">
+<div class="work-card-info">
+<span class="work-card-badge">YOLO · Vehicle Perception</span>
+<h3 class="work-card-title">Automatic Number Plate Recognition System</h3>
+<p class="work-card-sub">Built a multi-detection system for extracting vehicle colour and license plate information through YOLO-based detection and OCR plate number extraction.</p>
+</div>
 </div>
 </div>
 </section>
 
-<!-- SKILLS -->
-<section class="skills-interactive section-dark" id="skills">
-<div class="skills-wrap">
-<div class="reveal">
-<p class="section-label">Expertise</p>
-<h2 class="section-title">Skills</h2>
-</div>
-<div aria-label="Interactive skills map" class="skills-orbit reveal">
-<div class="skills-orbit-hint">Hover over a skill</div>
-<div class="skill-cluster programming" tabindex="0">
-<div class="skill-main">Programming<br/>Languages</div>
-<div class="skill-subskills">
-<span>Python</span><span>C++</span><span>C</span><span>MATLAB</span><span>C#</span><span>Node.js</span><span>Arduino</span>
-</div>
-</div>
-<div class="skill-cluster ai" tabindex="0">
-<div class="skill-main">AI / Machine<br/>Learning</div>
-<div class="skill-subskills">
-<span>PyTorch</span><span>TensorFlow</span><span>VQ-VAE</span><span>YOLO</span><span>Hebbian Learning</span><span>RL / PPO</span><span>Representation Learning</span>
-</div>
-</div>
-<div class="skill-cluster robotics" tabindex="0">
-<div class="skill-main">Robotics<br/>Systems</div>
-<div class="skill-subskills">
-<span>ROS2</span><span>SLAM</span><span>MoveIt</span><span>D* Lite</span><span>DWA</span><span>APF / MFS</span><span>Behaviour Control</span>
-</div>
-</div>
-<div class="skill-cluster embedded" tabindex="0">
-<div class="skill-main">Embedded<br/>AI</div>
-<div class="skill-subskills">
-<span>Jetson Orin</span><span>TensorRT</span><span>CUDA</span><span>JetPack 6</span><span>Coral TPU</span><span>micro-ROS</span><span>PlatformIO</span>
-</div>
-</div>
-<div class="skill-cluster simulation" tabindex="0">
-<div class="skill-main">Simulation &amp;<br/>Tools</div>
-<div class="skill-subskills">
-<span>Unity</span><span>Webots</span><span>Isaac Sim</span><span>Gazebo</span><span>OpenCV</span><span>DepthAI</span><span>GitHub</span>
-</div>
-</div>
 
+<!-- EXPERIENCE -->
+<section class="edu-exp-section section-dark" id="education">
+<p class="section-label">Background</p>
+<h2 class="section-title" style="margin-bottom:56px;">Experience</h2>
+<div class="timeline">
+
+  <div class="timeline-item reveal">
+    <div class="timeline-year">Aug 2025<br/>Present</div>
+    <div class="timeline-body">
+      <p class="timeline-role">Laboratory Assistant</p>
+      <p class="timeline-org">Heriot-Watt School of Mathematics &amp; Computer Science · Dubai</p>
+      <ul class="timeline-items">
+        <li>Lab support through demonstrations, tutorials, and coding guidance for postgraduate students</li>
+        <li>Teaching assistance for Intelligent Robotics module</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="timeline-item reveal">
+    <div class="timeline-year">Jan 2025<br/>Present</div>
+    <div class="timeline-body">
+      <p class="timeline-role">Teaching Assistant</p>
+      <p class="timeline-org">Heriot-Watt School of Engineering &amp; Physical Sciences · Dubai</p>
+      <ul class="timeline-items">
+        <li>Lab demonstrations and tutorials across robotics and programming courses</li>
+        <li>Modules: Machine Vision, Robotics System Sciences, Praxis Programming, Praxis Electronics</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="timeline-item reveal">
+    <div class="timeline-year">Jul 2023<br/>Dec 2023</div>
+    <div class="timeline-body">
+      <p class="timeline-role">Embedded Systems &amp; ML Engineer</p>
+      <p class="timeline-org">Vee Tech · Cairo</p>
+      <ul class="timeline-items">
+        <li>Developed the company's standard intelligent systems for Automatic Number Plate Recognition and Facial Recognition with liveness security checks</li>
+        <li>Collected and processed datasets for computer vision applications</li>
+        <li>Implemented secure embedded systems and created APIs for web and mobile integration</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="timeline-item reveal">
+    <div class="timeline-year">Apr 2023<br/>Jun 2023</div>
+    <div class="timeline-body">
+      <p class="timeline-role">Backend Intern</p>
+      <p class="timeline-org">Vee Tech · Cairo</p>
+      <ul class="timeline-items">
+        <li>Received training on the NestJS framework</li>
+        <li>Conducted testing of backend systems and SDKs</li>
+        <li>Automated backend QA testing processes</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+</section>
+
+
+<!-- VOLUNTEERING -->
+<section class="volunteering-section section-light" id="volunteering">
+<p class="section-label">Outreach</p>
+<h2 class="section-title">Volunteering</h2>
+<div class="conf-talks-grid">
+<div class="conf-card reveal" style="background:var(--cream);">
+<div class="conf-card-img">
+<img alt="ROS Winter Camp 2024" src="portfolio_updated_assets/10_ros_winter_camp_2024.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center 40%;"/>
+</div>
+<div class="conf-card-body">
+<span class="conf-date">Feb 2024</span>
+<h3 class="conf-title" style="color:var(--ink);">Dubai Future Labs × The Construct: ROS Winter Bootcamp</h3>
+<p class="conf-venue" style="color:#888;">Dubai Future Labs · 5-Day Intensive</p>
+<p class="conf-desc" style="color:#666;">5-day intensive on MoveIt, SLAM, mapping, and OpenCV in ROS2, organised by Dubai Future Labs and The Construct.</p>
+</div>
+</div>
+<div class="conf-card reveal" style="background:var(--cream);">
+<div class="conf-card-img">
+<img alt="Engineer for a Day" src="portfolio_updated_assets/11_engineer_for_a_day.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;"/>
+</div>
+<div class="conf-card-body">
+<span class="conf-date">2024 – 2025</span>
+<h3 class="conf-title" style="color:var(--ink);">Engineer for a Day, Heriot-Watt Dubai</h3>
+<p class="conf-venue" style="color:#888;">Heriot-Watt University Dubai · Volunteer</p>
+<p class="conf-desc" style="color:#666;">Led Arduino programming and obstacle-detection workshops for high-school visitors. Operated the Unitree GO1 quadruped during multiple outreach events.</p>
+</div>
+</div>
+<div class="conf-card reveal" style="background:var(--cream);">
+<div class="conf-card-img">
+<img alt="IROS 2024 Volunteer" src="portfolio_updated_assets/12_iros_2024_volunteer.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center 30%;"/>
+</div>
+<div class="conf-card-body">
+<span class="conf-date">Oct 2024</span>
+<h3 class="conf-title" style="color:var(--ink);">IROS 2024, Technical Volunteer</h3>
+<p class="conf-venue" style="color:#888;">Khalifa University · Abu Dhabi, UAE</p>
+<p class="conf-desc" style="color:#666;">Hardware demonstrations and interactive robotics competition at one of the world's premier robotics research conferences. Guided attendees through exhibits and hands-on demos.</p>
+</div>
+</div>
+<div class="conf-card reveal" style="background:var(--cream);">
+<div class="conf-card-img">
+<img alt="ITS World Congress" src="portfolio_updated_assets/13_its_world_congress.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center 25%;"/>
+</div>
+<div class="conf-card-body">
+<span class="conf-date">2024</span>
+<h3 class="conf-title" style="color:var(--ink);">ITS World Congress, Robot Demonstrator</h3>
+<p class="conf-venue" style="color:#888;">ITS World Congress · Volunteer</p>
+<p class="conf-desc" style="color:#666;">Operated and demonstrated university robots to visitors, engaging the public with live robotics demonstrations.</p>
+</div>
 </div>
 </div>
 </section>
 
 
 <!-- CONTACT + FOOTER (merged) -->
-<footer style="padding:0;" class="footer-light">
+<footer style="background:var(--ink); padding:0;">
 <div class="contact-strip" style="border-bottom:1px solid rgba(255,255,255,0.08);">
 <h2>Let's work together.</h2>
 <div class="contact-links">
@@ -1436,6 +1560,7 @@ if (tickItems.length) {
     'Experience':'الخبرة',
     'Volunteering':'التطوع',
     'Introduction':'مقدمة',
+    'Research':'البحث',
     'Papers':'الأبحاث',
     'Key Talks':'العروض الرئيسية',
     'Skills':'المهارات',
@@ -1588,6 +1713,7 @@ if (tickItems.length) {
   };
 
   const htmlMap = new Map([
+    ['h1.page-hero', { ar: 'الأعمال' }],
     ['h1.hero-name', { ar: 'حمزة<br><em>حمامي</em>' }],
     ['.about-section p:last-of-type', { ar: '<strong style="font-family:\'Times New Roman\',Times,serif; font-size:clamp(36px,5vw,60px); font-weight:700; color:var(--ink); line-height:1.05; letter-spacing:-0.5px; display:block; margin-bottom:24px;">مقدمة</strong> أنا مهندس روبوتات وباحث، خلفيتي تمتد عبر الأنظمة المضمنة، رؤية الحاسوب، الملاحة الذاتية، وتعلم الآلة. اهتمامي الجوهري يتمحور حول كيفية تعلم الروبوتات والاستجابة الفورية طوال عمرها التشغيلي، مستلهماً من مبادئ علم الأعصاب كالتعلم الهيبي والاستجابة التطورية التشغيلية، لبناء أنظمة تتفاعل وتُعيد تنظيم نفسها دون إعادة تدريب. يقع بحثي عند تقاطع الأنظمة الذاتية، الملاحة التفاعلية، الاستشعار العصبي الشكل، والحياة الاصطناعية، مع تركيز على بناء روبوتات تتصرف بذكاء في بيئات غير منظمة.' }],
     ['#project-alife .work-card-title', { ar: 'استجابة ما بعد التطور في الذاكرة الجينية' }],
