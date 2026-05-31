@@ -115,11 +115,17 @@ nav a, nav ul, nav div { pointer-events: all; }
 .hero {
   background: var(--deep);
   min-height: 100vh;
-  display: grid;
-  grid-template-columns: 1fr 420px;
-  align-items: center;
+  display: flex;
+  flex-direction: column;
   position: relative;
   overflow: hidden;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 210px 210px;
+  align-items: stretch;
+  flex: 1;
+  position: relative;
 }
 .hero::before {
   content: '';
@@ -156,7 +162,7 @@ h1.hero-name em { font-style: italic; color: rgba(255,255,255,0.65); }
   margin-bottom: 32px; font-weight: 300; max-width: 440px;
 }
 .hero-photo-col {
-  height: 100%; overflow: hidden; position: relative;
+  overflow: hidden; position: relative; height: 100vh;
 }
 .hero-photo-col img {
   width: 100%; height: 100%; object-fit: cover;
@@ -378,19 +384,29 @@ body.arabic-mode .nav-logo { direction: ltr; font-family: 'Times New Roman', 'He
   nav { padding: 16px 24px; }
   .nav-links { display: none; }
   .nav-hamburger { display: flex; }
-  .hero { grid-template-columns: 1fr; }
-  .hero-photo-col { height: 360px; }
-  .hero-text { padding: 120px 24px 60px; }
-  section { padding: 72px 24px; }
-  .origin-inner { grid-template-columns: 1fr; gap: 48px; }
+  .hero-inner { grid-template-columns: 1fr; grid-template-rows: auto; }
+  .hero-photo-col { height: 56vw; min-height: 220px; }
+  .hero-photo-snorkel { display: none; }
+  .hero-photo-col::after { background: linear-gradient(to bottom, var(--deep) 0%, transparent 40%); }
+  .hero-text { padding: 80px 24px 40px; order: 2; }
+  h1.hero-name { font-size: clamp(44px, 12vw, 80px); }
+  .hero-bio { font-size: 14px; }
+  .hero-cta { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .btn-outline { width: 100%; text-align: center; }
+  .hero-stats-bar { flex-wrap: wrap; }
+  .hero-stat { flex: 1 1 45%; padding: 14px 16px; }
+  .hero-stat-number { font-size: 24px; }
+  section { padding: 64px 24px; }
+  .origin-inner { grid-template-columns: 1fr; gap: 40px; }
   .certs-grid { grid-template-columns: 1fr; }
+  .cert-card { padding: 32px 24px; }
   .bucket-grid { grid-template-columns: 1fr; }
-  .log-entry { grid-template-columns: 60px 1fr; }
+  .log-entry { grid-template-columns: 50px 1fr; gap: 16px; }
   .log-date { display: none; }
   .footer-contact { flex-direction: column; align-items: flex-start; padding: 36px 24px; }
   .footer-bottom { padding: 20px 24px; flex-direction: column; gap: 8px; }
-  .logs-section { padding: 72px 24px; }
-  .bucket-section { padding: 72px 24px; }
+  .logs-section { padding: 64px 24px; }
+  .bucket-section { padding: 64px 24px; }
 }
 </style>
 </head>
@@ -421,7 +437,7 @@ body.arabic-mode .nav-logo { direction: ltr; font-family: 'Times New Roman', 'He
 
 <!-- HERO -->
 <section class="hero" id="top" style="display:flex; flex-direction:column; min-height:100vh; padding:0;">
-<div style="display:grid; grid-template-columns:1fr 210px 210px; align-items:stretch; flex:1; position:relative;">
+<div class="hero-inner">
 <div class="hero-text">
 <span class="hero-eyebrow">Diving Portfolio</span>
 <h1 class="hero-name">Hamze<br/><em>Dives</em></h1>
@@ -431,10 +447,10 @@ body.arabic-mode .nav-logo { direction: ltr; font-family: 'Times New Roman', 'He
 <a class="btn-outline" href="#certifications">Certifications</a>
 </div>
 </div>
-<div class="hero-photo-col" style="height:100vh;">
+<div class="hero-photo-col hero-photo-scuba">
 <img alt="Hamze scuba diving" src="diving_assets/hamze_diving.jpg" style="object-position:center 20%;"/>
 </div>
-<div class="hero-photo-col" style="height:100vh;">
+<div class="hero-photo-col hero-photo-snorkel">
 <img alt="Hamze snorkeling" src="diving_assets/hamze_snorkeling.jpg" style="object-position:center 30%;"/>
 </div>
 </div>
