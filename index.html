@@ -85,6 +85,14 @@ nav a, nav ul { pointer-events: all; }
   font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; font-weight: 500;
 }
 .nav-links a:hover { opacity: 0.6; }
+/* Diving link — ocean blue that reads on both dark and light nav */
+.nav-links a.nav-diving,
+.nav-mobile-menu a.nav-diving {
+  color: #4eb5d4;
+  transition: color 0.2s, opacity 0.2s;
+}
+.nav-links a.nav-diving:hover,
+.nav-mobile-menu a.nav-diving:hover { opacity: 1; color: #7fcfe6; }
 .nav-item-dropdown { position: relative; }
 .nav-dropdown-trigger { cursor: default; }
 .nav-dropdown-menu {
@@ -895,54 +903,6 @@ body.arabic-mode .nav-logo {
   color: rgba(255,255,255,0.96);
 }
 
-/* OTHER INTERESTS */
-.interests-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2px; }
-@media(max-width:900px){ .interests-grid { grid-template-columns: 1fr; } .interest-card { min-height: 300px; } }
-.interest-card {
-  position: relative; overflow: hidden; display: block;
-  text-decoration: none; min-height: 420px;
-  background: var(--ink);
-}
-.interest-card-bg {
-  position: absolute; inset: 0;
-}
-.interest-card-bg img {
-  width: 100%; height: 100%; object-fit: cover;
-  filter: grayscale(30%) brightness(0.55);
-  transition: filter 0.5s ease, transform 0.5s ease;
-}
-.interest-card:hover .interest-card-bg img {
-  filter: grayscale(0%) brightness(0.7);
-  transform: scale(1.04);
-}
-.interest-card-bg::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.3) 60%, transparent 100%);
-}
-.interest-card-content {
-  position: relative; z-index: 2;
-  padding: 40px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end;
-}
-.interest-card-label {
-  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
-  color: rgba(255,255,255,0.5); margin-bottom: 12px;
-}
-.interest-card-title {
-  font-family: 'Times New Roman', Times, serif;
-  font-size: clamp(36px, 5vw, 56px); font-weight: 700;
-  color: white; line-height: 1; margin-bottom: 12px; letter-spacing: -1px;
-}
-.interest-card-sub { font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 20px; font-weight: 300; }
-.interest-card-cta {
-  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
-  color: rgba(255,255,255,0.7); border-bottom: 1px solid rgba(255,255,255,0.3);
-  padding-bottom: 3px; display: inline-block;
-  transition: color 0.2s, border-color 0.2s;
-}
-.interest-card:hover .interest-card-cta { color: white; border-color: white; }
-
-
 .edu-exp-section { background: var(--cream); padding: 100px 48px; }
 .edu-exp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
 .edu-exp-col-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 28px; }
@@ -1040,10 +1000,12 @@ body.arabic-mode .nav-logo {
 /* Dynamic nav background */
 nav.nav-light { background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,0.06); }
 nav.nav-light .nav-links a { color: #111; }
+nav.nav-light .nav-links a.nav-diving { color: #2a8faf; }
 nav.nav-light .nav-logo { color: #111; }
 nav.nav-light .nav-hamburger span { background: #111; }
 nav.nav-dark { background: rgba(14,14,14,0.88); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06); }
 nav.nav-dark .nav-links a { color: white; }
+nav.nav-dark .nav-links a.nav-diving { color: #4eb5d4; }
 nav.nav-dark .nav-logo { color: white; }
 nav.nav-dark .nav-hamburger span { background: white; }
 nav { transition: background 0.3s ease, border-color 0.3s ease; }
@@ -1061,6 +1023,8 @@ nav { transition: background 0.3s ease, border-color 0.3s ease; }
 <li><a href="#publications">Papers</a></li>
 <li><a href="#talks">Key Talks</a></li>
 <li><a href="#skills">Skills</a></li>
+<li><a href="diving.html" data-hobby-page="diving.html" class="nav-diving nav-en">Diving</a></li>
+<li><a href="diving.html" data-hobby-page="diving.html" class="nav-diving nav-ar">الغوص</a></li>
 </ul>
 <div class="nav-hamburger" id="hamburger" aria-label="Menu">
 <span></span><span></span><span></span>
@@ -1072,6 +1036,8 @@ nav { transition: background 0.3s ease, border-color 0.3s ease; }
 <a href="#publications" class="mobile-nav-link">Papers</a>
 <a href="#talks" class="mobile-nav-link">Key Talks</a>
 <a href="#skills" class="mobile-nav-link">Skills</a>
+<a href="diving.html" class="mobile-nav-link nav-diving nav-en" data-hobby-page="diving.html">Diving</a>
+<a href="diving.html" class="mobile-nav-link nav-diving nav-ar" data-hobby-page="diving.html">الغوص</a>
 </div>
 
 <!-- HERO -->
@@ -1489,25 +1455,6 @@ I am a robotics engineer and researcher with a background spanning embedded syst
 </div>
 
 </div>
-</div>
-</section>
-
-<!-- OTHER INTERESTS -->
-<section id="interests" style="background:var(--sand); padding:100px 48px;">
-<p class="section-label">Beyond Research</p>
-<h2 class="section-title" style="margin-bottom:40px;">Other Interests</h2>
-<div class="interests-grid">
-<a class="interest-card reveal" href="diving.html" data-hobby-page="diving.html">
-<div class="interest-card-bg">
-<img src="diving_assets/hamze_diving.jpg" alt="Scuba Diving" onerror="this.style.display='none'"/>
-</div>
-<div class="interest-card-content">
-<span class="interest-card-label">Portfolio</span>
-<h3 class="interest-card-title">Scuba<br/>Diving</h3>
-<p class="interest-card-sub">PADI Open Water · 2 logged dives · Arabian Gulf</p>
-<span class="interest-card-cta">View diving portfolio →</span>
-</div>
-</a>
 </div>
 </section>
 

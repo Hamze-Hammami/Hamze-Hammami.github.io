@@ -90,10 +90,7 @@ nav a, nav ul, nav div { pointer-events: all; }
   transition: color 0.2s;
 }
 .nav-back:hover { color: white; }
-.nav-hamburger {
-  display: none; flex-direction: column; gap: 5px;
-  cursor: pointer; padding: 4px; pointer-events: all;
-}
+.nav-hamburger { display: none !important; }
 .nav-hamburger span {
   display: block; width: 22px; height: 1.5px;
   background: white; transition: transform 0.25s ease, opacity 0.25s ease;
@@ -380,8 +377,8 @@ body.arabic-mode .nav-logo { direction: ltr; font-family: 'Times New Roman', 'He
 .reveal.visible { opacity:1; transform:translateY(0); }
 @media(max-width:900px){
   nav { padding: 16px 24px; }
-  .nav-links { display: none; }
-  .nav-hamburger { display: flex; }
+  .nav-links { display: flex; }
+  .nav-hamburger { display: none; }
   .hero-inner { grid-template-columns: 1fr; grid-template-rows: auto; }
   .hero-photo-col { height: 56vw; min-height: 220px; }
   .hero-photo-snorkel { display: none; }
@@ -430,16 +427,7 @@ nav { transition: background 0.3s ease, border-color 0.3s ease; }
 <ul class="nav-links">
 <li><a href="index.html">← Portfolio</a></li>
 </ul>
-<div class="nav-hamburger" id="hamburger"><span></span><span></span><span></span></div>
 </nav>
-
-<div class="nav-mobile-menu" id="mobileMenu">
-<a href="index.html" class="mobile-nav-link">← Portfolio</a>
-<a href="#origin" class="mobile-nav-link">Story</a>
-<a href="#certifications" class="mobile-nav-link">Certs</a>
-<a href="#logs" class="mobile-nav-link">Dive Log</a>
-<a href="#bucketlist" class="mobile-nav-link">What's Next</a>
-</div>
 
 <!-- HERO -->
 <section class="hero" id="top" style="display:flex; flex-direction:column; min-height:100vh; padding:0;">
@@ -653,20 +641,6 @@ const obs = new IntersectionObserver((entries)=>{
 },{threshold:0.08});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-const hamburger = document.getElementById('hamburger');
-const mobileMenu = document.getElementById('mobileMenu');
-hamburger.addEventListener('click', () => {
-  hamburger.classList.toggle('open');
-  mobileMenu.classList.toggle('open');
-  document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
-});
-document.querySelectorAll('.mobile-nav-link').forEach(link => {
-  link.addEventListener('click', () => {
-    hamburger.classList.remove('open');
-    mobileMenu.classList.remove('open');
-    document.body.style.overflow = '';
-  });
-});
 
 (function(){
   const logo = document.getElementById('divingLogo');
