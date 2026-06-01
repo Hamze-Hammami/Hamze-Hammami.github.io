@@ -1164,6 +1164,57 @@ li.has-dropdown:hover .nav-dropdown {
   letter-spacing: 0.12em;
 }
 @media(max-width:900px){ li.has-dropdown:hover .nav-dropdown { display: none; } }
+
+/* ── Project groups (draft) ── */
+.project-group { display: flex; flex-direction: column; gap: 2px; margin-bottom: 2px; }
+.subcard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2px; }
+.subcard { background: #f0ebe2; padding: 30px 28px; display: flex; flex-direction: column; gap: 10px; transition: background 0.2s; }
+.subcard:hover { background: #eae3d8; }
+.subcard-tag { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #8a857c; font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; font-weight: 500; }
+.subcard-title { font-family: 'Times New Roman', Times, serif; font-size: 23px; font-weight: 700; color: var(--ink); line-height: 1.2; }
+.subcard-sub { font-size: 13px; color: #5f5a52; line-height: 1.65; font-weight: 300; }
+.work-card-actions { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; margin-top: 16px; }
+.work-card-actions .work-card-link { margin-top: 0; }
+.project-expand-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: transparent; color: #8a857c;
+  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  text-decoration: none; padding: 11px 22px;
+  font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; font-weight: 500;
+  cursor: default; border: 1px dashed rgba(14,14,14,0.28);
+}
+.project-expand-btn:hover { background: transparent; transform: none; border-color: rgba(14,14,14,0.4); }
+@media(max-width:900px){ .subcard-grid { grid-template-columns: 1fr; } }
+
+/* ── My Contribution callout (pop accent) ── */
+.my-contribution {
+  display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+  margin-top: 16px; padding: 12px 16px;
+  background: rgba(226, 88, 34, 0.1);
+  border-left: 3px solid #e25822;
+}
+.contrib-label {
+  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: #c2410c; font-weight: 700; white-space: nowrap;
+  font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+}
+.contrib-text { font-size: 13px; color: #4a463f; line-height: 1.55; font-weight: 400; }
+
+/* ── Sub-card credit (team members) ── */
+.subcard-credit { margin-top: 6px; font-size: 12px; color: #8a857c; font-weight: 400; line-height: 1.5; }
+.subcard-credit a { color: var(--ink); text-decoration: none; border-bottom: 1px solid rgba(14,14,14,0.28); transition: border-color 0.2s; }
+.subcard-credit a:hover { border-bottom-color: var(--ink); }
+/* Space so the first project doesn't look attached to the page header */
+.work-grid > .project-group:first-child,
+.work-grid > .work-card:first-child { margin-top: 36px; }
+
+.subcard-link { display: inline-block; margin-top: 12px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #555; text-decoration: none; transition: color 0.2s; font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; font-weight: 500; }
+.subcard-link:hover { color: var(--ink); }
+
+/* Space between major projects (sub-cards within a group stay tight) */
+.work-grid { gap: 28px !important; }
+.project-group { gap: 2px; }
+.subcard-grid { gap: 2px; }
 </style>
 </head>
 <body>
@@ -1214,46 +1265,95 @@ li.has-dropdown:hover .nav-dropdown {
 <p class="section-label">Selected Work</p>
 <h2 class="section-title">Projects</h2>
 <div class="work-grid">
-<!-- PROJECT: SUSHI -->
-<div class="work-card featured reveal" id="project-sushi">
-<div class="work-card-media" style="aspect-ratio:21/9;">
+
+<!-- PROJECT GROUP: AISV -->
+<div class="project-group reveal" style="grid-column:1/-1;">
+<div class="work-card featured" id="project-aisv">
+<div class="work-card-media" style="aspect-ratio:16/9;">
 <video autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;filter:grayscale(20%);transition:filter 0.4s,transform 0.4s;">
-<source src="portfolio_updated_assets/sushi_video.mp4" type="video/mp4"/>
+<source src="portfolio_updated_assets/AISV_video.mp4" type="video/mp4"/>
 </video>
 </div>
 <div class="work-card-info">
-<span class="work-card-badge">JIRS Q1 · Springer 2026</span>
-<h3 class="work-card-title">SUSHI, Autonomous Surface Vessel Navigation</h3>
-<p class="work-card-sub">A vision system for reactive, uninformed autonomous surface vessel navigation using water-aware perception, object detection, depth estimation, hybrid multi-field path planning, and behaviour-based control. Lead &amp; corresponding author.</p>
-<a class="work-card-link" href="research.html#pub-sushi">Related paper →</a>
+<h3 class="work-card-title">AISV, Autonomous Trash Collection</h3>
+<p class="work-card-sub">A project developing new technology for autonomous trash collection on water, developed as part of the Mubadala trash-collection ASV competition. The platform brings together three parts: a collection robot (Burger), a reactive vision navigation system (SUSHI), and a development simulation (Toast).</p>
+<div class="work-card-actions">
+<a class="project-expand-btn" data-project="aisv" title="Dedicated page coming soon">Coming Soon</a>
 </div>
 </div>
-<!-- PROJECT: Post-Evolution Adaptation -->
-<div class="work-card reveal" id="project-alife">
-<div class="work-card-media">
-<video autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;filter:grayscale(20%);transition:filter 0.4s,transform 0.4s;">
-<source src="portfolio_updated_assets/alife_video.mp4" type="video/mp4"/>
-</video>
 </div>
-<div class="work-card-info">
-<span class="work-card-badge">ALIFE 2025 · SONI Track</span>
-<h3 class="work-card-title">Post-Evolution Adaptation of Genetic Memory</h3>
-<p class="work-card-sub">E-puck robots pre-evolved in empty environments adapt Hebbian-modified MLP weights to novel obstacles on-the-fly in Webots, without retraining.</p>
-<a class="work-card-link" href="research.html#pub-alife">Related paper →</a>
+<div class="subcard-grid">
+<div class="subcard" id="subcard-burger">
+<span class="subcard-tag">Robot</span>
+<h4 class="subcard-title">Burger</h4>
+<p class="subcard-sub">A seabin-inspired collection mechanism built as a compact combat robot. Smaller and cheaper than full-scale systems, designed to carry far more trash to scale.</p>
+<p class="subcard-credit">Led by <a href="https://www.linkedin.com/in/laith-mohamed-03a7b4252/" target="_blank" rel="noopener">Laith Mohamed</a> and <a href="https://www.linkedin.com/in/saif-alsaad-b44483194/" target="_blank" rel="noopener">Saif Alsaad</a>.</p>
+</div>
+<div class="subcard">
+<span class="subcard-tag">Navigation</span>
+<h4 class="subcard-title">SUSHI</h4>
+<p class="subcard-sub">The vision system for reactive, uninformed surface navigation: water-aware perception, object detection, depth estimation, multi-field path planning, and behaviour-based control.</p>
+<div class="my-contribution">
+<span class="contrib-label">My Contribution</span>
+<span class="contrib-text">Led SUSHI's development and its journal paper study, and generally supervised AISV.</span>
+</div>
+<a class="subcard-link" href="research.html#pub-sushi">Related paper, JIRS Q1 →</a>
+</div>
+<div class="subcard" id="subcard-toast">
+<span class="subcard-tag">Simulation</span>
+<h4 class="subcard-title">Toast</h4>
+<p class="subcard-sub">The simulation environment built to develop SUSHI in software first, then validate it through real-world testing.</p>
+<p class="subcard-credit">Led by <a href="https://abban-fahim.github.io/" target="_blank" rel="noopener">Muhammad Abban</a>.</p>
 </div>
 </div>
-<!-- PROJECT: BeeVE -->
-<div class="work-card reveal" id="project-beeve">
+</div>
+
+<!-- PROJECT GROUP: BeeBetter -->
+<div class="project-group reveal" style="grid-column:1/-1;">
+<div class="work-card featured" id="project-beebetter">
 <div class="work-card-media">
 <video autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;filter:grayscale(20%);transition:filter 0.4s,transform 0.4s;">
 <source src="portfolio_updated_assets/beeve_video.mp4" type="video/mp4"/>
 </video>
 </div>
 <div class="work-card-info">
-<span class="work-card-badge">MSc Thesis · arXiv 2026</span>
-<h3 class="work-card-title">BeeVE, Unsupervised Honeybee Acoustic State Discovery</h3>
-<p class="work-card-sub">VQ-VAE applied to PaSST embeddings of honeybee recordings. A discrete acoustic codebook separates queen-right from queen-less colonies without labels and identifies potential hidden acoustic sub-states.</p>
-<a class="work-card-link" href="research.html#pub-beeve">Related paper →</a>
+<h3 class="work-card-title">BeeBetter, Multi-modal Honeybee Monitoring</h3>
+<p class="work-card-sub">A multi-modal beehive monitoring system for honeybee health and hazard detection, combining predator detection, environmental sensing, and acoustic analysis. Currently a working abstract with a trained queen-less CRNN and bee/hornet detection, not yet deployed in a conditioned environment.</p>
+<div class="work-card-actions">
+<a class="project-expand-btn" data-project="beebetter" title="Dedicated page coming soon">Coming Soon</a>
+</div>
+</div>
+</div>
+<div class="subcard-grid">
+<div class="subcard">
+<span class="subcard-tag">Detection + Sensing + Sound</span>
+<h4 class="subcard-title">BeeBetter Core</h4>
+<p class="subcard-sub">Predator detection with YOLO (bee vs hornet), environmental sensing (temperature, CO2, humidity, weight), and a CRNN sound module for queen-less detection, together forming an early hazard and colony-collapse warning system.</p>
+<a class="subcard-link" href="research.html#pub-beebetter">Related paper →</a>
+</div>
+<div class="subcard">
+<span class="subcard-tag">Sound Extension</span>
+<h4 class="subcard-title">BeeVE</h4>
+<p class="subcard-sub">An extension of BeeBetter's CRNN sound module: VQ-VAE applied to PaSST embeddings of honeybee recordings to discover non-semantic acoustic sub-states without labels.</p>
+<a class="subcard-link" href="research.html#pub-beeve">Related paper →</a>
+</div>
+</div>
+</div>
+
+<!-- PROJECT: Post-Evolution Adaptation -->
+<div class="work-card featured reveal" id="project-alife" style="grid-column:1/-1;">
+<div class="work-card-media">
+<video autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;filter:grayscale(20%);transition:filter 0.4s,transform 0.4s;">
+<source src="portfolio_updated_assets/alife_video.mp4" type="video/mp4"/>
+</video>
+</div>
+<div class="work-card-info">
+<h3 class="work-card-title">Post-Evolution Adaptation of Genetic Memory</h3>
+<p class="work-card-sub">E-puck robots pre-evolved in empty environments adapt Hebbian-modified MLP weights to novel obstacles on-the-fly in Webots, without retraining.</p>
+<div class="work-card-actions">
+<a class="work-card-link" href="research.html#pub-alife">Related paper →</a>
+<a class="project-expand-btn" data-project="post-evolution" title="Dedicated page coming soon">Coming Soon</a>
+</div>
 </div>
 </div>
 <!-- PROJECT: Eye Tracking Camera -->
@@ -1549,6 +1649,16 @@ if (tickItems.length) {
 
   const exactText = {
     'Work':'الأعمال',
+    'AISV, Autonomous Trash Collection':'AISV، الجمع الذاتي للنفايات',
+    'BeeBetter, Multi-modal Honeybee Monitoring':'BeeBetter، مراقبة متعددة الوسائط لنحل العسل',
+    'Robot':'روبوت',
+    'Navigation':'ملاحة',
+    'Simulation':'محاكاة',
+    'Detection + Sensing + Sound':'كشف واستشعار وصوت',
+    'Sound Extension':'امتداد صوتي',
+    'Related paper, JIRS Q1 →':'البحث المرتبط، JIRS Q1 ←',
+    'Coming Soon':'قريباً',
+    'My Contribution':'مساهمتي',
     'Projects':'المشاريع',
     'Experience':'الخبرة',
     'Volunteering':'التطوع',
@@ -1705,6 +1815,8 @@ if (tickItems.length) {
   };
 
   const htmlMap = new Map([
+    ['#subcard-burger .subcard-credit', { ar: 'بقيادة <a href="https://www.linkedin.com/in/laith-mohamed-03a7b4252/" target="_blank" rel="noopener">ليث محمد</a> و<a href="https://www.linkedin.com/in/saif-alsaad-b44483194/" target="_blank" rel="noopener">سيف السعد</a>.' }],
+    ['#subcard-toast .subcard-credit', { ar: 'بقيادة <a href="https://abban-fahim.github.io/" target="_blank" rel="noopener">محمد أبان</a>.' }],
     ['h1.page-hero', { ar: 'الأعمال' }],
     ['h1.hero-name', { ar: 'حمزة<br><em>حمامي</em>' }],
     ['.about-section p:last-of-type', { ar: '<strong style="font-family:\'Times New Roman\',Times,serif; font-size:clamp(36px,5vw,60px); font-weight:700; color:var(--ink); line-height:1.05; letter-spacing:-0.5px; display:block; margin-bottom:24px;">مقدمة</strong> أنا مهندس روبوتات وباحث، خلفيتي تمتد عبر الأنظمة المضمنة، رؤية الحاسوب، الملاحة الذاتية، وتعلم الآلة. اهتمامي الجوهري يتمحور حول كيفية تعلم الروبوتات والاستجابة الفورية طوال عمرها التشغيلي، مستلهماً من مبادئ علم الأعصاب كالتعلم الهيبي والاستجابة التطورية التشغيلية، لبناء أنظمة تتفاعل وتُعيد تنظيم نفسها دون إعادة تدريب. يقع بحثي عند تقاطع الأنظمة الذاتية، الملاحة التفاعلية، الاستشعار العصبي الشكل، والحياة الاصطناعية، مع تركيز على بناء روبوتات تتصرف بذكاء في بيئات غير منظمة.' }],
@@ -1732,6 +1844,14 @@ if (tickItems.length) {
   ]);
 
   const paragraphs = [
+    ["Led SUSHI's development and its journal paper study", 'قُدت تطوير SUSHI ودراسة بحثه المنشور في المجلة، وأشرفت بشكل عام على AISV.'],
+    ['A project developing new technology for autonomous trash collection', 'مشروع لتطوير تقنية جديدة لجمع النفايات ذاتياً على سطح الماء. بصفتي رئيس وقائد البحث والفريق، أشرفت على مختلف جوانب النظام وطوّرت SUSHI. تجمع المنصة بين ثلاثة أجزاء: روبوت جمع (Burger)، ونظام ملاحة بصري تفاعلي (SUSHI)، ومحاكاة للتطوير (Toast).'],
+    ['A seabin-inspired collection mechanism', 'آلية جمع مستوحاة من حاوية البحر، مبنية كروبوت قتالي مدمج. أصغر وأرخص من الأنظمة كاملة الحجم، ومصممة لحمل كمية أكبر بكثير من النفايات بمقياس أوسع.'],
+    ['The vision system for reactive, uninformed surface navigation', 'نظام الرؤية للملاحة السطحية التفاعلية غير المعلّمة: إدراك واعٍ بالمياه، كشف الأجسام، تقدير العمق، تخطيط مسار متعدد الحقول، وتحكم قائم على السلوك.'],
+    ['The simulation environment built to develop SUSHI', 'بيئة المحاكاة المبنية لتطوير SUSHI برمجياً أولاً، ثم التحقق منه عبر الاختبار في العالم الحقيقي.'],
+    ['A multi-modal beehive monitoring system', 'نظام مراقبة متعدد الوسائط لخلايا النحل لرصد صحة نحل العسل وكشف المخاطر، يجمع بين كشف المفترسات، الاستشعار البيئي، والتحليل الصوتي. حالياً نموذج أولي عامل بشبكة CRNN مدرّبة لكشف غياب الملكة وكشف النحل والدبابير، لم يُنشر بعد في بيئة محكومة.'],
+    ['Predator detection with YOLO', 'كشف المفترسات باستخدام YOLO (نحلة مقابل دبور)، واستشعار بيئي (حرارة، ثاني أكسيد الكربون، رطوبة، وزن)، ووحدة صوت CRNN لكشف غياب الملكة، تشكّل معاً نظام إنذار مبكر للمخاطر وانهيار المستعمرة.'],
+    ["An extension of BeeBetter's CRNN sound module", 'امتداد لوحدة الصوت CRNN في BeeBetter: VQ-VAE مطبّق على تمثيلات PaSST لتسجيلات نحل العسل لاكتشاف حالات صوتية فرعية غير دلالية دون تسميات.'],
     ['Earth Species Project', 'قدمت مشروع BeeVE لمجتمع Earth Species Project، مع التركيز على التحليل غير الخاضع للإشراف لأزيز نحل العسل، واكتشاف حالات queen-right وqueen-less، وإمكانية وجود حالات صوتية فرعية غير مكتشفة.'],
     ['Presented at the 2025 Conference on Artificial Life', 'قدمت العمل في مؤتمر الحياة الاصطناعية 2025 ضمن مسار SONI، حول الاستجابة الفورية للذاكرة الجينية عبر العمر التشغيلي من أجل التحكم في الروبوتات داخل بيئات جديدة.'],
     ['Invited by Emirates Students Space Association', 'بدعوة من جمعية الإمارات لطلبة الفضاء، وجمعية الفضاء بجامعة برمنغهام دبي، وفرع ACM في الجامعة، قدمت ورشة عملية عن إطار Ultralytics YOLO ومفاهيم الرؤية الحاسوبية.'],
@@ -2003,6 +2123,14 @@ if (tickItems.length) {
 </script>
 
 
+<script>
+// Draft: project expand buttons are placeholders until dedicated pages exist
+(function(){
+  document.querySelectorAll('.project-expand-btn').forEach(btn => {
+    btn.addEventListener('click', e => { e.preventDefault(); });
+  });
+})();
+</script>
 <script>
 // Center anchor targets in viewport (account for fixed nav); align tall sections below nav
 (function(){
