@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AISV Project · Hamze Hammami</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Times New Roman,serif' font-size='15' font-weight='700' fill='white'>H&#x663;</text></svg>"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+:root {
+  --cream: #f5f0e8;
+  --ink:   #0e0e0e;
+  --teal:  #1d6a6a;
+  --border: #ddd8cd;
+}
+body {
+  background: var(--cream);
+  color: var(--teal);
+  font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* CURSOR */
+.cursor {
+  position: fixed; width: 12px; height: 12px;
+  background: var(--teal); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: width 0.2s, height 0.2s;
+}
+.cursor-ring {
+  position: fixed; width: 36px; height: 36px;
+  border: 1.5px solid var(--teal); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%,-50%);
+  transition: width 0.3s, height 0.3s, opacity 0.3s;
+  opacity: 0.4;
+}
+
+/* SCROLL PROGRESS */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; height: 2px; width: 0%;
+  background: var(--teal); z-index: 9999;
+  transition: width 0.1s linear;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 48px;
+  background: var(--cream);
+  border-bottom: 1px solid var(--border);
+  pointer-events: none;
+}
+nav a, nav ul { pointer-events: all; }
+.nav-logo {
+  font-family: 'Times New Roman', 'Amiri', serif;
+  font-size: 26px; font-weight: 700;
+  color: var(--teal); text-decoration: none;
+  direction: rtl; line-height: 1;
+  transition: opacity 0.25s;
+}
+.nav-logo:hover { opacity: 0.6; }
+.nav-links { display: flex; gap: 28px; list-style: none; }
+.nav-links a {
+  font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--teal); text-decoration: none; transition: opacity 0.2s; font-weight: 500;
+}
+.nav-links a:hover { opacity: 0.5; }
+.nav-links a.nav-active {
+  border-bottom: 1px solid var(--teal); padding-bottom: 1px;
+}
+.nav-links a.nav-diving { color: #4eb5d4; }
+li.has-dropdown { position: relative; }
+.nav-dropdown {
+  position: absolute; top: calc(100% + 14px); left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  background: var(--cream); border: 1px solid var(--border);
+  min-width: 170px; padding: 6px 0;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  list-style: none; margin: 0; z-index: 300;
+}
+li.has-dropdown:hover .nav-dropdown {
+  opacity: 1; pointer-events: all; transform: translateX(-50%) translateY(0);
+}
+.nav-dropdown a {
+  display: block; padding: 9px 20px;
+  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--teal); text-decoration: none;
+  transition: background 0.15s; font-weight: 500; white-space: nowrap; opacity: 0.72;
+}
+.nav-dropdown a:hover { background: rgba(0,0,0,0.04); opacity: 1; }
+.nav-hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  cursor: pointer; padding: 4px; pointer-events: all;
+}
+.nav-hamburger span {
+  display: block; width: 22px; height: 1.5px;
+  background: var(--teal); transition: transform 0.25s, opacity 0.25s;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+.nav-mobile-menu {
+  display: none; position: fixed; inset: 0; background: var(--cream);
+  z-index: 99; flex-direction: column; align-items: center;
+  justify-content: center; gap: 36px;
+}
+.nav-mobile-menu.open { display: flex; }
+.nav-mobile-menu a {
+  font-size: 28px; font-family: 'Times New Roman', Times, serif;
+  color: var(--teal); text-decoration: none; font-weight: 700; opacity: 0.85;
+}
+.nav-mobile-menu a:hover { opacity: 1; }
+@media(max-width:900px) {
+  nav { padding: 16px 24px; }
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+}
+
+/* HERO */
+.hero {
+  background: var(--cream);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: 1fr auto;
+  align-items: start;
+  position: relative;
+  padding: 140px 48px 64px;
+  gap: 0 64px;
+}
+
+/* back link */
+.back-link {
+  position: absolute;
+  top: 84px; left: 48px;
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--teal); opacity: 0.5; text-decoration: none;
+  transition: opacity 0.2s; font-family: -apple-system, sans-serif;
+}
+.back-link:hover { opacity: 1; }
+
+/* Left col: logo */
+.hero-left {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  align-items: flex-start;
+  padding-top: 8px;
+}
+.hero-logo-wrap img {
+  width: clamp(200px, 28vw, 360px);
+  height: auto;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Right col: systems + team stacked */
+.hero-right {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  border-left: 1px solid var(--border);
+  padding-left: 64px;
+}
+
+/* Systems block */
+.systems-label {
+  font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--teal); opacity: 0.45;
+  font-family: -apple-system, sans-serif; font-weight: 500;
+  margin-bottom: 24px;
+}
+.systems-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0;
+  border: 1px solid var(--border);
+}
+.system-item {
+  display: flex; flex-direction: column; align-items: flex-start;
+  gap: 8px; padding: 20px 22px;
+  border-right: 1px solid var(--border);
+}
+.system-item:last-child { border-right: none; }
+.system-name {
+  font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 800;
+  font-size: clamp(16px, 2.2vw, 26px);
+  letter-spacing: 0.03em;
+  line-height: 1;
+}
+.system-name.burger { color: #2ab8c4; }
+.system-name.sushi  { color: #e85d5d; }
+.system-name.toast  { color: #2ec48a; }
+.system-expand {
+  font-size: 12px; line-height: 1.55;
+  color: var(--ink); opacity: 0.55;
+  font-family: -apple-system, sans-serif; font-weight: 400;
+}
+
+/* Team block */
+.team-label {
+  font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--teal); opacity: 0.45;
+  font-family: -apple-system, sans-serif; font-weight: 500;
+  margin-bottom: 16px;
+}
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+  gap: 1px;
+  border: 1px solid var(--border);
+}
+.team-card {
+  padding: 16px 18px;
+  background: var(--cream);
+  display: flex; flex-direction: column; gap: 4px;
+  transition: background 0.18s;
+}
+.team-card:hover { background: #ede7dc; }
+.team-role {
+  font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--teal); opacity: 0.45;
+  font-family: -apple-system, sans-serif; font-weight: 500;
+  white-space: nowrap;
+}
+.team-name {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 15px; font-weight: 700; color: var(--teal);
+  line-height: 1.2;
+}
+.team-card.supervisor { border-left: 2px solid var(--teal); }
+.team-card.supervisor .team-role { opacity: 0.7; }
+
+/* scroll hint */
+.hero-scroll {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  color: var(--teal); opacity: 0.3; margin-top: 48px;
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  font-family: -apple-system, sans-serif;
+  animation: bounce 2.4s ease-in-out infinite;
+  justify-self: center;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(8px); }
+}
+
+/* border under hero */
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 48px; right: 48px;
+  height: 1px; background: var(--border);
+}
+
+@media(max-width:900px) {
+  .hero {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    padding: 120px 24px 64px;
+    gap: 0;
+  }
+  .hero-left {
+    grid-column: 1;
+    grid-row: 1;
+    justify-content: flex-start;
+    padding-bottom: 32px;
+  }
+  .hero-logo-wrap img { width: clamp(160px, 48vw, 260px); }
+  .hero-right {
+    grid-column: 1;
+    grid-row: 2;
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px solid var(--border);
+    padding-top: 32px;
+    gap: 32px;
+  }
+  .hero-scroll {
+    grid-column: 1;
+    grid-row: 3;
+    margin-top: 32px;
+  }
+  .back-link { left: 24px; top: 68px; }
+  .hero::after { left: 24px; right: 24px; }
+  .systems-grid { grid-template-columns: 1fr; }
+  .system-item { border-right: none; border-bottom: 1px solid var(--border); }
+  .system-item:last-child { border-bottom: none; }
+  .team-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* ═══ BURGER SECTION ═══ */
+.burger-section {
+  padding: 100px 48px;
+  background: var(--cream);
+  border-top: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 64px;
+}
+
+/* Header */
+.burger-header { max-width: 720px; }
+.burger-label {
+  font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: #2ab8c4; font-family: -apple-system, sans-serif; font-weight: 600;
+  display: block; margin-bottom: 12px;
+}
+.burger-heading {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 700; color: var(--teal);
+  line-height: 1.15; letter-spacing: -0.5px; padding-bottom: 0.08em;
+  margin-bottom: 24px;
+}
+.burger-body {
+  font-size: 16px; line-height: 1.85;
+  color: var(--teal); opacity: 0.85; font-weight: 400;
+}
+.burger-body strong { font-weight: 700; opacity: 1; color: var(--teal); }
+
+/* 2 bot photos */
+.burger-photos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.burger-img-wrap { display: flex; flex-direction: column; gap: 10px; }
+.burger-img-box {
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.burger-img-box img {
+  width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block;
+  filter: saturate(0.88);
+  transition: filter 0.3s, transform 0.4s;
+}
+.burger-img-box:hover img { filter: saturate(1); transform: scale(1.02); }
+.burger-img-caption {
+  font-size: 11px; letter-spacing: 0.04em;
+  color: var(--teal); opacity: 0.4;
+  font-family: -apple-system, sans-serif; line-height: 1.5;
+}
+
+/* Mechanism block */
+.burger-mechanism-block {
+  display: flex; flex-direction: column; gap: 40px;
+  border-top: 1px solid var(--border); padding-top: 64px;
+}
+.burger-mechanism-header { max-width: 640px; }
+.burger-sublabel {
+  font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--teal); opacity: 0.4;
+  font-family: -apple-system, sans-serif; font-weight: 500;
+  display: block; margin-bottom: 10px;
+}
+.burger-subheading {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: clamp(24px, 3.5vw, 38px);
+  font-weight: 700; color: var(--teal);
+  line-height: 1.2; letter-spacing: -0.3px; padding-bottom: 0.06em;
+  margin-bottom: 16px;
+}
+.burger-sub-body {
+  font-size: 14px; line-height: 1.8;
+  color: var(--teal); opacity: 0.7; font-weight: 400;
+}
+
+/* 3 mechanism cards */
+.burger-mechanism-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2px;
+}
+.burger-mech-item {
+  display: flex; flex-direction: column;
+  background: var(--cream);
+  border: 1px solid var(--border);
+}
+.burger-mech-item.selected {
+  border-color: #2ab8c4;
+}
+.burger-mech-item .burger-img-box {
+  border: none; border-bottom: 1px solid var(--border);
+}
+.burger-mech-item .burger-img-box img { aspect-ratio: 16/9; object-fit: contain; background: var(--cream); }
+.burger-mech-item.selected .burger-img-box { border-bottom-color: #2ab8c4; }
+.burger-mech-caption {
+  padding: 20px 22px; display: flex; flex-direction: column; gap: 12px;
+}
+.mech-title {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 17px; font-weight: 700; color: var(--teal);
+  display: flex; align-items: center; gap: 10px;
+}
+.mech-selected-badge {
+  font-family: -apple-system, sans-serif;
+  font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: #2ab8c4; border: 1px solid #2ab8c4;
+  padding: 2px 8px; font-weight: 600;
+}
+.mech-list {
+  list-style: none; display: flex; flex-direction: column; gap: 6px;
+}
+.mech-list li {
+  font-size: 12px; line-height: 1.5;
+  font-family: -apple-system, sans-serif;
+  padding-left: 14px; position: relative;
+}
+.mech-list li::before {
+  content: '●'; position: absolute; left: 0;
+  font-size: 7px; top: 4px;
+}
+.mech-pro { color: #2e7d4f; }
+.mech-pro::before { color: #2e7d4f; }
+.mech-con { color: #c0392b; }
+.mech-con::before { color: #c0392b; }
+.mech-neutral { color: #b8960a; }
+.mech-neutral::before { color: #b8960a; }
+
+@media(max-width:900px) {
+  .burger-section { padding: 72px 24px; gap: 48px; }
+  .burger-photos { grid-template-columns: 1fr 1fr; }
+  .burger-mechanism-grid { grid-template-columns: 1fr; gap: 16px; }
+}
+@media(max-width:540px) {
+  .burger-photos { grid-template-columns: 1fr; }
+}
+
+/* Design iterations */
+.burger-design-block {
+  display: flex; flex-direction: column; gap: 32px;
+  border-top: 1px solid var(--border); padding-top: 64px;
+}
+.burger-design-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  max-width: 900px;
+}
+.design-cell {
+  display: flex; flex-direction: column; gap: 8px;
+}
+.design-cell .burger-img-box {
+  background: var(--cream);
+  overflow: hidden;
+}
+.design-cell .burger-img-box img {
+  width: 100%; aspect-ratio: 16/10;
+  object-fit: cover; object-position: center;
+  display: block;
+}
+/* Desktop visual order: side, V1, V2 / top, V3, Final */
+.d-side  { order: 1; }
+.d-v1    { order: 2; }
+.d-v2    { order: 3; }
+.d-top   { order: 4; }
+.d-v3    { order: 5; }
+.d-final { order: 6; }
+/* Final manufactured cell highlighted */
+.design-cell.final .design-final-border {
+  border: 4px solid var(--teal);
+  box-shadow: 0 8px 28px rgba(29,106,106,0.22);
+}
+.design-cell.final .final-caption {
+  color: var(--teal); opacity: 1; font-weight: 600;
+}
+@media(max-width:900px) {
+  /* Mobile order: both dimensions paired, then V1 V2 V3 Final */
+  .burger-design-grid { grid-template-columns: 1fr 1fr; max-width: 100%; }
+  .d-side  { order: 1; }
+  .d-top   { order: 2; }
+  .d-v1    { order: 3; }
+  .d-v2    { order: 4; }
+  .d-v3    { order: 5; }
+  .d-final { order: 6; }
+}
+
+/* Electrical system */
+.burger-electrical-block {
+  display: flex; flex-direction: column; gap: 40px;
+  border-top: 1px solid var(--border); padding-top: 64px;
+}
+.electrical-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 24px;
+  align-items: center;
+}
+.electrical-cards-col {
+  display: flex; flex-direction: column; gap: 2px;
+}
+.electrical-card {
+  padding: 22px 24px;
+  border: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 9px;
+  transition: background 0.18s;
+}
+.electrical-card:hover { background: #ede7dc; }
+.electrical-title {
+  font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--teal);
+}
+.electrical-body {
+  font-size: 13px; line-height: 1.7;
+  color: var(--teal); opacity: 0.75; font-weight: 400;
+}
+.electrical-schematic {
+  display: flex; flex-direction: column; gap: 12px;
+}
+.electrical-schematic .burger-img-box {
+  border: 1px solid var(--border);
+  background: var(--cream);
+}
+.electrical-schematic .burger-img-box img {
+  width: 100%; height: auto;
+  aspect-ratio: 2210 / 1490;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+@media(max-width:900px) {
+  .electrical-layout { grid-template-columns: 1fr; }
+}
+
+/* ═══ SUSHI SECTIONS ═══ */
+.sushi-section,
+.sushi-vision-section,
+.sushi-planning-section,
+.sushi-control-section {
+  padding: 100px 48px;
+  display: flex; flex-direction: column; gap: 56px;
+  border-top: 1px solid var(--border);
+}
+.sushi-section { background: var(--cream); }
+.sushi-vision-section { background: #f0ebe0; }
+.sushi-planning-section { background: var(--cream); }
+.sushi-control-section { background: #f0ebe0; }
+
+.sushi-header { max-width: 760px; display: flex; flex-direction: column; gap: 14px; }
+.sushi-label {
+  font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: #e85d5d; font-family: -apple-system, sans-serif; font-weight: 600;
+}
+.sushi-heading {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 700; color: var(--teal);
+  line-height: 1.15; letter-spacing: -0.5px; padding-bottom: 0.08em;
+}
+.sushi-body {
+  font-size: 15px; line-height: 1.85;
+  color: var(--teal); opacity: 0.85; font-weight: 400;
+}
+.sushi-body strong { font-weight: 700; opacity: 1; color: var(--teal); }
+
+/* Stats row */
+.sushi-stats {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+}
+.sushi-stat {
+  padding: 28px 24px;
+  border: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 8px;
+  background: var(--cream);
+}
+.sushi-stat-number {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: clamp(28px, 3.5vw, 44px); font-weight: 700; font-style: italic;
+  color: var(--teal); line-height: 1;
+}
+.sushi-stat-label {
+  font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--teal); opacity: 0.45;
+  font-family: -apple-system, sans-serif;
+}
+
+/* Pipeline */
+.sushi-pipeline-block { display: flex; flex-direction: column; gap: 20px; }
+.sushi-pipeline {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 0;
+  border: 1px solid var(--border);
+}
+.sushi-pipe-step {
+  flex: 1; min-width: 120px;
+  padding: 20px 18px;
+  display: flex; flex-direction: column; gap: 6px;
+  border-right: 1px solid var(--border);
+}
+.sushi-pipe-step:last-child { border-right: none; }
+.sushi-pipe-arrow {
+  font-size: 16px; color: var(--teal); opacity: 0.25;
+  padding: 0 4px; flex-shrink: 0;
+  display: none; /* shown only between steps on desktop */
+}
+.sushi-pipe-num {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 20px; font-weight: 700; font-style: italic;
+  color: var(--teal); opacity: 0.25; line-height: 1;
+}
+.sushi-pipe-name {
+  font-size: 12px; font-weight: 700; letter-spacing: 0.06em;
+  color: var(--teal); line-height: 1.2;
+  font-family: -apple-system, sans-serif;
+}
+.sushi-pipe-desc {
+  font-size: 11px; color: var(--teal); opacity: 0.55;
+  line-height: 1.5; font-family: -apple-system, sans-serif;
+}
+
+/* Vision components */
+.sushi-vision-grid { display: flex; flex-direction: column; gap: 64px; }
+.sushi-component-block {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 48px; align-items: start;
+}
+.sushi-component-block.reverse .sushi-component-text { order: 2; }
+.sushi-component-block.reverse .sushi-component-img { order: 1; }
+.sushi-component-text { display: flex; flex-direction: column; gap: 14px; }
+.sushi-subheading {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: clamp(24px, 3.5vw, 36px);
+  font-weight: 700; color: var(--teal);
+  line-height: 1.2; letter-spacing: -0.3px; padding-bottom: 0.06em;
+}
+.sushi-component-body {
+  font-size: 14px; line-height: 1.85;
+  color: var(--teal); opacity: 0.82; font-weight: 400;
+}
+.sushi-component-body strong { font-weight: 700; opacity: 1; color: var(--teal); }
+.sushi-component-img { display: flex; flex-direction: column; gap: 10px; }
+.sushi-component-img .burger-img-box img { aspect-ratio: 16/10; object-fit: cover; }
+
+/* Planning layout */
+.sushi-planning-layout {
+  display: grid; grid-template-columns: 1.1fr 1fr;
+  gap: 32px; align-items: start;
+}
+.sushi-planning-img { display: flex; flex-direction: column; gap: 10px; }
+.sushi-planning-img .burger-img-box img { aspect-ratio: 4/3; object-fit: cover; }
+.sushi-planning-cards { display: flex; flex-direction: column; gap: 2px; }
+
+/* Control layout */
+.sushi-control-layout {
+  display: grid; grid-template-columns: 1fr 1.1fr;
+  gap: 32px; align-items: start;
+}
+.sushi-control-img { display: flex; flex-direction: column; gap: 10px; }
+.sushi-control-img .burger-img-box img { aspect-ratio: 16/9; object-fit: cover; }
+
+/* Plan/control cards */
+.sushi-plan-card {
+  padding: 24px 26px;
+  border: 1px solid var(--border);
+  background: var(--cream);
+  display: flex; flex-direction: column; gap: 10px;
+  transition: background 0.18s;
+}
+.sushi-plan-card:hover { background: #ede7dc; }
+.sushi-plan-card.highlight { border-left: 3px solid var(--teal); }
+.sushi-plan-title {
+  font-size: 12px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--teal);
+  font-family: -apple-system, sans-serif;
+}
+.sushi-plan-body {
+  font-size: 13px; line-height: 1.78;
+  color: var(--teal); opacity: 0.78; font-weight: 400;
+}
+.sushi-plan-body strong { font-weight: 700; opacity: 1; color: var(--teal); }
+.sushi-plan-body em { font-style: italic; }
+
+@media(max-width:900px) {
+  .sushi-section, .sushi-vision-section,
+  .sushi-planning-section, .sushi-control-section { padding: 72px 24px; gap: 40px; }
+  .sushi-stats { grid-template-columns: 1fr 1fr; }
+  .sushi-pipeline { flex-direction: column; }
+  .sushi-pipe-step { border-right: none; border-bottom: 1px solid var(--border); }
+  .sushi-pipe-step:last-child { border-bottom: none; }
+  .sushi-component-block,
+  .sushi-component-block.reverse { grid-template-columns: 1fr; }
+  .sushi-component-block.reverse .sushi-component-text { order: 1; }
+  .sushi-component-block.reverse .sushi-component-img { order: 2; }
+  .sushi-planning-layout,
+  .sushi-control-layout { grid-template-columns: 1fr; }
+}
+@media(max-width:540px) {
+  .sushi-stats { grid-template-columns: 1fr; }
+}
+
+/* Simplified layout classes */
+.sushi-simple-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 2px;
+}
+.sushi-simple-block {
+  display: flex; flex-direction: column; gap: 12px;
+  padding: 32px 28px;
+  border: 1px solid var(--border);
+  background: var(--cream);
+}
+.sushi-simple-block.full-width {
+  grid-column: 1 / -1;
+  border: none; padding: 0;
+}
+
+/* Side-by-side: text left, image right */
+.sushi-side-block {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0;
+  align-items: stretch;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.sushi-side-block.full-width {
+  grid-column: 1 / -1;
+  border: 1px solid var(--border);
+}
+.sushi-side-text {
+  padding: 28px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.sushi-side-img {
+  width: 420px; flex-shrink: 0;
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 28px 28px 28px 0;
+}
+.sushi-side-img .burger-img-box img {
+  width: 420px; height: 280px;
+  object-fit: cover; display: block;
+}
+/* fusion image: left side, fills full height */
+.sushi-side-img.fusion-img {
+  width: 500px; padding: 0; align-self: stretch;
+}
+.sushi-side-img.fusion-img .burger-img-box {
+  height: 100%; border: none;
+}
+.sushi-side-img.fusion-img .burger-img-box img {
+  width: 500px; height: 100%; min-height: 300px;
+  object-fit: cover; display: block;
+}
+/* planning image: left side, fills full height */
+.sushi-side-img.portrait {
+  width: 260px; padding: 0; align-self: stretch;
+}
+.sushi-side-img.portrait .burger-img-box {
+  height: 100%; border: none; overflow: hidden;
+}
+.sushi-side-img.portrait .burger-img-box img {
+  width: 260px; height: 100%;
+  object-fit: cover; object-position: center 15%;
+  display: block;
+}
+
+.sushi-img-border {
+  border: 3px solid var(--teal) !important;
+}
+
+/* Architecture wider, contained */
+.sushi-full-img {
+  display: flex; flex-direction: column; gap: 10px;
+  max-width: 860px;
+}
+.sushi-full-img .burger-img-box img {
+  width: 100%; height: 280px;
+  object-fit: contain; background: var(--cream); display: block;
+}
+
+@media(max-width:900px) {
+  .sushi-simple-grid { grid-template-columns: 1fr; }
+  .sushi-side-block { grid-template-columns: 1fr; }
+  .sushi-side-img { width: 100%; padding: 0 28px 28px; }
+  .sushi-side-img .burger-img-box img { width: 100%; height: 200px; }
+  .sushi-full-img { max-width: 100%; }
+  .sushi-full-img .burger-img-box img { height: 180px; }
+}
+
+.sushi-control-stack {
+  display: flex; flex-direction: column; gap: 2px;
+}
+.sushi-control-img-wrap {
+  display: flex; flex-direction: column; gap: 10px;
+  width: fit-content;
+}
+.sushi-control-img-wrap .burger-img-box {
+  border: 3px solid var(--teal);
+  overflow: hidden;
+}
+.sushi-control-img-wrap .burger-img-box img {
+  width: 480px; height: 320px;
+  object-fit: cover; object-position: center;
+  display: block;
+}
+
+.sushi-control-under {
+  display: flex; flex-direction: column; gap: 2px;
+}
+.sushi-control-with-img {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: stretch;
+}
+.sushi-control-img-under {
+  display: flex; flex-direction: column; gap: 10px;
+  align-self: center;
+}
+.sushi-control-img-under .burger-img-box {
+  overflow: hidden;
+  background: var(--cream);
+}
+.sushi-control-img-under .burger-img-box img {
+  width: 440px;
+  height: 280px;
+  aspect-ratio: unset;
+  object-fit: cover;
+  object-position: center 40%;
+  display: block;
+}
+@media(max-width:900px) {
+  .sushi-control-with-img { grid-template-columns: 1fr; }
+  .sushi-control-img-under .burger-img-box img { width: 100%; }
+}
+@media(max-width:900px) {
+  .sushi-control-with-img { grid-template-columns: 1fr; }
+  .sushi-control-img-under { width: 100%; }
+  .sushi-control-img-under .burger-img-box img { width: 100%; height: 260px; }
+}
+.sushi-side-block.exploration-block {
+  align-items: center;
+  overflow: visible;
+}
+.sushi-side-img.exploration-img {
+  width: 480px; padding: 0; flex-shrink: 0; align-self: center;
+}
+.sushi-side-img.exploration-img .burger-img-box {
+  border: none; background: transparent; overflow: hidden;
+}
+.sushi-side-img.exploration-img .burger-img-box img {
+  width: 100%; height: auto; display: block;
+}
+
+/* TOAST SECTION */
+.toast-section {
+  padding: 100px 48px;
+  background: var(--cream);
+  border-top: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 48px;
+}
+.toast-text { display: flex; flex-direction: column; max-width: 800px; }
+.toast-img-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+.toast-sq { display: flex; flex-direction: column; gap: 8px; }
+.toast-sq .burger-img-box {
+  background: #e8e3da;
+}
+.toast-sq .burger-img-box img {
+  width: 100%; height: 260px;
+  object-fit: cover; object-position: center;
+  display: block;
+}
+@media(max-width:768px) {
+  .toast-section { padding: 72px 24px; }
+  .toast-img-row { grid-template-columns: 1fr; }
+}
+
+.nav-logo { cursor: pointer; }
+.nav-logo.typing { letter-spacing: 0.04em; white-space: nowrap; }
+body.arabic-mode { direction: rtl; font-family: 'Times New Roman', 'Noto Naskh Arabic', 'Amiri', serif; }
+body.arabic-mode .sushi-component-body,
+body.arabic-mode .burger-body,
+body.arabic-mode .burger-sub-body,
+body.arabic-mode .electrical-body,
+body.arabic-mode .system-expand,
+body.arabic-mode .mech-list,
+body.arabic-mode .burger-img-caption,
+body.arabic-mode .sushi-heading,
+body.arabic-mode .burger-heading,
+body.arabic-mode .sushi-subheading,
+body.arabic-mode .burger-label,
+body.arabic-mode .sushi-label,
+body.arabic-mode .burger-sublabel,
+body.arabic-mode .systems-label,
+body.arabic-mode .team-label,
+body.arabic-mode .mech-title,
+body.arabic-mode .electrical-title,
+body.arabic-mode .team-name,
+body.arabic-mode .team-role { direction: rtl; text-align: right; font-family: 'Noto Naskh Arabic', 'Times New Roman', 'Amiri', serif; }
+body.arabic-mode .mech-list li { padding-left: 0; padding-right: 14px; }
+body.arabic-mode .mech-list li::before { left: auto; right: 0; }
+body.arabic-mode .team-card.supervisor { border-left: none; border-right: 2px solid var(--teal); }
+body.arabic-mode .nav-links,
+body.arabic-mode .contact-links { flex-direction: row-reverse; }
+body.arabic-mode .hero-right { border-left: none; border-right: 1px solid var(--border); padding-left: 0; padding-right: 64px; }
+@media(max-width:900px) {
+  body.arabic-mode .hero-right { border-right: none; padding-right: 0; }
+}
+body.arabic-mode .nav-logo {
+  direction: ltr;
+  font-family: 'Times New Roman', 'Helvetica Neue', Arial, sans-serif;
+  letter-spacing: 0.08em;
+  color: var(--teal);
+}
+body.language-switching .systems-grid,
+body.language-switching .team-grid,
+body.language-switching .back-link {
+  opacity: 0.12;
+  transform: translateY(8px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+body.language-settling .systems-grid,
+body.language-settling .team-grid,
+body.language-settling .back-link {
+  animation: langSettle 0.5s cubic-bezier(.2,.8,.2,1) both;
+}
+@keyframes langSettle {
+  from { opacity: 0.12; transform: translateY(8px); }
+  to   { opacity: 1;    transform: translateY(0); }
+}
+
+</style>
+</head>
+<body>
+<div class="scroll-progress" id="scrollProgress"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<nav id="mainNav">
+<a class="nav-logo" dir="ltr" href="#top" lang="en">ASV</a>
+</nav>
+
+<div class="nav-mobile-menu" id="mobileMenu">
+</div>
+
+<!-- HERO -->
+<section class="hero" id="top">
+
+  <a href="work.html" class="back-link">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2L4 7l5 5"/></svg>
+    Back to Work
+  </a>
+
+  <!-- Left: logo -->
+  <div class="hero-left">
+    <div class="hero-logo-wrap">
+      <img src="project_assets/aisv_logo.png" alt="The AISV Project"/>
+    </div>
+  </div>
+
+  <!-- Right: systems + team -->
+  <div class="hero-right">
+
+    <!-- Systems -->
+    <div>
+      <p class="systems-label">Systems</p>
+      <div class="systems-grid">
+        <div class="system-item">
+          <span class="system-name burger">B.U.R.G.E.R</span>
+          <span class="system-expand">Bot For Unsorted and Recyclable Garbage Effective Removal</span>
+        </div>
+        <div class="system-item">
+          <span class="system-name sushi">S.U.S.H.I</span>
+          <span class="system-expand">Surface Utilization Surveillance and Hazard Identification</span>
+        </div>
+        <div class="system-item">
+          <span class="system-name toast">T.O.A.S.T</span>
+          <span class="system-expand">Test Operations and Aquatic Simulation Technology</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Team -->
+    <div>
+      <p class="team-label">Team</p>
+      <div class="team-grid">
+        <div class="team-card supervisor">
+          <span class="team-role">Supervisor</span>
+          <span class="team-name">Nidhal Abdulaziz</span>
+        </div>
+        <div class="team-card">
+          <span class="team-role">Team &amp; Autonomy Lead</span>
+          <span class="team-name">Hamze Hammami</span>
+        </div>
+        <div class="team-card">
+          <span class="team-role">Simulation Lead</span>
+          <span class="team-name">Muhammad Abban</span>
+        </div>
+        <div class="team-card">
+          <span class="team-role">Mechanical Lead</span>
+          <span class="team-name">Saif Alsaad</span>
+        </div>
+        <div class="team-card">
+          <span class="team-role">Electrical Lead</span>
+          <span class="team-name">Laith Mohamed</span>
+        </div>
+        <div class="team-card">
+          <span class="team-role">Mechanical</span>
+          <span class="team-name">Sameeha Misbah</span>
+        </div>
+        <div class="team-card">
+          <span class="team-role">Electrical</span>
+          <span class="team-name">Abdul Maajid Aga</span>
+        </div>
+        <div class="team-card">
+          <span class="team-role">Electrical</span>
+          <span class="team-name">Maryam Mosadegh</span>
+        </div>
+        <div class="team-card">
+          <span class="team-role">Electrical</span>
+          <span class="team-name">Aisultan Alpysbay</span>
+        </div>
+        <div class="team-card">
+          <span class="team-role">Electrical</span>
+          <span class="team-name">Mouayad Aldada</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="hero-scroll">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M8 2v10M4 9l4 4 4-4"/></svg>
+    Scroll
+  </div>
+
+</section>
+
+<!-- BURGER SECTION -->
+<section class="burger-section" id="burger">
+
+  <!-- Section header -->
+  <div class="burger-header">
+    <span class="burger-label">B.U.R.G.E.R</span>
+    <h2 class="burger-heading">What is B.U.R.G.E.R?</h2>
+    <p class="burger-body" id="i18n-burger-intro"><strong>BURGER represents a significant advancement in autonomous surface vessel (ASV) aimed at addressing debris collection in water bodies.</strong> This ASV features a seabin-inspired collection mechanism, with a custom-built battery and smart system behaviour that enables the bot for effective debris collection even in the challenging nature of the open waters. Mechanical design led by <strong>Saif Alsaad</strong>, electrical system led by <strong>Laith Mohamed</strong>.</p>
+  </div>
+
+  <!-- 2 bot images -->
+  <div class="burger-photos">
+    <div class="burger-img-wrap">
+      <div class="burger-img-box">
+        <img src="project_assets/burger_asv.jpeg" alt="BURGER ASV in testing pool"/>
+      </div>
+      <span class="burger-img-caption">BURGER ASV pool testing at Heriot-Watt Dubai</span>
+    </div>
+    <div class="burger-img-wrap">
+      <div class="burger-img-box">
+        <img src="project_assets/seabin.png" alt="Seabin the inspiration"/>
+      </div>
+      <span class="burger-img-caption">Seabin the inspiration behind BURGER's collection mechanism</span>
+    </div>
+  </div>
+
+  <!-- Mechanism subsection -->
+  <div class="burger-mechanism-block">
+    <div class="burger-mechanism-header">
+      <span class="burger-sublabel">Design</span>
+      <h3 class="burger-subheading">Collection Mechanism</h3>
+      <p class="burger-sub-body">Different collection approaches come with distinct trade-offs in storage efficiency, space usage, and mechanical complexity. Here is how BURGER's seabin-inspired mechanism compares to alternative designs.</p>
+    </div>
+    <div class="burger-mechanism-grid">
+      <div class="burger-mech-item">
+        <div class="burger-img-box">
+          <img src="project_assets/burger_mech_1.png" alt="Mechanism option 1 net collection"/>
+        </div>
+        <div class="burger-mech-caption">
+          <span class="mech-title">Net Collection</span>
+          <ul class="mech-list">
+            <li class="mech-con">Net can't stack trash stays floating</li>
+            <li class="mech-pro">Easy and simple to implement</li>
+            <li class="mech-neutral">Non mechanical</li>
+          </ul>
+        </div>
+      </div>
+      <div class="burger-mech-item">
+        <div class="burger-img-box">
+          <img src="project_assets/burger_mech_2.png" alt="Mechanism option 2 conveyor belt"/>
+        </div>
+        <div class="burger-mech-caption">
+          <span class="mech-title">Conveyor Belt</span>
+          <ul class="mech-list">
+            <li class="mech-con">Transport takes too much space</li>
+            <li class="mech-con">Most robot area wasted on conveyor belt</li>
+            <li class="mech-pro">Small deep area for storage efficient</li>
+            <li class="mech-neutral">Mechanical</li>
+          </ul>
+        </div>
+      </div>
+      <div class="burger-mech-item selected">
+        <div class="burger-img-box">
+          <img src="project_assets/burger_mech_3.png" alt="Mechanism option 3 seabin funnel (selected)"/>
+        </div>
+        <div class="burger-mech-caption">
+          <span class="mech-title"><span class="mech-title-text">Seabin-Inspired Mechanism</span> <span class="mech-selected-badge">Selected</span></span>
+          <ul class="mech-list">
+            <li class="mech-pro">Storage efficiency</li>
+            <li class="mech-pro">No transport needed</li>
+            <li class="mech-con">Needs more power</li>
+            <li class="mech-neutral">Mechanical</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Design Iterations -->
+  <div class="burger-design-block">
+    <div class="burger-mechanism-header">
+      <span class="burger-sublabel">CAD</span>
+      <h3 class="burger-subheading">BURGER's Design Iterations</h3>
+    </div>
+    <div class="burger-design-grid">
+      <div class="design-cell d-side">
+        <div class="burger-img-box sushi-img-border">
+          <img src="project_assets/burger_design_1.png" alt="Technical dimensions side view"/>
+        </div>
+        <span class="burger-img-caption">Dimensioned side profile</span>
+      </div>
+      <div class="design-cell d-top">
+        <div class="burger-img-box sushi-img-border">
+          <img src="project_assets/burger_design_4.png" alt="Top-down dimensioned view"/>
+        </div>
+        <span class="burger-img-caption">Dimensioned top view</span>
+      </div>
+      <div class="design-cell d-v1">
+        <div class="burger-img-box sushi-img-border">
+          <img src="project_assets/burger_design_2.png" alt="V1 render"/>
+        </div>
+        <span class="burger-img-caption">V1</span>
+      </div>
+      <div class="design-cell d-v2">
+        <div class="burger-img-box sushi-img-border">
+          <img src="project_assets/burger_design_3.png" alt="V2 render"/>
+        </div>
+        <span class="burger-img-caption">V2</span>
+      </div>
+      <div class="design-cell d-v3">
+        <div class="burger-img-box sushi-img-border">
+          <img src="project_assets/burger_design_5.png" alt="V3 render"/>
+        </div>
+        <span class="burger-img-caption">V3</span>
+      </div>
+      <div class="design-cell final d-final">
+        <div class="burger-img-box design-final-border">
+          <img src="project_assets/burger_design_6.png" alt="Final manufactured version"/>
+        </div>
+        <span class="burger-img-caption final-caption">Final Version</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Electrical System -->
+  <div class="burger-electrical-block">
+    <div class="burger-mechanism-header">
+      <span class="burger-sublabel">Hardware</span>
+      <h3 class="burger-subheading">Electrical System</h3>
+    </div>
+    <div class="electrical-layout">
+      <div class="electrical-cards-col">
+        <div class="electrical-card">
+          <h4 class="electrical-title">Power Supply</h4>
+          <p class="electrical-body">A custom-welded battery module in 7s6p arrangement with BMS systems for safety and monitoring.</p>
+        </div>
+        <div class="electrical-card">
+          <h4 class="electrical-title">Computing</h4>
+          <p class="electrical-body">Jetson Nano embedded computer used for main processing with ESP32 microcontrollers.</p>
+        </div>
+        <div class="electrical-card">
+          <h4 class="electrical-title">Actuation</h4>
+          <p class="electrical-body">Water-cooled ESC control thrusters while the servo-stepper provides precise movement of the bucket.</p>
+        </div>
+        <div class="electrical-card">
+          <h4 class="electrical-title">Sensing</h4>
+          <p class="electrical-body">OAK-D Pro W camera with stereo capabilities, 9-axis IMU, and LiDAR for environmental awareness.</p>
+        </div>
+      </div>
+      <div class="electrical-schematic">
+        <div class="burger-img-box">
+          <img src="project_assets/burger_schematic.png" alt="BURGER full electrical schematic"/>
+        </div>
+        <span class="burger-img-caption">Full electrical schematic showing power distribution, computing, sensors, and actuation across both hulls</span>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══ SUSHI SECTION ═══ -->
+
+<!-- Architecture -->
+<section class="sushi-section" id="sushi">
+  <div class="sushi-header">
+    <span class="sushi-label">S.U.S.H.I</span>
+    <h2 class="sushi-heading">The Pipeline</h2>
+    <p class="sushi-body" id="i18n-arch-intro">SUSHI is a vision-first navigation system for Autonomous Surface Vehicles that fuses detection, water segmentation, and monocular depth to produce camera-centric navigation grids for planning and control. The system is integrated into ROS for full robot operation, but was built mostly using PyTorch with the perception models and path planning algorithms written from scratch. It is structured around three main components: a <strong>Vision Fusion</strong> module that converts raw camera frames into spatial object data, a <strong>Planning</strong> component that guides the vessel toward targets or explores autonomously, and a <strong>Control</strong> layer that follows the planned path while handling emergency avoidance reactively. SUSHI was my contribution to the project.</p>
+  </div>
+
+  <div class="sushi-pipeline-block">
+    <span class="burger-sublabel">System Flow</span>
+    <div class="sushi-full-img architecture">
+      <div class="burger-img-box">
+        <img src="project_assets/sushi_architecture.png" alt="SUSHI system block diagram"/>
+      </div>
+      <span class="burger-img-caption">SUSHI system architecture vision fusion, planning, and control components</span>
+    </div>
+  </div>
+</section>
+
+<!-- Vision Fusion -->
+<section class="sushi-vision-section" id="sushi-vision">
+  <div class="sushi-header">
+    <span class="sushi-label" style="color:#e85d5d;">Vision Fusion</span>
+    <h2 class="sushi-heading">Seeing the Water</h2>
+  </div>
+
+  <div class="sushi-vision-grid">
+
+    <div class="sushi-side-block full-width">
+      <div class="sushi-side-text">
+        <span class="burger-sublabel">01 · Object Detection</span>
+        <h3 class="sushi-subheading">YOLO on Water</h3>
+        <p class="sushi-component-body">The YOLO framework was deployed for trash and obstacle detection, with the core challenge being that most available datasets provide grounded or close-up images of debris that do not generalise to floating objects seen from an ASV. A SAHI mechanism was applied to slice each frame into overlapping tiles, and the model was retrained from scratch using simulation and pool data annotated with SAM2 and a CSRT tracker, achieving a mAP@0.5 of 94.5% with an F1 score of 0.91.</p>
+      </div>
+      <div class="sushi-side-img">
+        <div class="burger-img-box sushi-img-border">
+          <img src="project_assets/sushi_yolo.png" alt="YOLO detection on water"/>
+        </div>
+        <span class="burger-img-caption">YOLO detections on water surface with confidence scores</span>
+      </div>
+    </div>
+
+    <div class="sushi-side-block full-width">
+      <div class="sushi-side-text">
+        <span class="burger-sublabel">02 · Water Masking</span>
+        <h3 class="sushi-subheading">Knowing the Surface</h3>
+        <p class="sushi-component-body">A lightweight U-Net was trained using knowledge distillation from SAM2, where the teacher model's soft logits were extracted offline and used alongside binary ground truth masks during student training. Using only 500–550 frames from 20 video sequences, the distilled model achieves over 90% accuracy on unseen data, outperforming a conventional data-driven model trained on 3,000+ images which reached 80%.</p>
+      </div>
+      <div class="sushi-side-img">
+        <div class="burger-img-box sushi-img-border">
+          <img src="project_assets/sushi_masking.png" alt="Water segmentation mask"/>
+        </div>
+        <span class="burger-img-caption">U-Net water segmentation mask identifying navigable surface</span>
+      </div>
+    </div>
+
+    <div class="sushi-side-block full-width">
+      <div class="sushi-side-text">
+        <span class="burger-sublabel">03 · Monocular Depth</span>
+        <h3 class="sushi-subheading">Depth Anything on Reflective Surfaces</h3>
+        <p class="sushi-component-body">Stereo and IR-based depth sensors struggle on water due to reflections producing noisy and temporally unstable readings. Depth-Anything V2 was used instead, a monocular depth model that, as noted by its authors, benefits from synthetic training data precisely because of its advantage on transparent and reflective surfaces. Against ArUco marker ground truth it achieved a mean ARE of 0.0067 a 98.7% improvement over OAK-D and a 9.75× improvement in temporal stability.</p>
+      </div>
+      <div class="sushi-side-img">
+        <div class="burger-img-box sushi-img-border">
+          <img src="project_assets/sushi_depth.png" alt="Depth-Anything V2 on water"/>
+        </div>
+        <span class="burger-img-caption">Depth-Anything V2 metric depth map on reflective water surface</span>
+      </div>
+    </div>
+
+    <div class="sushi-side-block full-width">
+      <div class="sushi-side-text">
+        <span class="burger-sublabel">04 · Fusion Output</span>
+        <h3 class="sushi-subheading">Fused Vision</h3>
+        <p class="sushi-component-body">The SUSHI node fuses detection, water masking, and depth into a single navigation grid. Each detected object is validated against the water mask, assigned a unique ID, and given key attributes: confidence, bounding box width, metric distance, and camera angle. Object priority is ranked by depth, and the fusion layer filters out objects above the water surface or within the robot zone.</p>
+      </div>
+      <div class="sushi-side-img">
+        <div class="burger-img-box sushi-img-border">
+          <img src="project_assets/sushi_vision_fusion.png" alt="Vision fusion output"/>
+        </div>
+        <span class="burger-img-caption">Vision fusion output, detections, water mask, and priority ranking fused in real time</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Path Planning -->
+<section class="sushi-planning-section" id="sushi-planning">
+  <div class="sushi-header">
+    <span class="sushi-label" style="color:#2ab8c4;">Path Planning</span>
+    <h2 class="sushi-heading">Multi-Field Synthesis</h2>
+  </div>
+
+  <div class="sushi-side-block" style="margin-top:0;">
+    <div class="sushi-side-img portrait">
+      <div class="burger-img-box sushi-img-border">
+        <img src="project_assets/sushi_planning.png" alt="MFS path planning"/>
+      </div>
+      <span class="burger-img-caption">MFS in action, vision fusion mapped to a navigation grid with wavefront guidance field</span>
+    </div>
+    <div class="sushi-side-text" style="display:flex;flex-direction:column;gap:2px;">
+      <div class="sushi-simple-block" style="border:1px solid var(--border);">
+        <span class="burger-sublabel">Approach</span>
+        <h3 class="sushi-subheading">MFS Planner</h3>
+        <p class="sushi-component-body">MFS addresses a core limitation of Artificial Potential Fields, local minima, by blending a reactive APF component with a global wavefront flow field. The blending coefficient γ adjusts dynamically based on clearance distance, stagnation count, and goal proximity, giving each grid cell a spatially-aware potential rather than fixed parameters. Across 15 runs, MFS achieved a 100% success rate against Classic APF's 33%, Paraboloidal's 40%, and Conical's 80%.</p>
+      </div>
+      <div class="sushi-simple-block" style="border:1px solid var(--border);">
+        <span class="burger-sublabel">Behaviour Hierarchy</span>
+        <h3 class="sushi-subheading">How the Planner Decides</h3>
+        <p class="sushi-component-body">Three behaviours govern planning in priority order. Target Seeking activates when debris is detected and overrides everything else. Water Exploration samples the water mask for curious navigation when no goal is visible, biasing toward denser and farther water regions. Idle clears active paths and awaits new data when no conditions are met.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Control -->
+<section class="sushi-control-section" id="sushi-control">
+  <div class="sushi-header">
+    <span class="sushi-label" style="color:#2ec48a;">Control</span>
+    <h2 class="sushi-heading">Path Following & Avoidance</h2>
+  </div>
+
+  <div class="sushi-control-under">
+    <div class="sushi-control-with-img">
+      <div class="sushi-simple-grid" style="grid-template-columns:1fr; gap:2px;">
+        <div class="sushi-simple-block" style="border:1px solid var(--border);">
+          <span class="burger-sublabel">Fuzzy Path Following</span>
+          <h3 class="sushi-subheading">Main Controller</h3>
+          <p class="sushi-component-body">The main control loop uses a fuzzy logic controller with four inputs: distance to lookahead point, heading error, cross-track error, and obstacle proximity. Each is processed through triangular membership functions for smoother transitions than binary logic. In simulation the system achieved an average cross-track error of 0.086m and RMS error of 0.128m, with the executed trajectory differing from the planned path by only 0.12m.</p>
+        </div>
+        <div class="sushi-simple-block" style="border:1px solid var(--border);">
+          <span class="burger-sublabel">Emergency Avoidance</span>
+          <h3 class="sushi-subheading">Dynamic Window</h3>
+          <p class="sushi-component-body">When side sonars or horizon depth readings detect an imminent obstacle, the Dynamic Window Approach overrides path following. A window of feasible velocities is constructed, trajectories are predicted and scored for heading, clearance, and speed, and the optimal command is selected. A turn-in-place fallback activates when all forward trajectories are blocked, rotating the vessel until a clear path is found.</p>
+        </div>
+      </div>
+      <div class="sushi-control-img-under">
+        <div class="burger-img-box sushi-img-border">
+          <img src="project_assets/sushi_control.png" alt="Path vs trajectory comparison"/>
+        </div>
+        <span class="burger-img-caption">Path vs trajectory</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Visual Exploration -->
+  <div class="sushi-side-block exploration-block">
+    <div class="sushi-side-img exploration-img">
+      <div class="burger-img-box sushi-img-border">
+        <img src="project_assets/sushi_exploration.png" alt="Visual exploration testing"/>
+      </div>
+      <span class="burger-img-caption">Water mask exploration across dead end, wall, and obstacle avoidance scenarios</span>
+    </div>
+    <div class="sushi-side-text">
+      <span class="burger-sublabel">Visual Exploration</span>
+      <h3 class="sushi-subheading">Water-Guided Navigation</h3>
+      <p class="sushi-component-body">When no debris goal is detected, the system switches to a water mask exploration behaviour. Inspired by line-of-sight principles, the explorer samples candidate points within the visible water mask, biasing toward areas with higher water density and greater distance from shorelines. This drives a water-curious behaviour that keeps the vessel navigating safely without any prior map or goal. Three conditions are demonstrated: dead end escape, wall avoidance, and obstacle-dense environments, showing the system consistently choosing the safest and most open path within its visible area.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TOAST -->
+<section class="toast-section" id="toast">
+  <div class="sushi-header">
+    <span class="sushi-label" style="color:#c8b97a;">T.O.A.S.T</span>
+    <h2 class="sushi-heading">The Simulation</h2>
+  </div>
+
+  <div class="toast-text">
+    <p class="sushi-component-body">TOAST (Test Operations and Aquatic Simulation Technology) is a hardware-accelerated simulation environment for autonomous surface vehicles built on Unity. It was developed specifically for the AISV project to enable full development and validation of SUSHI before any hardware deployment. The simulation recreates a pool environment with coloured cans as collection goals and rocks as obstacles, with the robot equipped with a front-facing camera as the primary navigation sensor and four ultrasonic sensors on the sides for emergency avoidance. A LiDAR was available but deliberately excluded to demonstrate the viability of a vision-first approach.</p>
+    <p class="sushi-component-body" id="i18n-toast-2" style="margin-top:16px;">The simulator provides a ROS2 interface for full digital twin operation, streaming sensor data and receiving thruster commands exactly as the real vessel would. Scenarios are configurable and saveable as JSON files, with obstacles randomisable in position and orientation for varied data collection. Two buoyancy modes are implemented, one fully physics-based using hydrodynamic equations and one kinematic for lightweight simulation. TOAST was the primary environment for developing and benchmarking all SUSHI components. Led by <strong>Muhammad Abban</strong>.</p>
+  </div>
+
+  <div class="toast-img-row">
+    <div class="toast-sq">
+      <div class="burger-img-box sushi-img-border">
+        <img src="project_assets/toast_sim.png" alt="TOAST simulation with camera preview"/>
+      </div>
+      <span class="burger-img-caption">Simulation with camera preview and sensor rays</span>
+    </div>
+    <div class="toast-sq">
+      <div class="burger-img-box sushi-img-border">
+        <img src="project_assets/toast_world.png" alt="TOAST open water configuration"/>
+      </div>
+      <span class="burger-img-caption">Open water world configuration</span>
+    </div>
+    <div class="toast-sq">
+      <div class="burger-img-box sushi-img-border">
+        <img src="project_assets/toast_pool.png" alt="TOAST pool environment"/>
+      </div>
+      <span class="burger-img-caption">Pool environment with goals and obstacles</span>
+    </div>
+  </div>
+</section>
+
+<script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('ring');
+let mx = -100, my = -100, rx = -100, ry = -100;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
+(function tick() {
+  cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+  rx += (mx - rx) * 0.14; ry += (my - ry) * 0.14;
+  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  requestAnimationFrame(tick);
+})();
+document.querySelectorAll('a,button').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.style.width='20px'; cursor.style.height='20px'; ring.style.opacity='0'; });
+  el.addEventListener('mouseleave', () => { cursor.style.width='12px'; cursor.style.height='12px'; ring.style.opacity='0.4'; });
+});
+
+// Scroll progress
+const sp = document.getElementById('scrollProgress');
+window.addEventListener('scroll', () => {
+  const t = document.documentElement.scrollHeight - window.innerHeight;
+  sp.style.width = (t > 0 ? (window.scrollY / t) * 100 : 0) + '%';
+}, { passive: true });
+
+// Hamburger (not present on this page guard against null)
+const hb = document.getElementById('hamburger');
+const mm = document.getElementById('mobileMenu');
+if (hb && mm) {
+  hb.addEventListener('click', () => {
+    hb.classList.toggle('open'); mm.classList.toggle('open');
+    document.body.style.overflow = mm.classList.contains('open') ? 'hidden' : '';
+  });
+  document.querySelectorAll('.mobile-nav-link').forEach(l => {
+    l.addEventListener('click', () => { hb.classList.remove('open'); mm.classList.remove('open'); document.body.style.overflow = ''; });
+  });
+}
+
+// Arabic / English toggle
+(function(){
+  const logo = document.querySelector('.nav-logo');
+  if (!logo) return;
+
+  const exactText = {
+    // Nav / general
+    'Back to Work': 'العودة إلى الأعمال',
+    'Systems': 'الأنظمة',
+    'Team': 'الفريق',
+    'Supervisor': 'المشرف',
+    'Member': 'عضو',
+    'Team & Autonomy Lead': 'قائد الفريق والقيادة الذاتية',
+    'Simulation Lead': 'قائد المحاكاة',
+    'Mechanical Lead': 'قائد الميكانيكا',
+    'Electrical Lead': 'قائد الكهرباء',
+    'Mechanical': 'ميكانيكا',
+    'Electrical': 'كهرباء',
+    'Scroll': 'انزل',
+
+    // Systems expansions
+    'Bot For Unsorted and Recyclable Garbage Effective Removal': 'روبوت الجمع الفعّال للنفايات غير المفروزة والقابلة لإعادة التدوير',
+    'Surface Utilization Surveillance and Hazard Identification': 'مراقبة استخدام السطح وتحديد المخاطر',
+    'Test Operations and Aquatic Simulation Technology': 'عمليات الاختبار وتقنية المحاكاة المائية',
+
+    // Team names
+    'Nidhal Abdulaziz': 'نضال عبد العزيز',
+    'Hamze Hammami': 'حمزة حمامي',
+    'Muhammad Abban': 'محمد أبان',
+    'Saif Alsaad': 'سيف السعد',
+    'Laith Mohamed': 'ليث محمد',
+    'Abdul Maajid Aga': 'عبد الماجد أغا',
+    'Sameeha Misbah': 'سميحة مصباح',
+    'Maryam Mosadegh': 'مريم مصادق',
+    'Aisultan Alpysbay': 'أيسلطان ألبيسباي',
+    'Mouayad Aldada': 'مؤيد الدادا',
+
+    // BURGER section
+    'What is B.U.R.G.E.R?': 'ما هو B.U.R.G.E.R؟',
+    'Design': 'التصميم',
+    'CAD': 'التصميم بالحاسوب',
+    'BURGER\'s Design Iterations': 'تكرارات تصميم BURGER',
+    'Dimensioned side profile': 'الملف الجانبي بالأبعاد',
+    'V1': 'النسخة ١',
+    'V2': 'النسخة ٢',
+    'V3': 'النسخة ٣',
+    'Dimensioned top view': 'المنظر العلوي بالأبعاد',
+    'Final Version': 'النسخة النهائية',
+    'Hardware': 'العتاد',
+    'Collection Mechanism': 'آلية الجمع',
+    'Electrical System': 'النظام الكهربائي',
+    'Different collection approaches come with distinct trade-offs in storage efficiency, space usage, and mechanical complexity. Here is how BURGER\'s seabin-inspired mechanism compares to alternative designs.': 'تأتي طرق الجمع المختلفة بمقايضات متميزة في كفاءة التخزين واستخدام المساحة والتعقيد الميكانيكي. إليك كيف تقارن آلية BURGER المستوحاة من Seabin بالتصاميم البديلة.',
+    'Net Collection': 'الجمع بالشبكة',
+    'Conveyor Belt': 'الحزام الناقل',
+    'Seabin-Inspired Mechanism': 'آلية مستوحاة من Seabin',
+    'Net can\'t stack trash stays floating': 'الشبكة لا تكدّس النفايات تبقى طافية',
+    'Easy and simple to implement': 'سهلة وبسيطة التنفيذ',
+    'Non mechanical': 'غير ميكانيكية',
+    'Transport takes too much space': 'النقل يستهلك مساحة كبيرة',
+    'Most robot area wasted on conveyor belt': 'معظم مساحة الروبوت تُهدر على الحزام الناقل',
+    'Small deep area for storage efficient': 'منطقة عميقة صغيرة للتخزين فعّالة',
+    'Mechanical': 'ميكانيكية',
+    'Storage efficiency': 'كفاءة التخزين',
+    'No transport needed': 'لا حاجة للنقل',
+    'Needs more power': 'يحتاج طاقة أكبر',
+    'Selected': 'مُختارة',
+    'Power Supply': 'مصدر الطاقة',
+    'Computing': 'الحوسبة',
+    'Actuation': 'التشغيل',
+    'Sensing': 'الاستشعار',
+    'A custom-welded battery module in 7s6p arrangement with BMS systems for safety and monitoring.': 'وحدة بطارية ملحومة خصيصاً بترتيب 7s6p مع أنظمة إدارة البطارية للسلامة والمراقبة.',
+    'Jetson Nano embedded computer used for main processing with ESP32 microcontrollers.': 'حاسوب Jetson Nano المدمج يُستخدم للمعالجة الرئيسية مع متحكمات ESP32 الدقيقة.',
+    'Water-cooled ESC control thrusters while the servo-stepper provides precise movement of the bucket.': 'محركات دفع مبرّدة بالماء بتحكم ESC، بينما يوفر محرك السيرفو-ستيبر حركة دقيقة للدلو.',
+    'OAK-D Pro W camera with stereo capabilities, 9-axis IMU, and LiDAR for environmental awareness.': 'كاميرا OAK-D Pro W بقدرات ستيريو، ووحدة قياس بالقصور الذاتي بتسعة محاور، وليدار للوعي البيئي.',
+    'BURGER ASV pool testing at Heriot-Watt Dubai': 'اختبار مركبة BURGER في حوض هيريوت-وات دبي',
+    'Seabin the inspiration behind BURGER\'s collection mechanism': 'Seabin الإلهام وراء آلية جمع BURGER',
+    'Battery assembly': 'تجميع البطارية',
+    'Full electrical schematic showing power distribution, computing, sensors, and actuation across both hulls': 'المخطط الكهربائي الكامل يوضح توزيع الطاقة والحوسبة والمستشعرات والتشغيل عبر كلا الهيكلين',
+
+    // SUSHI architecture
+    'S.U.S.H.I': 'S.U.S.H.I',
+    'Architecture': 'البنية',
+    'The Pipeline': 'خط المعالجة',
+    'System Flow': 'تدفق النظام',
+    'SUSHI system architecture vision fusion, planning, and control components': 'بنية نظام SUSHI مكونات دمج الرؤية والتخطيط والتحكم',
+
+    // SUSHI vision fusion
+    'Vision Fusion': 'دمج الرؤية',
+    'Seeing the Water': 'رؤية الماء',
+    '01 · Object Detection': '٠١ · اكتشاف الأجسام',
+    'YOLO on Water': 'YOLO على الماء',
+    'The YOLO framework was deployed for trash and obstacle detection, with the core challenge being that most available datasets provide grounded or close-up images of debris that do not generalise to floating objects seen from an ASV. A SAHI mechanism was applied to slice each frame into overlapping tiles, and the model was retrained from scratch using simulation and pool data annotated with SAM2 and a CSRT tracker, achieving a mAP@0.5 of 94.5% with an F1 score of 0.91.': 'تم نشر إطار عمل YOLO لاكتشاف النفايات والعوائق، وكان التحدي الأساسي أن معظم مجموعات البيانات المتاحة توفر صوراً أرضية أو قريبة للحطام لا تُعمَّم على الأجسام الطافية كما تُرى من مركبة سطحية. تم تطبيق آلية SAHI لتقسيم كل إطار إلى بلاطات متداخلة، وأُعيد تدريب النموذج من الصفر باستخدام بيانات المحاكاة والحوض المُعلّمة بـ SAM2 ومتتبع CSRT، محققاً دقة mAP@0.5 بنسبة ٩٤٫٥٪ ودرجة F1 قدرها ٠٫٩١.',
+    '02 · Water Masking': '٠٢ · إخفاء الماء',
+    'Knowing the Surface': 'معرفة السطح',
+    'A lightweight U-Net was trained using knowledge distillation from SAM2, where the teacher model\'s soft logits were extracted offline and used alongside binary ground truth masks during student training. Using only 500–550 frames from 20 video sequences, the distilled model achieves over 90% accuracy on unseen data, outperforming a conventional data-driven model trained on 3,000+ images which reached 80%.': 'تم تدريب نموذج U-Net خفيف باستخدام تقطير المعرفة من SAM2، حيث استُخرجت اللوغاريتمات الناعمة لنموذج المعلّم دون اتصال واستُخدمت إلى جانب أقنعة الحقيقة الأرضية الثنائية أثناء تدريب الطالب. باستخدام ٥٠٠ إلى ٥٥٠ إطاراً فقط من ٢٠ تسلسلاً مرئياً، يحقق النموذج المُقطَّر دقة تتجاوز ٩٠٪ على بيانات غير مرئية، متفوقاً على نموذج تقليدي مدفوع بالبيانات دُرّب على أكثر من ٣٠٠٠ صورة بلغ ٨٠٪.',
+    '03 · Monocular Depth': '٠٣ · العمق أحادي العدسة',
+    'Depth Without Sensors': 'العمق دون مستشعرات',
+    'Depth Anything on Reflective Surfaces': 'Depth Anything على الأسطح العاكسة',
+    'Stereo and IR-based depth sensors struggle on water due to reflections producing noisy and temporally unstable readings. Depth-Anything V2 was used instead, a monocular depth model providing metric depth up to 80 metres from a single camera. Against ArUco marker ground truth it achieved a mean ARE of 0.0067 a 98.7% improvement over OAK-D and a 9.75× improvement in temporal stability.': 'تواجه مستشعرات العمق الستيريو والعاملة بالأشعة تحت الحمراء صعوبة على الماء بسبب الانعكاسات التي تنتج قراءات صاخبة وغير مستقرة زمنياً. استُخدم بدلاً منها Depth-Anything V2، وهو نموذج عمق أحادي العدسة يوفر عمقاً مترياً حتى ٨٠ متراً من كاميرا واحدة. مقابل الحقيقة الأرضية لعلامات ArUco حقق متوسط خطأ نسبي مطلق قدره ٠٫٠٠٦٧ أي تحسناً بنسبة ٩٨٫٧٪ على OAK-D وتحسناً بمقدار ٩٫٧٥ ضعفاً في الاستقرار الزمني.',
+    '04 · Fusion Output': '٠٤ · مخرجات الدمج',
+    'All Streams Combined': 'كل التدفقات مجتمعة',
+    'Fused Vision': 'الرؤية المدمجة',
+    'YOLO detections on water surface with confidence scores': 'اكتشافات YOLO على سطح الماء مع درجات الثقة',
+    'U-Net water segmentation mask identifying navigable surface': 'قناع تجزئة الماء بـ U-Net لتحديد السطح القابل للملاحة',
+    'Depth-Anything V2 metric depth map on reflective water surface': 'خريطة العمق المترية لـ Depth-Anything V2 على سطح الماء العاكس',
+    'The SUSHI node fuses detection, water masking, and depth into a single navigation grid. Each detected object is validated against the water mask, assigned a unique ID, and given key attributes: confidence, bounding box width, metric distance, and camera angle. Object priority is ranked by depth, and the fusion layer filters out objects above the water surface or within the robot zone.': 'تدمج عقدة SUSHI الاكتشاف وإخفاء الماء والعمق في شبكة ملاحة واحدة. يتم التحقق من كل جسم مكتشف مقابل قناع الماء، وتُسند له هوية فريدة وسمات أساسية: الثقة، وعرض المربع المحيط، والمسافة المترية، وزاوية الكاميرا. تُرتّب أولوية الأجسام حسب العمق، وتُرشّح طبقة الدمج الأجسام فوق سطح الماء أو داخل منطقة الروبوت.',
+    'Vision fusion output, detections, water mask, and priority ranking fused in real time': 'مخرجات دمج الرؤية الاكتشافات وقناع الماء وترتيب الأولوية مدمجة في الوقت الحقيقي',
+
+    // SUSHI planning
+    'Path Planning': 'تخطيط المسار',
+    'Multi-Field Synthesis': 'التركيب متعدد الحقول',
+    'Approach': 'النهج',
+    'MFS Planner': 'مخطط MFS',
+    'MFS addresses a core limitation of Artificial Potential Fields, local minima, by blending a reactive APF component with a global wavefront flow field. The blending coefficient γ adjusts dynamically based on clearance distance, stagnation count, and goal proximity, giving each grid cell a spatially-aware potential rather than fixed parameters. Across 15 runs, MFS achieved a 100% success rate against Classic APF\'s 33%, Paraboloidal\'s 40%, and Conical\'s 80%.': 'يعالج MFS قيداً أساسياً في حقول الجهد الاصطناعية، وهو الحد الأدنى المحلي، عبر مزج مكوّن APF تفاعلي مع حقل تدفق جبهة موجية شامل. يتكيّف معامل المزج γ ديناميكياً بناءً على مسافة الخلوص وعدّ الركود وقرب الهدف، مانحاً كل خلية في الشبكة جهداً مدركاً للمكان بدلاً من معاملات ثابتة. عبر ١٥ تجربة، حقق MFS معدل نجاح ١٠٠٪ مقابل ٣٣٪ لـ APF الكلاسيكي و٤٠٪ للقطع المكافئ و٨٠٪ للمخروطي.',
+    'Behaviour Hierarchy': 'تسلسل السلوكيات',
+    'How the Planner Decides': 'كيف يقرر المخطط',
+    'Three behaviours govern planning in priority order. Target Seeking activates when debris is detected and overrides everything else. Water Exploration samples the water mask for curious navigation when no goal is visible, biasing toward denser and farther water regions. Idle clears active paths and awaits new data when no conditions are met.': 'ثلاثة سلوكيات تحكم التخطيط بترتيب الأولوية. يُفعّل البحث عن الهدف عند اكتشاف الحطام ويتجاوز كل شيء آخر. يأخذ استكشاف الماء عينات من قناع الماء للملاحة الفضولية عند عدم وجود هدف مرئي، منحازاً نحو مناطق الماء الأكثر كثافة والأبعد. يمسح وضع الخمول المسارات النشطة وينتظر بيانات جديدة عند عدم تحقق أي شروط.',
+    'MFS in action, vision fusion mapped to a navigation grid with wavefront guidance field': 'MFS أثناء العمل دمج الرؤية مُسقَط على شبكة ملاحة مع حقل توجيه الجبهة الموجية',
+
+    // SUSHI control
+    'Control': 'التحكم',
+    'Path Following & Avoidance': 'تتبع المسار وتجنب العوائق',
+    'Fuzzy Path Following': 'تتبع المسار الضبابي',
+    'Main Controller': 'المتحكم الرئيسي',
+    'The main control loop uses a fuzzy logic controller with four inputs: distance to lookahead point, heading error, cross-track error, and obstacle proximity. Each is processed through triangular membership functions for smoother transitions than binary logic. In simulation the system achieved an average cross-track error of 0.086m and RMS error of 0.128m, with the executed trajectory differing from the planned path by only 0.12m.': 'تستخدم حلقة التحكم الرئيسية متحكماً بالمنطق الضبابي بأربعة مدخلات: المسافة إلى نقطة الاستباق، وخطأ الاتجاه، وخطأ الانحراف عن المسار، وقرب العوائق. تُعالَج كل منها عبر دوال انتماء مثلثية لانتقالات أكثر سلاسة من المنطق الثنائي. في المحاكاة حقق النظام متوسط خطأ انحراف عن المسار قدره ٠٫٠٨٦ متر وخطأ جذر متوسط مربع قدره ٠٫١٢٨ متر، مع اختلاف المسار المنفذ عن المخطط بمقدار ٠٫١٢ متر فقط.',
+    'Emergency Avoidance': 'التجنب الطارئ',
+    'Dynamic Window': 'النافذة الديناميكية',
+    'When side sonars or horizon depth readings detect an imminent obstacle, the Dynamic Window Approach overrides path following. A window of feasible velocities is constructed, trajectories are predicted and scored for heading, clearance, and speed, and the optimal command is selected. A turn-in-place fallback activates when all forward trajectories are blocked, rotating the vessel until a clear path is found.': 'عندما تكتشف السونارات الجانبية أو قراءات عمق الأفق عائقاً وشيكاً، يتجاوز نهج النافذة الديناميكية تتبع المسار. تُبنى نافذة من السرعات الممكنة، وتُتنبأ المسارات وتُقيّم حسب الاتجاه والخلوص والسرعة، ويُختار الأمر الأمثل. يُفعّل الدوران في المكان كحل احتياطي عند انسداد جميع المسارات الأمامية، فتدور المركبة حتى تجد مساراً خالياً.',
+    'Path vs trajectory': 'المسار مقابل المسار المنفذ',
+    'Visual Exploration': 'الاستكشاف البصري',
+    'Water-Guided Navigation': 'الملاحة الموجَّهة بالماء',
+    'When no debris goal is detected, the system switches to a water mask exploration behaviour. Inspired by line-of-sight principles, the explorer samples candidate points within the visible water mask, biasing toward areas with higher water density and greater distance from shorelines. This drives a water-curious behaviour that keeps the vessel navigating safely without any prior map or goal. Three conditions are demonstrated: dead end escape, wall avoidance, and obstacle-dense environments, showing the system consistently choosing the safest and most open path within its visible area.': 'عند عدم اكتشاف هدف من الحطام، يتحول النظام إلى سلوك استكشاف قناع الماء. مستوحى من مبادئ خط البصر، يأخذ المستكشف عينات من نقاط مرشحة ضمن قناع الماء المرئي، منحازاً نحو المناطق ذات كثافة الماء الأعلى والمسافة الأكبر عن الشواطئ. يقود هذا سلوكاً فضولياً تجاه الماء يبقي المركبة تبحر بأمان دون أي خريطة أو هدف مسبق. تُعرض ثلاث حالات: الهروب من الطريق المسدود، وتجنب الجدران، والبيئات الكثيفة بالعوائق، مُظهرة أن النظام يختار باستمرار المسار الأكثر أماناً وانفتاحاً ضمن منطقته المرئية.',
+    'Water mask exploration across dead end, wall, and obstacle avoidance scenarios': 'استكشاف قناع الماء عبر سيناريوهات الطريق المسدود وتجنب الجدران والعوائق',
+
+    // TOAST
+    'T.O.A.S.T': 'T.O.A.S.T',
+    'The Simulation': 'المحاكاة',
+    'TOAST (Test Operations and Aquatic Simulation Technology) is a hardware-accelerated simulation environment for autonomous surface vehicles built on Unity. It was developed specifically for the AISV project to enable full development and validation of SUSHI before any hardware deployment. The simulation recreates a pool environment with coloured cans as collection goals and rocks as obstacles, with the robot equipped with a front-facing camera as the primary navigation sensor and four ultrasonic sensors on the sides for emergency avoidance. A LiDAR was available but deliberately excluded to demonstrate the viability of a vision-first approach.': 'TOAST (تقنية عمليات الاختبار والمحاكاة المائية) بيئة محاكاة مُسرَّعة بالعتاد للمركبات السطحية ذاتية القيادة مبنية على Unity. طُوّرت خصيصاً لمشروع AISV لتمكين التطوير والتحقق الكامل من SUSHI قبل أي نشر للعتاد. تُعيد المحاكاة إنشاء بيئة حوض بعلب ملونة كأهداف للجمع وصخور كعوائق، مع تجهيز الروبوت بكاميرا أمامية كمستشعر ملاحة أساسي وأربعة مستشعرات فوق صوتية على الجانبين للتجنب الطارئ. كان الليدار متاحاً لكنه استُبعد عمداً لإثبات جدوى النهج القائم على الرؤية أولاً.',
+    'Simulation with camera preview and sensor rays': 'محاكاة مع معاينة الكاميرا وأشعة المستشعرات',
+    'Open water world configuration': 'تكوين عالم المياه المفتوحة',
+    'Pool environment with goals and obstacles': 'بيئة الحوض بالأهداف والعوائق',
+
+    // Footer
+    'Let\'s work together.': 'لنتعاون معاً.',
+    '© 2026 Hamze Hammami · Dubai, UAE': '© ٢٠٢٦ حمزة حمامي · دبي، الإمارات',
+    'GitHub': 'GitHub',
+    'Scholar': 'Scholar',
+    'LinkedIn': 'LinkedIn',
+    'ORCID': 'ORCID',
+  };
+
+  const htmlMap = new Map();
+  htmlMap.set('#i18n-arch-intro', {
+    ar: 'SUSHI نظام ملاحة قائم على الرؤية أولاً للمركبات السطحية ذاتية القيادة، يدمج الاكتشاف وتجزئة الماء والعمق أحادي العدسة لإنتاج شبكات ملاحة محورها الكاميرا للتخطيط والتحكم. النظام مدمج في ROS لتشغيل الروبوت بالكامل، لكنه بُني في معظمه باستخدام PyTorch مع كتابة نماذج الإدراك وخوارزميات تخطيط المسار من الصفر. يتكوّن من ثلاثة مكونات رئيسية: وحدة <strong>دمج الرؤية</strong> التي تحوّل إطارات الكاميرا الخام إلى بيانات أجسام مكانية، ومكوّن <strong>التخطيط</strong> الذي يوجّه المركبة نحو الأهداف أو يستكشف ذاتياً، وطبقة <strong>التحكم</strong> التي تتبع المسار المخطط مع التعامل مع التجنب الطارئ بشكل تفاعلي. كان SUSHI إسهامي في المشروع.'
+  });
+  htmlMap.set('#i18n-burger-intro', {
+    ar: '<strong>يمثل BURGER تقدماً ملحوظاً في مجال المركبات السطحية ذاتية القيادة (ASV) بهدف معالجة جمع الحطام في المسطحات المائية.</strong> تتميز هذه المركبة بآلية جمع مستوحاة من Seabin، مع بطارية مخصصة وسلوك ذكي للنظام يمكّن الروبوت من جمع الحطام بفاعلية حتى في الطبيعة الصعبة للمياه المفتوحة. التصميم الميكانيكي بقيادة <strong>سيف السعد</strong>، والنظام الكهربائي بقيادة <strong>ليث محمد</strong>.'
+  });
+  htmlMap.set('#i18n-toast-2', {
+    ar: 'يوفر المحاكي واجهة ROS2 لتشغيل التوأم الرقمي الكامل، يبث بيانات المستشعرات ويستقبل أوامر الدفع تماماً كما تفعل المركبة الحقيقية. السيناريوهات قابلة للتكوين والحفظ كملفات JSON، مع إمكانية عشوائية العوائق في الموضع والاتجاه لجمع بيانات متنوع. تم تنفيذ وضعي طفو، أحدهما قائم بالكامل على الفيزياء باستخدام المعادلات الهيدروديناميكية والآخر حركي للمحاكاة الخفيفة. كان TOAST البيئة الأساسية لتطوير واختبار جميع مكونات SUSHI. بقيادة <strong>محمد أبان</strong>.'
+  });
+
+  function storeOriginals() {
+    document.querySelectorAll('body *').forEach(el => {
+      if (!el.dataset.enText && el.children.length === 0) el.dataset.enText = el.textContent;
+    });
+    htmlMap.forEach((v, sel) => {
+      document.querySelectorAll(sel).forEach(el => { if (!el.dataset.enHtml) el.dataset.enHtml = el.innerHTML; });
+    });
+  }
+
+  let typingTimer = null;
+  let isSwitching = false;
+  let logoHovering = false;
+  let suppressHoverUntilLeave = false;
+  let arabic = false;
+  let logoTypeRun = 0;
+
+  function typeLogo(text, dir, done) {
+    const run = ++logoTypeRun;
+    clearInterval(typingTimer);
+    logo.classList.add('typing');
+    logo.dir = dir;
+    const current = logo.textContent;
+    let i = current.length;
+    typingTimer = setInterval(() => {
+      if (run !== logoTypeRun) { clearInterval(typingTimer); return; }
+      if (i > 0) { logo.textContent = current.slice(0, --i); return; }
+      clearInterval(typingTimer);
+      let j = 0;
+      typingTimer = setInterval(() => {
+        if (run !== logoTypeRun) { clearInterval(typingTimer); return; }
+        logo.textContent = text.slice(0, ++j);
+        if (j >= text.length) {
+          clearInterval(typingTimer);
+          logo.classList.remove('typing');
+          if (done) done();
+        }
+      }, 34);
+    }, 24);
+  }
+
+  function applyArabicText() {
+    document.documentElement.lang = 'ar';
+    document.documentElement.dir = 'rtl';
+    document.body.classList.add('arabic-mode');
+    document.querySelectorAll('body *').forEach(el => {
+      if (el.children.length === 0 && el.dataset.enText) {
+        const raw = el.dataset.enText;
+        const key = raw.trim();
+        if (exactText[key]) el.textContent = raw.replace(key, exactText[key]);
+      }
+    });
+    htmlMap.forEach((v, sel) => document.querySelectorAll(sel).forEach(el => el.innerHTML = v.ar));
+  }
+
+  function applyEnglishText() {
+    document.documentElement.lang = 'en';
+    document.documentElement.dir = 'ltr';
+    document.body.classList.remove('arabic-mode');
+    document.querySelectorAll('body *').forEach(el => {
+      if (el.dataset.enText && el.children.length === 0) el.textContent = el.dataset.enText;
+    });
+    htmlMap.forEach((v, sel) => document.querySelectorAll(sel).forEach(el => {
+      if (el.dataset.enHtml) el.innerHTML = el.dataset.enHtml;
+    }));
+  }
+
+  function setLogoDefault() {
+    const defaultText = arabic ? 'ASV' : 'مركبة';
+    logo.textContent = defaultText;
+    logo.lang = arabic ? 'en' : 'ar';
+    logo.dir = arabic ? 'ltr' : 'rtl';
+    logo.title = arabic ? 'Change language to English' : 'غيّر اللغة إلى العربية';
+  }
+
+  function isNearLogo(event) {
+    const rect = logo.getBoundingClientRect();
+    const padX = 44, padY = 22;
+    return (
+      event.clientX >= rect.left - padX && event.clientX <= rect.right + padX &&
+      event.clientY >= rect.top - padY && event.clientY <= rect.bottom + padY
+    );
+  }
+
+  function beginLanguageHover() {
+    if (isSwitching || suppressHoverUntilLeave || logoHovering) return;
+    logoHovering = true;
+    const hint = arabic ? 'Change to English?' : 'تغيير إلى العربية؟';
+    typeLogo(hint, arabic ? 'ltr' : 'rtl');
+  }
+
+  function endLanguageHover(force = false) {
+    if (isSwitching && !force) return;
+    if (!logoHovering && !force) return;
+    logoHovering = false;
+    typeLogo(arabic ? 'ASV' : 'مركبة', arabic ? 'ltr' : 'rtl');
+  }
+
+  function handleLogoProximity(event) {
+    const inside = isNearLogo(event);
+    if (!inside) {
+      suppressHoverUntilLeave = false;
+      if (logoHovering && !isSwitching) endLanguageHover();
+      return;
+    }
+    if (!isSwitching && !suppressHoverUntilLeave) beginLanguageHover();
+  }
+
+  function runLanguageSwitch(nextArabic) {
+    if (isSwitching) return;
+    isSwitching = true;
+    logoHovering = false;
+    suppressHoverUntilLeave = true;
+    ++logoTypeRun;
+    clearInterval(typingTimer);
+    logo.classList.remove('typing');
+    document.body.classList.remove('language-settling');
+    document.body.classList.add('language-switching');
+    setTimeout(() => {
+      arabic = nextArabic;
+      if (arabic) applyArabicText(); else applyEnglishText();
+      const confirmation = arabic ? 'تم تغيير اللغة إلى العربية' : 'Changed language to English';
+      typeLogo(confirmation, arabic ? 'rtl' : 'ltr', () => {
+        setTimeout(() => {
+          document.body.classList.remove('language-switching');
+          document.body.classList.add('language-settling');
+          typeLogo(arabic ? 'ASV' : 'مركبة', arabic ? 'ltr' : 'rtl', () => {
+            document.body.classList.remove('language-settling');
+            isSwitching = false;
+            logoHovering = false;
+            setLogoDefault();
+            suppressHoverUntilLeave = true;
+          });
+        }, 850);
+      });
+    }, 320);
+  }
+
+  storeOriginals();
+
+  const _urlParams = new URLSearchParams(window.location.search);
+  if (_urlParams.get('lang') === 'ar') { arabic = true; applyArabicText(); }
+
+  setLogoDefault();
+
+  document.addEventListener('mousemove', handleLogoProximity, { passive: true });
+  document.addEventListener('click', e => {
+    if (!isNearLogo(e)) return;
+    e.preventDefault();
+    e.stopPropagation();
+    runLanguageSwitch(!arabic);
+  }, true);
+
+})();
+
+// Preserve language across nav links
+(function(){
+  document.querySelectorAll('a.nav-page, .nav-dropdown a, .mobile-nav-link, .back-link').forEach(link => {
+    link.addEventListener('click', function() {
+      const raw = this.getAttribute('href').split('?')[0];
+      const lang = document.body.classList.contains('arabic-mode') ? 'ar' : 'en';
+      const hashIdx = raw.indexOf('#');
+      const base = hashIdx > -1 ? raw.substring(0, hashIdx) : raw;
+      const hash = hashIdx > -1 ? raw.substring(hashIdx) : '';
+      if (base) this.setAttribute('href', base + '?lang=' + lang + hash);
+    });
+  });
+})();
+</script>
+</body>
+</html>
