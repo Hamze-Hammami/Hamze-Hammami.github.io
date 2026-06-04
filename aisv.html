@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>AISV Project · Hamze Hammami</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Times New Roman,serif' font-size='15' font-weight='700' fill='white'>H&#x663;</text></svg>"/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23f5f0e8'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Times New Roman,serif' font-size='15' font-weight='700' fill='%231d6a6a'>H&#x663;</text></svg>"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet"/>
 <style>
@@ -147,6 +147,23 @@ li.has-dropdown:hover .nav-dropdown {
   transition: opacity 0.2s; font-family: -apple-system, sans-serif;
 }
 .back-link:hover { opacity: 1; }
+
+/* Sticky back link — right side of nav, fades in after hero */
+.nav-back-sticky {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--teal); text-decoration: none; font-weight: 500;
+  font-family: -apple-system, sans-serif;
+  opacity: 0; pointer-events: none;
+  transform: translateX(6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.nav-back-sticky.visible {
+  opacity: 0.6; pointer-events: all; transform: translateX(0);
+}
+.nav-back-sticky:hover { opacity: 1; }
+body.arabic-mode .nav-back-sticky { direction: rtl; transform: translateX(-6px); }
+body.arabic-mode .nav-back-sticky.visible { transform: translateX(0); }
 
 /* Left col: logo */
 .hero-left {
@@ -363,8 +380,8 @@ li.has-dropdown:hover .nav-dropdown {
 .burger-mechanism-header { max-width: 640px; }
 .burger-sublabel {
   font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
-  color: var(--teal); opacity: 0.4;
-  font-family: -apple-system, sans-serif; font-weight: 500;
+  color: #2ab8c4;
+  font-family: -apple-system, sans-serif; font-weight: 600;
   display: block; margin-bottom: 10px;
 }
 .burger-subheading {
@@ -373,6 +390,8 @@ li.has-dropdown:hover .nav-dropdown {
   font-weight: 700; color: var(--teal);
   line-height: 1.2; letter-spacing: -0.3px; padding-bottom: 0.06em;
   margin-bottom: 16px;
+  border-left: 3px solid #2ab8c4;
+  padding-left: 14px;
 }
 .burger-sub-body {
   font-size: 14px; line-height: 1.8;
@@ -788,6 +807,8 @@ li.has-dropdown:hover .nav-dropdown {
   .sushi-side-block { grid-template-columns: 1fr; }
   .sushi-side-img { width: 100%; padding: 0 28px 28px; }
   .sushi-side-img .burger-img-box img { width: 100%; height: 200px; }
+  .sushi-side-img.portrait .burger-img-box { height: auto; }
+  .sushi-side-img.portrait .burger-img-box img { width: 100%; height: auto; min-height: 260px; object-fit: cover; object-position: center center; }
   .sushi-full-img { max-width: 100%; }
   .sushi-full-img .burger-img-box img { height: 180px; }
 }
@@ -938,6 +959,35 @@ body.language-settling .back-link {
   to   { opacity: 1;    transform: translateY(0); }
 }
 
+
+/* SUSHI paper link */
+.sushi-paper-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--teal); text-decoration: none;
+  border-bottom: 1px solid rgba(29,106,106,0.3);
+  padding-bottom: 2px;
+  transition: border-color 0.2s, opacity 0.2s;
+  font-family: -apple-system, sans-serif;
+  width: fit-content;
+}
+.sushi-paper-link:hover { border-color: var(--teal); opacity: 0.7; }
+.sushi-paper-row {
+  display: flex; align-items: center; gap: 20px;
+}
+.sushi-springer-logo {
+  display: inline-flex; align-items: center;
+  text-decoration: none;
+  border-left: 1px solid var(--border);
+  padding-left: 20px;
+  transition: opacity 0.2s;
+}
+.sushi-springer-logo img {
+  width: 80px; height: auto; display: block;
+  opacity: 0.55;
+  transition: opacity 0.2s;
+}
+.sushi-springer-logo:hover img { opacity: 1; }
 </style>
 </head>
 <body>
@@ -947,6 +997,10 @@ body.language-settling .back-link {
 
 <nav id="mainNav">
 <a class="nav-logo" dir="ltr" href="#top" lang="en">ASV</a>
+<a class="nav-back-sticky" href="work.html#project-aisv" id="navBackBtn">
+  <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2L3 6.5l5 4.5"/></svg>
+  Back to Work
+</a>
 </nav>
 
 <div class="nav-mobile-menu" id="mobileMenu">
@@ -1213,6 +1267,15 @@ body.language-settling .back-link {
     <span class="sushi-label">S.U.S.H.I</span>
     <h2 class="sushi-heading">The Pipeline</h2>
     <p class="sushi-body" id="i18n-arch-intro">SUSHI is a vision-first navigation system for Autonomous Surface Vehicles that fuses detection, water segmentation, and monocular depth to produce camera-centric navigation grids for planning and control. The system is integrated into ROS for full robot operation, but was built mostly using PyTorch with the perception models and path planning algorithms written from scratch. It is structured around three main components: a <strong>Vision Fusion</strong> module that converts raw camera frames into spatial object data, a <strong>Planning</strong> component that guides the vessel toward targets or explores autonomously, and a <strong>Control</strong> layer that follows the planned path while handling emergency avoidance reactively. SUSHI was my contribution to the project.</p>
+    <div class="sushi-paper-row">
+      <a class="sushi-paper-link" href="https://link.springer.com/article/10.1007/s10846-026-02379-9" target="_blank" rel="noopener">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 11L11 2M11 2H5M11 2v6"/></svg>
+        Read the paper
+      </a>
+      <a class="sushi-springer-logo" href="https://link.springer.com/article/10.1007/s10846-026-02379-9" target="_blank" rel="noopener" title="Published in Journal of Intelligent & Robotic Systems · Springer">
+        <img src="project_assets/springer_logo.png" alt="Springer"/>
+      </a>
+    </div>
   </div>
 
   <div class="sushi-pipeline-block">
@@ -1372,7 +1435,7 @@ body.language-settling .back-link {
 <!-- TOAST -->
 <section class="toast-section" id="toast">
   <div class="sushi-header">
-    <span class="sushi-label" style="color:#c8b97a;">T.O.A.S.T</span>
+    <span class="sushi-label" style="color:#2ec48a;">T.O.A.S.T</span>
     <h2 class="sushi-heading">The Simulation</h2>
   </div>
 
@@ -1426,6 +1489,18 @@ window.addEventListener('scroll', () => {
   const t = document.documentElement.scrollHeight - window.innerHeight;
   sp.style.width = (t > 0 ? (window.scrollY / t) * 100 : 0) + '%';
 }, { passive: true });
+
+// Sticky back link — show after scrolling past hero
+(function(){
+  const btn = document.getElementById('navBackBtn');
+  if (!btn) return;
+  const hero = document.getElementById('top');
+  const observer = new IntersectionObserver(entries => {
+    // When hero is no longer intersecting (scrolled past), show the button
+    btn.classList.toggle('visible', !entries[0].isIntersecting);
+  }, { threshold: 0.1 });
+  if (hero) observer.observe(hero);
+})();
 
 // Hamburger (not present on this page guard against null)
 const hb = document.getElementById('hamburger');

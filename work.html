@@ -314,6 +314,30 @@ section { padding:100px 48px; }
 .work-card-sub { font-size:13px; color:#999; line-height:1.5; }
 .work-card-link { display:inline-flex; align-items:center; gap:8px; color:#ccc; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; text-decoration:none; margin-top:16px; transition:gap 0.2s; }
 .work-card-link:hover { gap:14px; }
+.work-card-link--cta {
+  margin-top: 20px;
+  background: var(--cream);
+  color: var(--ink) !important;
+  padding: 12px 22px;
+  border: 1.5px solid var(--ink);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  transition: background 0.2s, color 0.2s, gap 0.2s;
+}
+.work-card-link--cta:hover {
+  background: var(--ink);
+  color: var(--cream) !important;
+  gap: 14px;
+}
+.section-dark .work-card-link--cta {
+  background: transparent;
+  color: var(--cream) !important;
+  border-color: var(--cream);
+}
+.section-dark .work-card-link--cta:hover {
+  background: var(--cream);
+  color: var(--ink) !important;
+}
 .work-card.featured { grid-column:1/-1; }
 .work-card.featured .work-card-media { aspect-ratio:21/9; }
 
@@ -1278,7 +1302,7 @@ li.has-dropdown:hover .nav-dropdown {
 <h3 class="work-card-title">AISV, Autonomous Trash Collection</h3>
 <p class="work-card-sub">A project developing new technology for autonomous trash collection on water, developed as part of the Mubadala trash-collection ASV competition. The platform brings together three parts: a collection robot (Burger), a reactive vision navigation system (SUSHI), and a development simulation (Toast).</p>
 <div class="work-card-actions">
-<a class="work-card-link nav-page" href="aisv.html">Explore the Project <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+<a class="work-card-link work-card-link--cta nav-page" href="aisv.html">Explore the Project <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
 </div>
 </div>
 </div>

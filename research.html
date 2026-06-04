@@ -1164,6 +1164,33 @@ li.has-dropdown:hover .nav-dropdown {
   letter-spacing: 0.12em;
 }
 @media(max-width:900px){ li.has-dropdown:hover .nav-dropdown { display: none; } }
+
+/* ── Publication author tags ── */
+.pub-author-tags {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-top: 6px;
+}
+.pub-author-tag {
+  font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 3px 9px; border: 1px solid var(--border);
+  color: var(--muted); font-family: -apple-system, sans-serif;
+  white-space: nowrap;
+}
+.pub-author-tag.first-author {
+  border-color: var(--ink); color: var(--ink); font-weight: 600;
+}
+.pub-author-tag.co-author {
+  border-color: var(--border); color: var(--muted);
+}
+.pub-authors {
+  font-size: 11px; color: var(--muted); margin-top: 5px;
+  font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.5;
+}
+.pub-authors strong { color: var(--ink); font-weight: 600; }
+@media(max-width:900px) {
+  .pub-author-tags { display: none; }
+}
 </style>
 </head>
 <body>
@@ -1217,46 +1244,46 @@ li.has-dropdown:hover .nav-dropdown {
 <!-- Q1 Journal -->
 <a class="pub-row reveal" href="https://link.springer.com/article/10.1007/s10846-026-02379-9" id="pub-sushi" target="_blank">
 <div class="pub-year">2026</div>
-<div><p class="pub-title">SUSHI: A Vision System for Reactive, Uninformed ASV Navigation via Multi-Field Path Planning and Visual Exploration</p><p class="pub-venue">Journal of Intelligent &amp; Robotic Systems · Springer · Lead &amp; Corresponding Author</p></div>
+<div><p class="pub-title">SUSHI: A Vision System for Reactive, Uninformed ASV Navigation via Multi-Field Path Planning and Visual Exploration</p><p class="pub-venue">Journal of Intelligent &amp; Robotic Systems · Springer</p><div class="pub-author-tags"><span class="pub-author-tag first-author">First Author</span></div><p class="pub-authors"><strong>Hamze Hammami</strong>, Muhammad Abban, Abdul Maajid Aga, Laith Mohamed, Saif Alsaad, Nidhal Abdulaziz</p></div>
 <div class="pub-logo-wrap"><img alt="JIRS" class="pub-logo" src="publication_logos/JIRS.jpg"/></div>
 <span class="pub-badge badge-q1">Q1 Journal</span>
 </a>
 <!-- Conferences -->
 <a class="pub-row reveal" href="https://direct.mit.edu/isal/proceedings/isal2025/37/15/134065" id="pub-alife" target="_blank">
 <div class="pub-year">2025</div>
-<div><p class="pub-title">Why Evolve When You Can Adapt? Post-Evolution Adaptation of Genetic Memory for On-the-Fly Control</p><p class="pub-venue">ALIFE 2025 · MIT Press · SONI Track</p></div>
+<div><p class="pub-title">Why Evolve When You Can Adapt? Post-Evolution Adaptation of Genetic Memory for On-the-Fly Control</p><p class="pub-venue">ALIFE 2025 · MIT Press · SONI Track</p><div class="pub-author-tags"><span class="pub-author-tag first-author">First Author</span></div><p class="pub-authors"><strong>Hamze Hammami</strong>, Eva Denisa Barbulescu, Talal Shaikh, Mouayad Aldada, Muhammad Saad Munawar</p></div>
 <div class="pub-logo-wrap"><img alt="ALIFE 2025" class="pub-logo" src="publication_logos/ALIFE25.png"/></div>
 <span class="pub-badge badge-pub">Conference</span>
 </a>
 <a class="pub-row reveal" href="https://ojs.aaai.org/index.php/AAAI-SS/article/view/36048" id="pub-haic" target="_blank">
 <div class="pub-year">2025</div>
-<div><p class="pub-title">Enhancing Creativity and Efficiency in Furniture Design through Human-AI Collaboration</p><p class="pub-venue">AAAI-SuS-2025 · Symposium on Human-AI Collaboration (HAIC 2025)</p></div>
+<div><p class="pub-title">Enhancing Creativity and Efficiency in Furniture Design through Human-AI Collaboration</p><p class="pub-venue">AAAI-SuS-2025 · Symposium on Human-AI Collaboration (HAIC 2025)</p><div class="pub-author-tags"><span class="pub-author-tag co-author">Co-Author</span></div><p class="pub-authors">Nidhal Abdulaziz, Mohamed Al Musleh, Vrushali Mhatre, <strong>Hamze Hammami</strong></p></div>
 <div class="pub-logo-wrap"><img alt="AAAI" class="pub-logo" src="publication_logos/AAAI-Symposium_SuSS.webp"/></div>
 <span class="pub-badge badge-pub">Conference</span>
 </a>
 <a class="pub-row reveal" href="https://ieeexplore.ieee.org/document/10812634" id="pub-beebetter" target="_blank">
 <div class="pub-year">2024</div>
-<div><p class="pub-title">BeeBetter: A Multi-modal Beehive System for Honeybee Health Monitoring and Hazard Detection</p><p class="pub-venue">ICSPIS 2024 · IEEE</p></div>
+<div><p class="pub-title">BeeBetter: A Multi-modal Beehive System for Honeybee Health Monitoring and Hazard Detection</p><p class="pub-venue">ICSPIS 2024 · IEEE</p><div class="pub-author-tags"><span class="pub-author-tag first-author">First Author</span></div><p class="pub-authors"><strong>Hamze Hammami</strong>, Nidhal Abdulaziz</p></div>
 <div class="pub-logo-wrap"><img alt="ICSPIS" class="pub-logo" src="publication_logos/ICSPIS24.png"/></div>
 <span class="pub-badge badge-pub">Conference</span>
 </a>
 <!-- Poster -->
 <div class="pub-row reveal" id="pub-carbide" style="cursor:default;">
 <div class="pub-year">2025</div>
-<div><p class="pub-title">Carbide Volume Fraction in Cobalt-based Alloys using ML Techniques</p><p class="pub-venue">AIMS 2025 · IIT Delhi Abu Dhabi Campus</p></div>
+<div><p class="pub-title">Carbide Volume Fraction in Cobalt-based Alloys using ML Techniques</p><p class="pub-venue">AIMS 2025 · IIT Delhi Abu Dhabi Campus</p><div class="pub-author-tags"><span class="pub-author-tag co-author">Co-Author</span></div><p class="pub-authors">Vishakh Kumar, <strong>Hamze Hammami</strong>, Rehan Ahmed, Nidhal Abdulaziz</p></div>
 <div class="pub-logo-wrap"><img alt="AiMS 2025" class="pub-logo" src="publication_logos/aims.png"/></div>
 <span class="pub-badge badge-poster">Poster</span>
 </div>
 <!-- Preprints -->
 <a class="pub-row reveal" href="https://arxiv.org/abs/2605.07903" id="pub-beeve" target="_blank">
 <div class="pub-year">2026</div>
-<div><p class="pub-title">BeeVE: A Vector-Quantized Encoder for Unsupervised Non-Semantic State Discovery in Honeybee Acoustics</p><p class="pub-venue">arXiv Preprint · MSc Thesis, Heriot-Watt University Dubai</p></div>
+<div><p class="pub-title">BeeVE: A Vector-Quantized Encoder for Unsupervised Non-Semantic State Discovery in Honeybee Acoustics</p><p class="pub-venue">arXiv Preprint · MSc Thesis, Heriot-Watt University Dubai</p><div class="pub-author-tags"><span class="pub-author-tag first-author">First Author</span></div><p class="pub-authors"><strong>Hamze Hammami</strong>, Nidhal Abdulaziz</p></div>
 <div class="pub-logo-wrap"><img alt="arXiv" class="pub-logo" src="publication_logos/arxiv.png"/></div>
 <span class="pub-badge badge-pre">Preprint</span>
 </a>
 <a class="pub-row reveal" href="https://doi.org/10.36227/techrxiv.175355484.45273307/v1" id="pub-ssl" target="_blank">
 <div class="pub-year">2025</div>
-<div><p class="pub-title">Robot Single Sound Source Localization with ITD Binaural Cue Processing Using Limited Microphone Sensors</p><p class="pub-venue">TechRxiv Preprint</p></div>
+<div><p class="pub-title">Robot Single Sound Source Localization with ITD Binaural Cue Processing Using Limited Microphone Sensors</p><p class="pub-venue">TechRxiv Preprint</p><div class="pub-author-tags"><span class="pub-author-tag first-author">First Author</span></div><p class="pub-authors"><strong>Hamze Hammami</strong>, Morteza Varasteh</p></div>
 <div class="pub-logo-wrap"><img alt="TechRxiv" class="pub-logo" src="publication_logos/tehcrxiv.jpg"/></div>
 <span class="pub-badge badge-pre">Preprint</span>
 </a>

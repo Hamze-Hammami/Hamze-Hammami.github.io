@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Post-Evolution Adaptation · Hamze Hammami</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23efefef'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Times New Roman,serif' font-size='15' font-weight='700' fill='%23c0392b'>H&#x663;</text></svg>"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --white:  #efefef;
+  --red:    #c0392b;
+  --border: #d4d0cc;
+  --ink:    #111111;
+  --muted:  #777;
+}
+
+body {
+  background: var(--white);
+  color: var(--ink);
+  font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* CURSOR */
+.cursor {
+  position: fixed; width: 12px; height: 12px;
+  background: var(--red); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: width 0.2s, height 0.2s;
+}
+.cursor-ring {
+  position: fixed; width: 36px; height: 36px;
+  border: 1.5px solid var(--red); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%,-50%);
+  transition: width 0.3s, height 0.3s, opacity 0.3s;
+  opacity: 0.35;
+}
+
+/* SCROLL PROGRESS */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; height: 2px; width: 0%;
+  background: var(--red); z-index: 9999;
+  transition: width 0.1s linear;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 48px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  pointer-events: none;
+}
+nav a, nav ul { pointer-events: all; }
+.nav-logo {
+  font-family: 'Amiri', 'Times New Roman', serif;
+  font-size: 26px; font-weight: 700;
+  color: var(--red); text-decoration: none;
+  direction: rtl; line-height: 1;
+  transition: opacity 0.25s;
+  cursor: pointer;
+}
+.nav-logo:hover { opacity: 0.6; }
+@media(max-width:900px) {
+  nav { padding: 16px 24px; }
+}
+
+/* BACK LINK */
+.back-link {
+  position: absolute;
+  top: 84px; left: 48px;
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--muted); text-decoration: none;
+  transition: color 0.2s; font-family: -apple-system, sans-serif;
+}
+.back-link:hover { color: var(--ink); }
+
+/* Sticky back link — right side of nav */
+.nav-back-sticky {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink); text-decoration: none; font-weight: 500;
+  font-family: -apple-system, sans-serif;
+  opacity: 0; pointer-events: none;
+  transform: translateX(6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.nav-back-sticky.visible {
+  opacity: 0.5; pointer-events: all; transform: translateX(0);
+}
+.nav-back-sticky:hover { opacity: 1; }
+body.arabic-mode .nav-back-sticky { direction: rtl; transform: translateX(-6px); }
+body.arabic-mode .nav-back-sticky.visible { transform: translateX(0); }
+@media(max-width:900px) {
+  .back-link { left: 24px; top: 68px; }
+}
+
+/* ═══ HERO ═══ */
+.hero {
+  background: var(--white);
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  position: relative;
+  padding: 140px 48px 72px;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 80px;
+  align-items: start;
+}
+
+/* Left column */
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  border-right: 1px solid var(--border);
+  padding-right: 80px;
+}
+
+.hero-eyebrow {
+  font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--red); font-family: -apple-system, sans-serif; font-weight: 600;
+}
+
+.hero-title {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: clamp(38px, 5.5vw, 68px);
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.08;
+  letter-spacing: -0.5px;
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--red);
+}
+
+.hero-tagline {
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--muted);
+  font-weight: 400;
+  max-width: 480px;
+}
+
+/* Paper link */
+.hero-paper-link {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--red); text-decoration: none;
+  border-bottom: 1px solid rgba(192,57,43,0.3);
+  padding-bottom: 2px;
+  transition: border-color 0.2s, opacity 0.2s;
+  font-family: -apple-system, sans-serif;
+  width: fit-content;
+}
+.hero-paper-link:hover { border-color: var(--red); opacity: 0.7; }
+
+/* Paper row: link + MIT logo */
+.hero-paper-row {
+  display: flex; align-items: center; gap: 20px;
+}
+.hero-mit-logo {
+  display: inline-flex; align-items: center;
+  text-decoration: none;
+  border-left: 1px solid var(--border);
+  padding-left: 20px;
+  transition: opacity 0.2s;
+}
+.hero-mit-logo img {
+  width: 44px; height: 44px;
+  object-fit: contain; display: block;
+  border-radius: 6px;
+  background: #1a1a1a;
+  padding: 4px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+  opacity: 0.88;
+  transition: opacity 0.2s, box-shadow 0.2s;
+}
+.hero-mit-logo:hover img { opacity: 1; box-shadow: 0 2px 8px rgba(0,0,0,0.28); }
+
+/* Right column */
+.hero-right {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding-top: 4px;
+}
+
+/* Team block */
+.hero-team-label {
+  font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--muted);
+  font-family: -apple-system, sans-serif; font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.hero-team-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  border: 1px solid var(--border);
+  background: var(--border);
+}
+
+.team-card {
+  padding: 16px 18px;
+  background: var(--white);
+  display: flex; flex-direction: column; gap: 4px;
+  transition: background 0.18s;
+}
+
+.team-card:hover { background: #e6e4e0; }
+
+.team-role {
+  font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted);
+  font-family: -apple-system, sans-serif; font-weight: 500;
+}
+
+.team-name {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 15px; font-weight: 700; color: var(--ink);
+  line-height: 1.2;
+}
+
+.team-card.supervisor {
+  border-left: 2px solid var(--red);
+}
+
+.team-card.supervisor .team-role {
+  color: var(--red);
+}
+
+.team-card.lead .team-role {
+  color: var(--ink); opacity: 0.6;
+}
+
+/* Scroll hint */
+.hero-scroll {
+  grid-row: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  color: var(--muted); opacity: 0.4; margin-top: 56px;
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  font-family: -apple-system, sans-serif;
+  animation: bounce 2.4s ease-in-out infinite;
+  justify-self: center;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(8px); }
+}
+
+/* Mobile */
+@media(max-width:900px) {
+  .hero { padding: 120px 24px 64px; min-height: auto; }
+  .hero-inner { grid-template-columns: 1fr; gap: 48px; }
+  .hero-left { border-right: none; padding-right: 0; border-bottom: 1px solid var(--border); padding-bottom: 48px; }
+  .hero-team-grid { grid-template-columns: 1fr; }
+}
+
+/* Arabic */
+body.arabic-mode .hero-title,
+body.arabic-mode .hero-tagline,
+body.arabic-mode .hero-eyebrow,
+body.arabic-mode .hero-team-label,
+body.arabic-mode .team-role,
+body.arabic-mode .team-name { direction: rtl; text-align: right; font-family: 'Noto Naskh Arabic', 'Times New Roman', 'Amiri', serif; }
+body.arabic-mode .team-card.supervisor { border-left: none; border-right: 2px solid var(--red); }
+body.arabic-mode .hero-right { direction: rtl; }
+body.arabic-mode .hero-paper-link { direction: rtl; }
+
+body.language-switching .hero-inner,
+body.language-switching .back-link {
+  opacity: 0.1; transform: translateY(8px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+body.language-settling .hero-inner,
+body.language-settling .back-link {
+  animation: langSettle 0.5s cubic-bezier(.2,.8,.2,1) both;
+}
+@keyframes langSettle {
+  from { opacity: 0.1; transform: translateY(8px); }
+  to   { opacity: 1;   transform: translateY(0); }
+}
+
+/* ═══ ROAMING ROBOT ═══ */
+#robo {
+  position: absolute;
+  width: 48px; height: 48px;
+  pointer-events: none;
+  z-index: 90;
+  will-change: transform;
+  top: 0; left: 0;
+}
+#robo img {
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  display: block;
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.45));
+}
+.hero { position: relative; overflow: hidden; }
+
+
+/* ═══ PROBLEM SECTION ═══ */
+.problem-section {
+  background: #222222;
+  padding: 100px 48px;
+  border-top: 1px solid #333;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 80px;
+  align-items: start;
+}
+.problem-left {
+  display: flex; flex-direction: column; gap: 40px;
+  border-right: 1px solid #3a3a3a;
+  padding-right: 80px;
+}
+.problem-label {
+  font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--red); font-family: -apple-system, sans-serif; font-weight: 600;
+}
+.problem-heading {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 700; color: #f0ece4;
+  line-height: 1.1; letter-spacing: -0.4px;
+}
+.problem-block { display: flex; flex-direction: column; gap: 14px; }
+.problem-block-label {
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: #888; font-family: -apple-system, sans-serif; font-weight: 500;
+}
+.problem-body { font-size: 14px; line-height: 1.85; color: #aaa; font-weight: 400; }
+.problem-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.problem-list li {
+  font-size: 14px; line-height: 1.7; color: #aaa;
+  padding-left: 18px; position: relative; font-weight: 400;
+}
+.problem-list li::before {
+  content: ''; position: absolute; left: 0; top: 9px;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--red); opacity: 0.7;
+}
+.problem-divider { height: 1px; background: #3a3a3a; width: 100%; }
+.problem-right { display: flex; flex-direction: column; gap: 16px; padding-top: 8px; }
+.problem-fig-label {
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: #555; font-family: -apple-system, sans-serif;
+}
+.problem-fig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+.problem-fig-cell {
+  aspect-ratio: 1 / 1; background: #2a2a2a; border: 1px solid #3a3a3a;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.problem-fig-cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.problem-fig-cell .fig-placeholder {
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: #444; font-family: -apple-system, sans-serif; text-align: center; padding: 12px;
+}
+.problem-fig-caption { font-size: 11px; color: #555; line-height: 1.5; font-family: -apple-system, sans-serif; padding-top: 4px; }
+.problem-fig-single { border: 1px solid #3a3a3a; overflow: hidden; }
+.problem-fig-single img { width: 100%; height: auto; display: block; filter: brightness(0.92); }
+@media(max-width:900px) {
+  .problem-section { grid-template-columns: 1fr; gap: 48px; padding: 72px 24px; }
+  .problem-left { border-right: none; padding-right: 0; border-bottom: 1px solid #3a3a3a; padding-bottom: 48px; }
+}
+body.arabic-mode .problem-heading,
+body.arabic-mode .problem-body,
+body.arabic-mode .problem-label,
+body.arabic-mode .problem-block-label,
+body.arabic-mode .problem-list li { direction: rtl; text-align: right; font-family: 'Noto Naskh Arabic', 'Times New Roman', 'Amiri', serif; }
+body.arabic-mode .problem-list li { padding-left: 0; padding-right: 18px; }
+body.arabic-mode .problem-list li::before { left: auto; right: 0; }
+body.arabic-mode .problem-right { direction: rtl; }
+
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<nav id="mainNav">
+  <a class="nav-logo" dir="rtl" href="#top" lang="ar">تفاعل</a>
+  <a class="nav-back-sticky" href="work.html#project-post-evolution" id="navBackBtn">
+    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2L3 6.5l5 4.5"/></svg>
+    Back to Work
+  </a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+
+  <!-- Roaming e-puck robot -->
+  <div id="robo"><img src="project_assets/e-puck.png" alt="e-puck robot" draggable="false"/></div>
+
+  <a href="work.html" class="back-link">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2L4 7l5 5"/></svg>
+    Back to Work
+  </a>
+
+  <div class="hero-inner">
+
+    <!-- Left: title + tagline + paper link -->
+    <div class="hero-left">
+      <span class="hero-eyebrow">Evolutionary Robotics · Hebbian Learning</span>
+
+      <h1 class="hero-title">Post-Evolution<br/><em>Adaptation</em></h1>
+
+      <p class="hero-tagline">E-puck robots pre-evolved in empty environments adapt Hebbian-modified MLP weights to novel obstacles on-the-fly in Webots, without retraining. Genetic memory meets lifetime learning.</p>
+
+      <div class="hero-paper-row">
+        <a class="hero-paper-link" href="https://direct.mit.edu/isal/proceedings/isal2025/37/15/134065" target="_blank" rel="noopener">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 11L11 2M11 2H5M11 2v6"/></svg>
+          Read the paper
+        </a>
+        <a class="hero-mit-logo" href="https://direct.mit.edu/isal/proceedings/isal2025/37/15/134065" target="_blank" rel="noopener" title="Published at ALIFE 2025 · MIT Press">
+          <img src="project_assets/mit_press_logo.png" alt="The MIT Press" width="52" height="52"/>
+        </a>
+      </div>
+    </div>
+
+    <!-- Right: team -->
+    <div class="hero-right">
+      <div>
+        <p class="hero-team-label">Research Team</p>
+        <div class="hero-team-grid">
+          <div class="team-card supervisor">
+            <span class="team-role">Supervisor</span>
+            <span class="team-name">Talal Shaikh</span>
+          </div>
+          <div class="team-card lead">
+            <span class="team-role">Lead Author</span>
+            <span class="team-name">Hamze Hammami</span>
+          </div>
+          <div class="team-card">
+            <span class="team-role">Member</span>
+            <span class="team-name">Eva Denisa Barbulescu</span>
+          </div>
+          <div class="team-card">
+            <span class="team-role">Member</span>
+            <span class="team-name">Mouayad Aldada</span>
+          </div>
+          <div class="team-card">
+            <span class="team-role">Member</span>
+            <span class="team-name">Muhammad Saad Munawar</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="hero-scroll">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M8 2v10M4 9l4 4 4-4"/></svg>
+    Scroll
+  </div>
+
+</section>
+
+<!-- PROBLEM SECTION -->
+<section class="problem-section" id="problem">
+
+  <div class="problem-left">
+    <span class="problem-label">The Problem</span>
+    <h2 class="problem-heading">Genetic Memory,<br/>No Lifetime Learning</h2>
+
+    <div class="problem-block">
+      <span class="problem-block-label">The Limitation</span>
+      <p class="problem-body">Genetic controllers are effective at optimising behaviour in fixed environments, but they encode only what evolution has seen. Even small changes at deployment can cause failure, and covering every possible scenario through evolution alone is computationally expensive and impractical.</p>
+      <ul class="problem-list">
+        <li>Limited to generational experience, not runtime adaptation.</li>
+        <li>Brittle under sudden environmental changes.</li>
+        <li>Retraining from scratch is costly for each new scenario.</li>
+      </ul>
+    </div>
+
+    <div class="problem-divider"></div>
+
+    <div class="problem-block">
+      <span class="problem-block-label">The Proposal</span>
+      <p class="problem-body">Separate genetic memory from lifetime learning. Keep the evolved genome as a fixed foundation, then apply Hebbian plasticity on top, adapting weights on-the-fly without touching the core knowledge.</p>
+      <ul class="problem-list">
+        <li>Adapt the genotype to novel situations at runtime.</li>
+        <li>Preserve core knowledge, reset after each trial.</li>
+        <li>Zero-shot: weights develop only from neuron co-activation during the robot's lifetime.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="problem-right">
+    <span class="problem-fig-label">Figures — add images below</span>
+    <div class="problem-fig-single">
+      <img src="project_assets/problem_trajectories.png" alt="Robot trajectories: GA vs Hebbian"/>
+    </div>
+    <p class="problem-fig-caption">Robot trajectories comparing GA-only vs Hebbian-adapted controllers under base and changed environments. Top row: GA alone. Bottom row: post-evolution Hebbian adaptation.</p>
+  </div>
+
+</section>
+
+<script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('ring');
+let mx = -100, my = -100, rx = -100, ry = -100;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
+(function tick() {
+  cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+  rx += (mx - rx) * 0.14; ry += (my - ry) * 0.14;
+  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  requestAnimationFrame(tick);
+})();
+document.querySelectorAll('a,button').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.style.width='20px'; cursor.style.height='20px'; ring.style.opacity='0'; });
+  el.addEventListener('mouseleave', () => { cursor.style.width='12px'; cursor.style.height='12px'; ring.style.opacity='0.35'; });
+});
+
+// Scroll progress
+const sp = document.getElementById('scrollProgress');
+window.addEventListener('scroll', () => {
+  const t = document.documentElement.scrollHeight - window.innerHeight;
+  sp.style.width = (t > 0 ? (window.scrollY / t) * 100 : 0) + '%';
+}, { passive: true });
+
+// Sticky back link — show after scrolling past hero
+(function(){
+  const btn = document.getElementById('navBackBtn');
+  const hero = document.getElementById('top');
+  if (!btn || !hero) return;
+  const observer = new IntersectionObserver(entries => {
+    btn.classList.toggle('visible', !entries[0].isIntersecting);
+  }, { threshold: 0.1 });
+  observer.observe(hero);
+})();
+
+// Arabic / English toggle
+(function(){
+  const logo = document.querySelector('.nav-logo');
+  if (!logo) return;
+
+  const exactText = {
+    'Back to Work': 'العودة إلى الأعمال',
+    'Back to Work ': 'العودة إلى الأعمال',
+    'Evolutionary Robotics · Hebbian Learning': 'الروبوتات التطورية · التعلم الهيبي',
+    'Post-Evolution': 'استجابة ما بعد التطور',
+    'Adaptation': 'في الذاكرة الجينية',
+    'E-puck robots pre-evolved in empty environments adapt Hebbian-modified MLP weights to novel obstacles on-the-fly in Webots, without retraining. Genetic memory meets lifetime learning.': 'روبوتات E-puck تطورت مسبقاً في بيئات فارغة تتكيّف مع عقبات جديدة عبر تعديل أوزان MLP بقواعد هيبي لحظياً في Webots، دون إعادة تدريب. ذاكرة جينية تلتقي بتعلم مدى الحياة.',
+    'Read the paper': 'اقرأ الورقة',
+    'Research Team': 'فريق البحث',
+    'Supervisor': 'المشرف',
+    'Lead Author': 'المؤلف الرئيسي',
+    'Member': 'عضو',
+    'Talal Shaikh': 'طلال شيخ',
+    'Hamze Hammami': 'حمزة حمامي',
+    'Eva Denisa Barbulescu': 'إيفا دينيسا بربوليسكو',
+    'Mouayad Aldada': 'مؤيد الدادا',
+    'Muhammad Saad Munawar': 'محمد سعد منور',
+    'Scroll': 'انزل',
+  };
+
+  function storeOriginals() {
+    document.querySelectorAll('body *').forEach(el => {
+      if (!el.dataset.enText && el.children.length === 0) el.dataset.enText = el.textContent;
+    });
+  }
+
+  let typingTimer = null;
+  let isSwitching = false;
+  let logoHovering = false;
+  let suppressHoverUntilLeave = false;
+  let arabic = false;
+  let logoTypeRun = 0;
+
+  function typeLogo(text, dir, done) {
+    const run = ++logoTypeRun;
+    clearInterval(typingTimer);
+    logo.classList.add('typing');
+    logo.dir = dir;
+    const current = logo.textContent;
+    let i = current.length;
+    typingTimer = setInterval(() => {
+      if (run !== logoTypeRun) { clearInterval(typingTimer); return; }
+      if (i > 0) { logo.textContent = current.slice(0, --i); return; }
+      clearInterval(typingTimer);
+      let j = 0;
+      typingTimer = setInterval(() => {
+        if (run !== logoTypeRun) { clearInterval(typingTimer); return; }
+        logo.textContent = text.slice(0, ++j);
+        if (j >= text.length) {
+          clearInterval(typingTimer);
+          logo.classList.remove('typing');
+          if (done) done();
+        }
+      }, 34);
+    }, 24);
+  }
+
+  function applyArabicText() {
+    document.documentElement.lang = 'ar';
+    document.documentElement.dir = 'rtl';
+    document.body.classList.add('arabic-mode');
+    document.querySelectorAll('body *').forEach(el => {
+      if (el.children.length === 0 && el.dataset.enText) {
+        const raw = el.dataset.enText;
+        const key = raw.trim();
+        if (exactText[key]) el.textContent = raw.replace(key, exactText[key]);
+      }
+    });
+  }
+
+  function applyEnglishText() {
+    document.documentElement.lang = 'en';
+    document.documentElement.dir = 'ltr';
+    document.body.classList.remove('arabic-mode');
+    document.querySelectorAll('body *').forEach(el => {
+      if (el.dataset.enText && el.children.length === 0) el.textContent = el.dataset.enText;
+    });
+  }
+
+  function setLogoDefault() {
+    logo.textContent = 'تفاعل';
+    logo.lang = 'ar';
+    logo.dir = 'rtl';
+    logo.title = arabic ? 'Change language to English' : 'غيّر اللغة إلى العربية';
+  }
+
+  function isNearLogo(event) {
+    const rect = logo.getBoundingClientRect();
+    const padX = 44;
+    const padY = 22;
+    return (
+      event.clientX >= rect.left - padX &&
+      event.clientX <= rect.right + padX &&
+      event.clientY >= rect.top - padY &&
+      event.clientY <= rect.bottom + padY
+    );
+  }
+
+  function beginLanguageHover() {
+    if (isSwitching || suppressHoverUntilLeave || logoHovering) return;
+    logoHovering = true;
+    const hint = arabic ? 'Change to English?' : 'تغيير اللغة إلى العربية؟';
+    typeLogo(hint, arabic ? 'ltr' : 'rtl');
+  }
+
+  function endLanguageHover(force) {
+    if (isSwitching && !force) return;
+    if (!logoHovering && !force) return;
+    logoHovering = false;
+    typeLogo('تفاعل', 'rtl');
+  }
+
+  function handleLogoProximity(event) {
+    const inside = isNearLogo(event);
+    if (!inside) {
+      suppressHoverUntilLeave = false;
+      if (logoHovering && !isSwitching) endLanguageHover(false);
+      return;
+    }
+    if (!isSwitching && !suppressHoverUntilLeave) beginLanguageHover();
+  }
+
+  function runLanguageSwitch(nextArabic) {
+    if (isSwitching) return;
+    isSwitching = true;
+    logoHovering = false;
+    suppressHoverUntilLeave = true;
+
+    ++logoTypeRun;
+    clearInterval(typingTimer);
+    logo.classList.remove('typing');
+
+    document.body.classList.remove('language-settling');
+    document.body.classList.add('language-switching');
+
+    setTimeout(() => {
+      arabic = nextArabic;
+      if (arabic) applyArabicText(); else applyEnglishText();
+
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.set('lang', arabic ? 'ar' : 'en');
+        history.replaceState(null, '', url.toString());
+      } catch(e) {}
+
+      const confirmation = arabic ? 'تم تغيير اللغة إلى العربية' : 'Changed language to English';
+      typeLogo(confirmation, arabic ? 'rtl' : 'ltr', () => {
+        setTimeout(() => {
+          document.body.classList.remove('language-switching');
+          document.body.classList.add('language-settling');
+
+          typeLogo('تفاعل', 'rtl', () => {
+            document.body.classList.remove('language-settling');
+            isSwitching = false;
+            logoHovering = false;
+            setLogoDefault();
+            suppressHoverUntilLeave = true;
+          });
+        }, 850);
+      });
+    }, 320);
+  }
+
+  storeOriginals();
+
+  const urlLang = new URLSearchParams(window.location.search).get('lang');
+  if (urlLang === 'ar') {
+    arabic = true;
+    applyArabicText();
+  }
+
+  setLogoDefault();
+
+  document.addEventListener('mousemove', handleLogoProximity, { passive: true });
+
+  document.addEventListener('click', e => {
+    if (!isNearLogo(e)) return;
+    e.preventDefault();
+    e.stopPropagation();
+    runLanguageSwitch(!arabic);
+  }, true);
+
+})();
+
+// Roaming e-puck robot — hero-constrained, obstacle-aware
+(function(){
+  const robo = document.getElementById('robo');
+  const hero = document.getElementById('top');
+  const SIZE = 48;
+  const RADIUS = SIZE / 2;
+  const SPEED = 1.6;
+  const WALL_MARGIN = 12;
+  const SENSOR_RANGE = 110;
+  const PAD = 14;
+  const TURN_CHANCE = 0.007;
+
+  const OBS_SELECTOR = 'h1, h2, h3, p, .hero-eyebrow, .hero-team-label, .team-name, .team-role, .hero-paper-link, .back-link';
+
+  // start bottom-center of hero
+  let x = 0;
+  let y = 0;
+  let angle = -Math.PI / 2 + (Math.random() - 0.5) * 0.6; // heading upward with slight random spread
+  let heroRect = hero.getBoundingClientRect();
+
+  let obsRects = [];
+
+  function buildRects(){
+    heroRect = hero.getBoundingClientRect();
+    obsRects = [];
+    const seen = new Set();
+    document.querySelectorAll(OBS_SELECTOR).forEach(el => {
+      if (el.closest('#robo')) return;
+      // only elements inside the hero
+      if (!hero.contains(el)) return;
+      const r = el.getBoundingClientRect();
+      if (r.width < 10 || r.height < 6) return;
+      // convert to hero-relative coords
+      const rel = {
+        l: r.left   - heroRect.left - PAD,
+        t: r.top    - heroRect.top  - PAD,
+        r: r.right  - heroRect.left + PAD,
+        b: r.bottom - heroRect.top  + PAD
+      };
+      const key = Math.round(rel.l) + ',' + Math.round(rel.t) + ',' + Math.round(rel.r) + ',' + Math.round(rel.b);
+      if (seen.has(key)) return;
+      seen.add(key);
+      obsRects.push(rel);
+    });
+  }
+
+  buildRects();
+  x = (hero.offsetWidth / 2) - RADIUS;
+  y = hero.offsetHeight - SIZE - WALL_MARGIN;
+  window.addEventListener('scroll', buildRects, { passive: true });
+  window.addEventListener('resize', buildRects, { passive: true });
+
+  function clamp(v, lo, hi){ return Math.max(lo, Math.min(hi, v)); }
+
+  function castRay(px, py, rayAngle){
+    const dx = Math.cos(rayAngle);
+    const dy = Math.sin(rayAngle);
+    let best = SENSOR_RANGE;
+    for (const ob of obsRects){
+      let tmin = 0, tmax = SENSOR_RANGE;
+      if (Math.abs(dx) < 1e-9){
+        if (px < ob.l || px > ob.r) continue;
+      } else {
+        let t1 = (ob.l - px) / dx, t2 = (ob.r - px) / dx;
+        if (t1 > t2){ const tmp=t1; t1=t2; t2=tmp; }
+        tmin = Math.max(tmin, t1); tmax = Math.min(tmax, t2);
+        if (tmin > tmax) continue;
+      }
+      if (Math.abs(dy) < 1e-9){
+        if (py < ob.t || py > ob.b) continue;
+      } else {
+        let t1 = (ob.t - py) / dy, t2 = (ob.b - py) / dy;
+        if (t1 > t2){ const tmp=t1; t1=t2; t2=tmp; }
+        tmin = Math.max(tmin, t1); tmax = Math.min(tmax, t2);
+        if (tmin > tmax) continue;
+      }
+      if (tmin >= 0 && tmin < best) best = tmin;
+    }
+    return best;
+  }
+
+  const SENSOR_ANGLES = [
+    -0.3, -Math.PI/2, -Math.PI + 0.3, Math.PI,
+     Math.PI - 0.3,  Math.PI/2,  0.3, 0
+  ];
+
+  function tick(){
+    const W = hero.offsetWidth;
+    const H = hero.offsetHeight;
+    const cx = x + RADIUS;
+    const cy = y + RADIUS;
+
+    let steer = 0;
+    let anyHit = false;
+
+    for (let s = 0; s < 8; s++){
+      const sa = angle + SENSOR_ANGLES[s];
+      const dist = castRay(cx, cy, sa);
+      if (dist < SENSOR_RANGE){
+        anyHit = true;
+        const prox = 1 - dist / SENSOR_RANGE;
+        const side = Math.sin(SENSOR_ANGLES[s]);
+        steer -= side * prox * 0.18;
+      }
+    }
+
+    if (anyHit){
+      angle += steer;
+    } else if (Math.random() < TURN_CHANCE){
+      angle += (Math.random() - 0.5) * 0.45;
+    }
+
+    const nx = x + Math.cos(angle) * SPEED;
+    const ny = y + Math.sin(angle) * SPEED;
+    if (nx < WALL_MARGIN || nx > W - SIZE - WALL_MARGIN){
+      angle = Math.PI - angle + (Math.random() - 0.5) * 0.4;
+    }
+    if (ny < WALL_MARGIN || ny > H - SIZE - WALL_MARGIN){
+      angle = -angle + (Math.random() - 0.5) * 0.4;
+    }
+
+    x = clamp(x + Math.cos(angle) * SPEED, WALL_MARGIN, W - SIZE - WALL_MARGIN);
+    y = clamp(y + Math.sin(angle) * SPEED, WALL_MARGIN, H - SIZE - WALL_MARGIN);
+
+    const deg = (angle * 180 / Math.PI) + 90;
+    robo.style.transform = `translate(${x}px, ${y}px) rotate(${deg}deg)`;
+
+    requestAnimationFrame(tick);
+  }
+
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
