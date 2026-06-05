@@ -148,17 +148,11 @@ body.arabic-mode .nav-back-sticky.visible { transform: translateX(0); }
 }
 
 .hero-title em {
-  font-style: italic;
+  font-style: normal;
   color: var(--red);
 }
+body:not(.arabic-mode) .hero-title em { font-style: italic; }
 
-.hero-tagline {
-  font-size: 14px;
-  line-height: 1.85;
-  color: var(--muted);
-  font-weight: 400;
-  max-width: 480px;
-}
 
 /* Paper link */
 .hero-paper-link {
@@ -397,6 +391,615 @@ body.arabic-mode .problem-list li { padding-left: 0; padding-right: 18px; }
 body.arabic-mode .problem-list li::before { left: auto; right: 0; }
 body.arabic-mode .problem-right { direction: rtl; }
 
+
+/* ═══ BASE ENVIRONMENT SECTION ═══ */
+.env-section {
+  background: #1a1a1a;
+  padding: 100px 48px;
+  border-top: 1px solid #2a2a2a;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 80px;
+  align-items: center;
+}
+.env-left { display: flex; flex-direction: column; gap: 28px; border-right: 1px solid #2e2e2e; padding-right: 80px; }
+.env-label { font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--red); font-family: -apple-system, sans-serif; font-weight: 600; }
+.env-heading { font-family: 'Times New Roman', Times, serif; font-size: clamp(28px, 3.5vw, 46px); font-weight: 700; color: #f0ece4; line-height: 1.1; letter-spacing: -0.3px; }
+.env-body { font-size: 14px; line-height: 1.85; color: #888; font-weight: 400; }
+.env-right { display: flex; flex-direction: column; gap: 12px; }
+.env-img-wrap { border: 1px solid #2e2e2e; overflow: hidden; }
+.env-img-wrap img { width: 100%; height: auto; display: block; }
+.env-caption { font-size: 11px; color: #555; line-height: 1.5; font-family: -apple-system, sans-serif; }
+
+@media(max-width:900px){
+  .env-section { grid-template-columns: 1fr; gap: 48px; padding: 72px 24px; }
+  .env-left { border-right: none; padding-right: 0; border-bottom: 1px solid #2e2e2e; padding-bottom: 48px; }
+}
+
+/* ═══ FITNESS SECTION ═══ */
+.fitness-section {
+  background: var(--white);
+  padding: 56px 48px;
+  border-top: 1px solid var(--border);
+}
+.fitness-header { max-width: 640px; margin-bottom: 28px; }
+.fitness-label { font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--red); font-family: -apple-system, sans-serif; font-weight: 600; margin-bottom: 12px; display: block; }
+.fitness-heading { font-family: 'Times New Roman', Times, serif; font-size: clamp(28px, 3.5vw, 46px); font-weight: 700; color: var(--ink); line-height: 1.1; letter-spacing: -0.3px; }
+.fitness-subtext { font-size: 13px; line-height: 1.7; color: var(--muted); margin-top: 10px; }
+
+/* Individual fitness rows */
+.fitness-rows { display: flex; flex-direction: column; gap: 1px; }
+.fitness-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0;
+  background: #f0ece4;
+  border: 1px solid var(--border);
+  transition: background 0.2s;
+}
+.fitness-row:hover { background: #e8e4da; }
+.fitness-row-img {
+  width: 100px; height: 100px;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent;
+  padding: 8px;
+}
+.fitness-row-img img { width: 84px; height: 84px; object-fit: contain; opacity: 0.9; filter: grayscale(10%); }
+.fitness-row-body { padding: 10px 18px; display: flex; flex-direction: column; gap: 4px; flex: 1; border-left: 1px solid var(--border); }
+.fitness-row-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--red); font-family: -apple-system, sans-serif; font-weight: 600; }
+.fitness-row-formula { font-family: 'Times New Roman', Times, serif; font-size: clamp(13px, 1.4vw, 16px); color: var(--ink); line-height: 1.35; }
+.fitness-row-desc { font-size: 11px; color: var(--muted); line-height: 1.5; font-family: -apple-system, sans-serif; }
+
+/* Combined + Final — no image, full width */
+.fitness-row.no-img .fitness-row-body { border-left: none; }
+.fitness-row.combined { border-top: 2px solid var(--border); margin-top: 8px; }
+.fitness-row.final { border-top: 1px solid var(--red); }
+
+@media(max-width:900px){
+  .fitness-section { padding: 72px 24px; }
+  .fitness-row { grid-template-columns: 1fr; }
+  .fitness-row { flex-direction: column; }
+  .fitness-row-img { width: 100%; height: 80px; }
+  .fitness-row-body { border-left: none; border-top: 1px solid var(--border); }
+}
+
+/* Arabic */
+body.arabic-mode .env-left,
+body.arabic-mode .env-body,
+body.arabic-mode .env-heading,
+body.arabic-mode .env-label { direction: rtl; text-align: right; font-family: 'Noto Naskh Arabic', 'Times New Roman', serif; }
+body.arabic-mode .env-left { border-right: none; padding-right: 0; border-left: 1px solid #2e2e2e; padding-left: 80px; }
+body.arabic-mode .fitness-header,
+body.arabic-mode .fitness-row-label,
+body.arabic-mode .fitness-row-desc { direction: rtl; text-align: right; font-family: 'Noto Naskh Arabic', 'Times New Roman', serif; }
+
+/* ═══ GENETIC TRAINING & FAILURE SECTIONS ═══ */
+.genetic-section {
+  padding: 80px 48px;
+  border-top: 1px solid var(--border);
+}
+.genetic-section.training { background: var(--white); }
+.genetic-section.failure  { background: #f5f0eb; }
+
+.genetic-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.genetic-header { max-width: 720px; display: flex; flex-direction: column; gap: 10px; }
+.genetic-label { font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--red); font-family: -apple-system, sans-serif; font-weight: 600; }
+.genetic-heading { font-family: 'Times New Roman', Times, serif; font-size: clamp(26px, 3.2vw, 42px); font-weight: 700; color: var(--ink); line-height: 1.1; letter-spacing: -0.3px; }
+.genetic-body { font-size: 14px; line-height: 1.85; color: var(--muted); font-weight: 400; }
+
+.genetic-videos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.genetic-video-block { display: flex; flex-direction: column; gap: 10px; }
+
+.genetic-video-label {
+  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--ink); font-family: -apple-system, sans-serif; font-weight: 600;
+}
+
+.genetic-video-wrap {
+  position: relative;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+}
+.genetic-video-wrap video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Failure section text + heading colour tweak */
+.genetic-section.failure .genetic-heading { color: var(--ink); }
+
+@media(max-width:900px){
+  .genetic-section { padding: 64px 24px; }
+  .genetic-videos { grid-template-columns: 1fr; gap: 24px; }
+}
+
+/* Arabic */
+body.arabic-mode .genetic-header,
+body.arabic-mode .genetic-body,
+body.arabic-mode .genetic-label,
+body.arabic-mode .genetic-heading,
+body.arabic-mode .genetic-video-label { direction: rtl; text-align: right; font-family: 'Noto Naskh Arabic', 'Times New Roman', serif; }
+
+/* ═══ NEUROMODULATION SECTION ═══ */
+.neuro-section {
+  background: var(--white);
+  padding: 80px 48px;
+  border-top: 1px solid var(--border);
+}
+.neuro-inner {
+  max-width: 860px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.neuro-label { font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--red); font-family: -apple-system, sans-serif; font-weight: 600; }
+.neuro-heading { font-family: 'Times New Roman', Times, serif; font-size: clamp(26px, 3.2vw, 42px); font-weight: 700; color: var(--ink); line-height: 1.1; letter-spacing: -0.3px; }
+.neuro-body { font-size: 14px; line-height: 1.85; color: var(--muted); }
+
+.neuro-formula-block {
+  display: flex; flex-direction: column; gap: 10px;
+  padding: 0;
+}
+.neuro-formula-main {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: clamp(18px, 2.2vw, 26px);
+  color: var(--ink); line-height: 1.3;
+}
+.neuro-formula-vars {
+  display: flex; flex-direction: column; gap: 4px;
+  padding-left: 16px;
+  border-left: 2px solid var(--red);
+}
+.neuro-formula-var {
+  font-size: 13px; color: var(--muted);
+  font-family: 'Times New Roman', Times, serif;
+  line-height: 1.5;
+}
+.neuro-formula-var strong { color: var(--ink); }
+.neuro-body-detail { font-size: 13px; line-height: 1.8; color: var(--muted); }
+
+/* Two scenario cards */
+.neuro-scenarios {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin-top: 4px;
+}
+.neuro-scenario {
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 8px 0;
+}
+.neuro-scenario-label {
+  font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--red); font-family: -apple-system, sans-serif; font-weight: 600;
+}
+.neuro-scenario-lines {
+  display: flex; flex-direction: column; gap: 2px;
+}
+.neuro-scenario-line {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: clamp(12px, 1.3vw, 14px);
+  color: var(--ink); line-height: 1.5;
+}
+
+/* Inline image */
+.neuro-img-inline { display: flex; align-items: flex-start; gap: 16px; }
+.neuro-img-inline-left { flex: 1; display: flex; flex-direction: column; gap: 16px; }
+.neuro-img-wrap { overflow: hidden; background: var(--white); flex-shrink: 0; width: 200px; }
+.neuro-img-wrap img { width: 100%; height: auto; display: block; }
+.neuro-img-caption { font-size: 11px; color: var(--muted); line-height: 1.5; font-family: -apple-system, sans-serif; margin-top: 6px; }
+
+@media(max-width:900px){
+  .neuro-section { padding: 64px 24px; }
+  .neuro-img-inline { flex-direction: column; gap: 20px; }
+  .neuro-img-wrap { width: 160px; max-width: 100%; }
+  .neuro-formula-main { font-size: 18px; word-break: break-word; }
+  .neuro-scenarios { grid-template-columns: 1fr 1fr; }
+  .neuro-inner { gap: 20px; }
+}
+
+body.arabic-mode .neuro-body,
+body.arabic-mode .neuro-heading,
+body.arabic-mode .neuro-label,
+body.arabic-mode .neuro-body-detail,
+body.arabic-mode .neuro-formula-var { direction: rtl; text-align: right; font-family: 'Noto Naskh Arabic', 'Times New Roman', serif; }
+body.arabic-mode .neuro-formula-vars { padding-left: 0; padding-right: 16px; border-left: none; border-right: 2px solid var(--red); }
+body.arabic-mode .neuro-img-inline { flex-direction: row-reverse; }
+
+/* ═══ HEBBIAN SYNAPTIC SECTION ═══ */
+.hebbian-section {
+  background: #1a1a1a;
+  padding: 80px 48px;
+  border-top: 1px solid #2a2a2a;
+}
+.hebbian-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 80px;
+  align-items: start;
+}
+.hebbian-left { display: flex; flex-direction: column; gap: 24px; border-right: 1px solid #2e2e2e; padding-right: 80px; }
+.hebbian-label { font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--red); font-family: -apple-system, sans-serif; font-weight: 600; }
+.hebbian-heading { font-family: 'Times New Roman', Times, serif; font-size: clamp(26px, 3.2vw, 42px); font-weight: 700; color: #f0ece4; line-height: 1.1; letter-spacing: -0.3px; }
+.hebbian-body { font-size: 14px; line-height: 1.85; color: #888; }
+
+.hebbian-points { display: flex; flex-direction: column; gap: 12px; }
+.hebbian-point { display: flex; flex-direction: column; gap: 3px; padding-left: 14px; border-left: 2px solid #3a3a3a; }
+.hebbian-point-title { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--red); font-family: -apple-system, sans-serif; font-weight: 600; }
+.hebbian-point-text { font-size: 13px; color: #888; line-height: 1.6; }
+
+.hebbian-equations { display: flex; flex-direction: column; gap: 2px; margin-top: 4px; }
+.hebbian-eq {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 0;
+  border: 1px solid #2e2e2e;
+  background: #222;
+}
+.hebbian-eq-label {
+  padding: 10px 14px;
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--red); font-family: -apple-system, sans-serif; font-weight: 600;
+  border-right: 1px solid #2e2e2e;
+  display: flex; align-items: center;
+}
+.hebbian-eq-formula {
+  padding: 10px 16px;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: clamp(13px, 1.4vw, 16px);
+  color: #f0ece4; line-height: 1.4;
+  display: flex; align-items: center;
+}
+
+.hebbian-right { display: flex; flex-direction: column; gap: 12px; padding-top: 4px; }
+.hebbian-img-wrap { border: 1px solid #2e2e2e; overflow: hidden; background: #ffffff; }
+.hebbian-img-wrap img { width: 100%; height: auto; display: block; }
+
+@media(max-width:900px){
+  .hebbian-section { padding: 64px 24px; }
+  .hebbian-inner { grid-template-columns: 1fr; gap: 48px; }
+  .hebbian-left { border-right: none; padding-right: 0; border-bottom: 1px solid #2e2e2e; padding-bottom: 40px; }
+  .hebbian-eq { grid-template-columns: 76px 1fr; }
+  .hebbian-eq-formula { font-size: 10px; word-break: break-word; overflow-wrap: anywhere; padding: 8px 8px; line-height: 1.6; }
+  .hebbian-eq-label { padding: 8px 8px; font-size: 9px; letter-spacing: 0.06em; }
+}
+
+body.arabic-mode .hebbian-left,
+body.arabic-mode .hebbian-body,
+body.arabic-mode .hebbian-heading,
+body.arabic-mode .hebbian-label,
+body.arabic-mode .hebbian-point-text,
+body.arabic-mode .hebbian-point-title { direction: rtl; text-align: right; font-family: 'Noto Naskh Arabic', 'Times New Roman', serif; }
+body.arabic-mode .hebbian-left { border-right: none; padding-right: 0; border-left: 1px solid #2e2e2e; padding-left: 80px; }
+body.arabic-mode .hebbian-point { padding-left: 0; padding-right: 14px; border-left: none; border-right: 2px solid #3a3a3a; }
+body.arabic-mode .hebbian-eq-label { border-right: none; border-left: 1px solid #2e2e2e; }
+body.arabic-mode .hebbian-eq { direction: rtl; }
+body.arabic-mode .fitness-row-body { border-left: none; border-right: 1px solid var(--border); }
+body.arabic-mode .fitness-row { flex-direction: row-reverse; }
+body.arabic-mode .fitness-row.no-img .fitness-row-body { border-right: none; }
+body.arabic-mode .neuro-scenarios { direction: rtl; }
+body.arabic-mode .neuro-scenario-label,
+body.arabic-mode .neuro-scenario-line { direction: rtl; text-align: right; }
+
+/* Mobile Arabic — override two-col grids to stack properly */
+@media(max-width:900px) {
+  body.arabic-mode .problem-section { direction: rtl; }
+  body.arabic-mode .env-section { direction: rtl; }
+  body.arabic-mode .hero-inner { direction: rtl; }
+  body.arabic-mode .hero-left { border-bottom: 1px solid var(--border); border-right: none; border-left: none; padding-left: 0; }
+  body.arabic-mode .hebbian-inner { direction: rtl; }
+  body.arabic-mode .hebbian-left { border-left: none; padding-left: 0; border-bottom: 1px solid #2e2e2e; }
+  body.arabic-mode .fitness-row { flex-direction: column; }
+  body.arabic-mode .fitness-row-body { border-right: none; border-top: 1px solid var(--border); }
+  body.arabic-mode .neuro-img-inline { flex-direction: column; }
+  body.arabic-mode .genetic-inner { direction: rtl; }
+  body.arabic-mode .genetic-videos { direction: rtl; }
+  body.arabic-mode .neuro-inner { direction: rtl; }
+  body.arabic-mode .env-left { border-left: none; padding-left: 0; }
+  body.arabic-mode .problem-left { border-right: none; padding-right: 0; }
+}
+
+/* ═══ HEBBIAN VISUALIZING SECTION ═══ */
+.hebbian-vis-section {
+  background: #0e0e0e;
+  padding: 80px 48px;
+  border-top: 1px solid #1a1a1a;
+}
+.hebbian-vis-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.hebbian-vis-header { max-width: 720px; display: flex; flex-direction: column; gap: 10px; }
+.hebbian-vis-label { font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--red); font-family: -apple-system, sans-serif; font-weight: 600; }
+.hebbian-vis-heading { font-family: 'Times New Roman', Times, serif; font-size: clamp(26px, 3.2vw, 42px); font-weight: 700; color: #f0ece4; line-height: 1.1; letter-spacing: -0.3px; }
+.hebbian-vis-body { font-size: 14px; line-height: 1.85; color: #888; }
+
+.hebbian-vis-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.hebbian-vis-block { display: flex; flex-direction: column; gap: 10px; }
+.hebbian-vis-block-label {
+  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: #555; font-family: -apple-system, sans-serif; font-weight: 600;
+}
+.hebbian-vis-wrap {
+  position: relative;
+  border: 1px solid #2a2a2a;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  flex: 1;
+}
+.hebbian-vis-wrap.network { aspect-ratio: 16 / 9; }
+.hebbian-vis-wrap video {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Legend */
+.hebbian-vis-legend {
+  display: flex; flex-wrap: wrap; gap: 16px;
+  padding-top: 4px;
+}
+@keyframes flash-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.15; }
+}
+.hebbian-legend-dot.flash-strengthen { animation: flash-pulse 1.2s ease-in-out infinite; box-shadow: 0 0 6px #2ecc71; }
+.hebbian-legend-dot.flash-weaken { animation: flash-pulse 1.2s ease-in-out infinite; box-shadow: 0 0 6px #e67e22; }
+.hebbian-legend-dot.flash-small-red { animation: flash-pulse 1.2s ease-in-out infinite; box-shadow: 0 0 6px #e74c3c; }
+.hebbian-legend-dot.flash-small-blue { animation: flash-pulse 1.2s ease-in-out infinite; box-shadow: 0 0 6px #4ecdc4; }
+.hebbian-legend-dots { display: flex; gap: 4px; }
+.hebbian-vis-success-header {
+  display: flex; flex-direction: column; gap: 10px;
+  max-width: 720px;
+  padding-top: 16px;
+  border-top: 1px solid #1e1e1e;
+}
+.hebbian-vis-success-heading {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: clamp(20px, 2.4vw, 32px);
+  font-weight: 700; color: #f0ece4; line-height: 1.2;
+}
+.hebbian-legend-item {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 11px; color: #666;
+  font-family: -apple-system, sans-serif;
+}
+.hebbian-legend-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+}
+
+@media(max-width:900px){
+  .hebbian-vis-section { padding: 64px 24px; }
+  .hebbian-vis-grid { grid-template-columns: 1fr; }
+  .hebbian-vis-wrap { aspect-ratio: 1 / 1; }
+  .hebbian-vis-wrap.network { aspect-ratio: 16 / 9; }
+}
+
+body.arabic-mode .hebbian-vis-header,
+body.arabic-mode .hebbian-vis-body,
+body.arabic-mode .hebbian-vis-heading,
+body.arabic-mode .hebbian-vis-success-heading,
+body.arabic-mode .hebbian-vis-label,
+body.arabic-mode .hebbian-vis-success-header,
+body.arabic-mode .hebbian-vis-block-label { direction: rtl; text-align: right; font-family: 'Noto Naskh Arabic', 'Times New Roman', serif; }
+body.arabic-mode .hebbian-vis-legend { flex-direction: row-reverse; }
+
+/* ═══ RESULTS SECTION ═══ */
+.results-section {
+  background: var(--white);
+  padding: 80px 48px;
+  border-top: 1px solid var(--border);
+}
+.results-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px; }
+.results-header { max-width: 720px; display: flex; flex-direction: column; gap: 10px; }
+.results-label { font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--red); font-family: -apple-system, sans-serif; font-weight: 600; }
+.results-heading { font-family: 'Times New Roman', Times, serif; font-size: clamp(26px, 3.2vw, 42px); font-weight: 700; color: var(--ink); line-height: 1.1; letter-spacing: -0.3px; }
+.results-body { font-size: 14px; line-height: 1.85; color: var(--muted); }
+
+/* Stat callouts */
+/* Tables */
+.results-tables { display: flex; flex-direction: column; gap: 32px; }
+.results-table-block { display: flex; flex-direction: column; gap: 12px; }
+.results-table-title { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); font-family: -apple-system, sans-serif; font-weight: 600; }
+.results-table-note { font-size: 12px; color: var(--muted); font-family: -apple-system, sans-serif; line-height: 1.5; }
+.rtable { width: 100%; border-collapse: collapse; font-size: 12px; font-family: -apple-system, sans-serif; }
+.rtable th { background: var(--ink); color: #f0ece4; padding: 8px 12px; text-align: center; font-weight: 600; font-size: 11px; letter-spacing: 0.04em; border: 1px solid #333; }
+.rtable th.row-header { background: #2a2a2a; }
+.rtable td { padding: 7px 12px; text-align: center; border: 1px solid var(--border); color: var(--ink); background: #f7f5f1; }
+.rtable td.row-label { text-align: left; font-weight: 600; background: #f0ece4; color: var(--ink); }
+.rtable tr:hover td { background: #e8e4da; }
+.rtable td.fail { color: var(--red); font-weight: 600; }
+.rtable td.success { color: #2a7a2a; font-weight: 600; }
+
+/* Brain feedback plots */
+.brain-section { display: flex; flex-direction: column; gap: 24px; }
+.brain-heading { font-family: 'Times New Roman', Times, serif; font-size: clamp(20px, 2.4vw, 30px); font-weight: 700; color: var(--ink); }
+.brain-body { font-size: 13px; color: var(--muted); line-height: 1.8; max-width: 760px; }
+.brain-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.brain-plot { display: flex; flex-direction: column; gap: 8px; }
+.brain-plot-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); font-family: -apple-system, sans-serif; font-weight: 600; }
+.brain-plot img { width: 100%; height: auto; display: block; border: 1px solid var(--border); }
+
+@media(max-width:900px){
+  .results-section { padding: 64px 24px; }
+  .results-stats { grid-template-columns: 1fr 1fr; }
+  .brain-grid { grid-template-columns: 1fr; }
+  .rtable { font-size: 10px; }
+  .rtable th, .rtable td { padding: 5px 6px; }
+}
+
+body.arabic-mode .results-header,
+body.arabic-mode .results-body,
+body.arabic-mode .results-heading,
+body.arabic-mode .results-label,
+body.arabic-mode .results-stat-label,
+body.arabic-mode .results-table-title,
+body.arabic-mode .results-table-note,
+body.arabic-mode .brain-body,
+body.arabic-mode .brain-heading,
+body.arabic-mode .brain-plot-label { direction: rtl; text-align: right; font-family: 'Noto Naskh Arabic', 'Times New Roman', serif; }
+body.arabic-mode .rtable td.row-label { text-align: right; }
+
+/* ═══ LIGHT EXPERIMENT SECTION ═══ */
+.light-section {
+  background: #f5f0eb;
+  padding: 80px 48px;
+  border-top: 1px solid var(--border);
+}
+.light-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; }
+.light-header { max-width: 720px; display: flex; flex-direction: column; gap: 10px; }
+.light-label { font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--red); font-family: -apple-system, sans-serif; font-weight: 600; }
+.light-heading { font-family: 'Times New Roman', Times, serif; font-size: clamp(26px, 3.2vw, 42px); font-weight: 700; color: var(--ink); line-height: 1.1; letter-spacing: -0.3px; }
+.light-body { font-size: 14px; line-height: 1.85; color: var(--muted); }
+.light-note {
+  font-size: 13px; line-height: 1.8; color: var(--muted);
+  border-left: 3px solid var(--red); padding-left: 16px;
+}
+.light-videos {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+.light-video-block { display: flex; flex-direction: column; gap: 10px; }
+.light-video-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink); font-family: -apple-system, sans-serif; font-weight: 600; }
+.light-video-wrap {
+  position: relative; border: 1px solid var(--border); overflow: hidden; aspect-ratio: 1 / 1;
+}
+.light-video-wrap video { width: 100%; height: 100%; object-fit: cover; display: block; }
+@media(max-width:900px){
+  .light-section { padding: 64px 24px; }
+  .light-videos { grid-template-columns: 1fr; gap: 24px; }
+}
+body.arabic-mode .light-header,
+body.arabic-mode .light-body,
+body.arabic-mode .light-heading,
+body.arabic-mode .light-label,
+body.arabic-mode .light-note,
+body.arabic-mode .light-video-label { direction: rtl; text-align: right; font-family: 'Noto Naskh Arabic', 'Times New Roman', serif; }
+body.arabic-mode .light-note { border-left: none; padding-left: 0; border-right: 3px solid var(--red); padding-right: 16px; }
+
+/* ═══ DISCUSSION SECTION ═══ */
+.disc-section {
+  background: #1a1a1a;
+  padding: 80px 48px;
+  border-top: 1px solid #2a2a2a;
+}
+.disc-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 64px; }
+.disc-header { max-width: 720px; display: flex; flex-direction: column; gap: 10px; }
+.disc-label { font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--red); font-family: -apple-system, sans-serif; font-weight: 600; }
+.disc-heading { font-family: 'Times New Roman', Times, serif; font-size: clamp(26px, 3.2vw, 42px); font-weight: 700; color: #f0ece4; line-height: 1.1; letter-spacing: -0.3px; }
+.disc-intro { font-size: 14px; line-height: 1.85; color: #888; }
+
+.disc-point {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 64px;
+  align-items: center;
+  padding-top: 32px;
+  border-top: 1px solid #2e2e2e;
+}
+.disc-point.img-right .disc-point-text { order: 1; }
+.disc-point.img-right .disc-point-img  { order: 2; }
+.disc-point.img-left  .disc-point-text { order: 2; }
+.disc-point.img-left  .disc-point-img  { order: 1; }
+
+.disc-point-text { display: flex; flex-direction: column; gap: 14px; }
+.disc-point-tag { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); font-family: -apple-system, sans-serif; font-weight: 600; }
+.disc-point-title { font-family: 'Times New Roman', Times, serif; font-size: clamp(20px, 2.4vw, 30px); font-weight: 700; color: #f0ece4; line-height: 1.2; }
+.disc-point-body { font-size: 14px; line-height: 1.85; color: #888; }
+
+.disc-point-img img { width: 100%; height: auto; display: block; }
+
+/* Limitations — no image, full width with 2-col bullet grid */
+.disc-limitations { padding-top: 32px; border-top: 1px solid #2e2e2e; display: flex; flex-direction: column; gap: 20px; }
+.disc-limitations-heading { font-family: 'Times New Roman', Times, serif; font-size: clamp(20px, 2.4vw, 30px); font-weight: 700; color: #f0ece4; }
+.disc-limitations-body { font-size: 14px; line-height: 1.85; color: #888; max-width: 760px; }
+.disc-limitations-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+.disc-lim-item { background: #222; border: 1px solid #2e2e2e; padding: 16px 20px; display: flex; flex-direction: column; gap: 6px; }
+.disc-lim-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--red); font-family: -apple-system, sans-serif; font-weight: 600; }
+.disc-lim-text { font-size: 13px; color: #888; line-height: 1.6; }
+
+.disc-lim-img { width: 100%; max-width: 860px; margin: 0 auto; }
+.disc-lim-img img { width: 100%; height: auto; display: block; }
+.disc-point-full {
+  padding-top: 32px;
+  border-top: 1px solid #2e2e2e;
+  display: flex; flex-direction: column; gap: 14px;
+}
+.disc-full-img { width: 100%; max-width: 640px; height: auto; display: block; margin-top: 8px; }
+
+@media(max-width:900px){
+  .disc-section { padding: 64px 24px; }
+  .disc-point { grid-template-columns: 1fr; gap: 32px; }
+  .disc-point.img-left .disc-point-text { order: 1; }
+  .disc-point.img-left .disc-point-img  { order: 2; }
+  .disc-limitations-grid { grid-template-columns: 1fr; }
+}
+
+body.arabic-mode .disc-header,
+body.arabic-mode .disc-intro,
+body.arabic-mode .disc-heading,
+body.arabic-mode .disc-label,
+body.arabic-mode .disc-point-body,
+body.arabic-mode .disc-point-title,
+body.arabic-mode .disc-point-tag,
+body.arabic-mode .disc-limitations-body,
+body.arabic-mode .disc-limitations-heading,
+body.arabic-mode .disc-lim-label,
+body.arabic-mode .disc-lim-text { direction: rtl; text-align: right; font-family: 'Noto Naskh Arabic', 'Times New Roman', serif; }
+body.arabic-mode .disc-point.img-right .disc-point-text { order: 2; }
+body.arabic-mode .disc-point.img-right .disc-point-img  { order: 1; }
+
+/* Conference badge in hero */
+.hero-conf-badge {
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 8px 0;
+}
+.hero-conf-logo {
+  height: 52px; width: auto; display: block; object-fit: contain;
+  opacity: 0.85; transition: opacity 0.2s;
+}
+.hero-conf-logo:hover { opacity: 1; }
+.hero-conf-text {
+  display: flex; flex-direction: column; gap: 2px;
+}
+.hero-conf-presented {
+  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--muted); font-family: -apple-system, sans-serif;
+}
+.hero-conf-name {
+  font-size: 16px; font-weight: 600; color: var(--ink);
+  font-family: -apple-system, sans-serif; letter-spacing: 0.02em;
+}
 </style>
 </head>
 <body>
@@ -406,8 +1009,8 @@ body.arabic-mode .problem-right { direction: rtl; }
 <div class="cursor-ring" id="ring"></div>
 
 <nav id="mainNav">
-  <a class="nav-logo" dir="rtl" href="#top" lang="ar">تفاعل</a>
-  <a class="nav-back-sticky" href="work.html#project-post-evolution" id="navBackBtn">
+  <a class="nav-logo" dir="rtl" href="#top" lang="ar">تفاعَل</a>
+  <a class="nav-back-sticky" href="work.html#project-alife" id="navBackBtn">
     <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2L3 6.5l5 4.5"/></svg>
     Back to Work
   </a>
@@ -419,7 +1022,8 @@ body.arabic-mode .problem-right { direction: rtl; }
   <!-- Roaming e-puck robot -->
   <div id="robo"><img src="project_assets/e-puck.png" alt="e-puck robot" draggable="false"/></div>
 
-  <a href="work.html" class="back-link">
+
+  <a href="work.html#project-alife" class="back-link">
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2L4 7l5 5"/></svg>
     Back to Work
   </a>
@@ -428,11 +1032,16 @@ body.arabic-mode .problem-right { direction: rtl; }
 
     <!-- Left: title + tagline + paper link -->
     <div class="hero-left">
+      <div class="hero-conf-badge">
+        <img src="project_assets/alife_logo.png" alt="ALIFE 2025" class="hero-conf-logo"/>
+        <div class="hero-conf-text">
+          <span class="hero-conf-presented" id="conf-presented">Presented at</span>
+          <span class="hero-conf-name" id="conf-name">ALIFE 2025 · Kyoto / Online</span>
+        </div>
+      </div>
       <span class="hero-eyebrow">Evolutionary Robotics · Hebbian Learning</span>
 
-      <h1 class="hero-title">Post-Evolution<br/><em>Adaptation</em></h1>
-
-      <p class="hero-tagline">E-puck robots pre-evolved in empty environments adapt Hebbian-modified MLP weights to novel obstacles on-the-fly in Webots, without retraining. Genetic memory meets lifetime learning.</p>
+      <h1 class="hero-title" id="hero-main-title">Post-Evolution <em>Adaptation</em></h1>
 
       <div class="hero-paper-row">
         <a class="hero-paper-link" href="https://direct.mit.edu/isal/proceedings/isal2025/37/15/134065" target="_blank" rel="noopener">
@@ -508,19 +1117,537 @@ body.arabic-mode .problem-right { direction: rtl; }
       <ul class="problem-list">
         <li>Adapt the genotype to novel situations at runtime.</li>
         <li>Preserve core knowledge, reset after each trial.</li>
-        <li>Zero-shot: weights develop only from neuron co-activation during the robot's lifetime.</li>
+        <li id="zeroshot-li">Zero-shot: weights develop only from neuron co-activation during the robot's lifetime.</li>
       </ul>
     </div>
   </div>
 
   <div class="problem-right">
-    <span class="problem-fig-label">Figures — add images below</span>
+    <span class="problem-fig-label">Figures, add images below</span>
     <div class="problem-fig-single">
       <img src="project_assets/problem_trajectories.png" alt="Robot trajectories: GA vs Hebbian"/>
     </div>
     <p class="problem-fig-caption">Robot trajectories comparing GA-only vs Hebbian-adapted controllers under base and changed environments. Top row: GA alone. Bottom row: post-evolution Hebbian adaptation.</p>
   </div>
 
+</section>
+
+<!-- FITNESS FUNCTION SECTION -->
+<section class="fitness-section" id="fitness">
+  <div class="fitness-header">
+    <span class="fitness-label">Genetic Algorithm</span>
+    <h2 class="fitness-heading">Fitness Function</h2>
+    <p class="fitness-subtext">A dual fitness system combining behaviour fitness and a goal reward. The behaviour components penalise spinning and collision while rewarding forward motion and correct junction turns. The goal reward scales with Euclidean distance to the target position.</p>
+  </div>
+
+  <div class="fitness-rows">
+
+    <div class="fitness-row">
+      <div class="fitness-row-body">
+        <span class="fitness-row-label">Forward Motion</span>
+        <div class="fitness-row-formula">forwardFitness = (v<sub>left</sub> + v<sub>right</sub>) / 1.5</div>
+        <p class="fitness-row-desc">Rewards the robot for moving forward. Clamped to [0, 1], negative values (reversing) are treated as zero.</p>
+      </div>
+      <div class="fitness-row-img"><img src="project_assets/fitness_forward.png" alt="Forward fitness"/></div>
+    </div>
+
+    <div class="fitness-row">
+      <div class="fitness-row-body">
+        <span class="fitness-row-label">Collision Avoidance</span>
+        <div class="fitness-row-formula">avoidCollisionFitness = 1 − (max(proximitySensors))<sup>3</sup></div>
+        <p class="fitness-row-desc">Penalises proximity to obstacles. The cubic exponent gives a sharper penalty as the robot gets closer, given double weight in the combined score.</p>
+      </div>
+      <div class="fitness-row-img"><img src="project_assets/fitness_collision.png" alt="Collision avoidance fitness"/></div>
+    </div>
+
+    <div class="fitness-row">
+      <div class="fitness-row-body">
+        <span class="fitness-row-label">Anti-Spinning</span>
+        <div class="fitness-row-formula">spinningFitness = 1 − |v<sub>right</sub> − v<sub>left</sub>| / 2</div>
+        <p class="fitness-row-desc">Penalises large velocity differences between wheels. Discourages in-place spinning behaviour that wastes time without progress.</p>
+      </div>
+      <div class="fitness-row-img"><img src="project_assets/fitness_spinning.png" alt="Spinning fitness"/></div>
+    </div>
+
+    <div class="fitness-row">
+      <div class="fitness-row-body">
+        <span class="fitness-row-label">Junction Decision</span>
+        <div class="fitness-row-formula">junctionFitness = 1 if correct turn, 0 otherwise</div>
+        <p class="fitness-row-desc">Binary reward at the T-junction. The robot must turn right when light is present and left when absent, the core behavioural objective of the task.</p>
+      </div>
+      <div class="fitness-row-img"><img src="project_assets/fitness_junction.png" alt="Junction fitness"/></div>
+    </div>
+
+    <div class="fitness-row">
+      <div class="fitness-row-body">
+        <span class="fitness-row-label">Goal Reward</span>
+        <div class="fitness-row-formula">dist = √((x<sub>g</sub>−x)² + (z<sub>g</sub>−z)²) &nbsp;·&nbsp; reward = 1 − min(1, (1.7 × dist)³)</div>
+        <p class="fitness-row-desc">Distance-based reward scaling the robot's proximity to the target position. A cubic scaling makes the reward drop off steeply with distance.</p>
+      </div>
+      <div class="fitness-row-img"><img src="project_assets/fitness_reward.png" alt="Goal reward"/></div>
+    </div>
+
+    <div class="fitness-row no-img combined">
+      <div class="fitness-row-body">
+        <span class="fitness-row-label">Combined Behaviour Fitness</span>
+        <div class="fitness-row-formula">combinedFitness = (f<sub>forw</sub> + 2·f<sub>avoid</sub> + f<sub>spin</sub> + f<sub>junction</sub>) / 5</div>
+        <p class="fitness-row-desc">Weighted combination of all four behaviour components. Collision avoidance is given double weight to prioritise safe navigation above all else.</p>
+      </div>
+    </div>
+
+    <div class="fitness-row no-img final">
+      <div class="fitness-row-body">
+        <span class="fitness-row-label">Final Fitness</span>
+        <div class="fitness-row-formula">finalFitness = (combinedFitness + reward) / 2</div>
+        <p class="fitness-row-desc">The average of behaviour fitness and goal reward. Balances the quality of movement with whether the robot actually reaches its target.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- BASE ENVIRONMENT SECTION -->
+<section class="env-section" id="environment">
+  <div class="env-left">
+    <span class="env-label">Base Environment</span>
+    <h2 class="env-heading">The T-Maze</h2>
+    <p class="env-body" id="tmaze-body1">A T-shaped maze serves as the training and testing environment for the genome's observable states through Hebbian learning. The robot starts at the base of the T, with a light source that appears or disappears depending on the task.</p>
+    <p class="env-body">The robot must learn to turn right at the junction when light is present, and left when light is absent. This rule is not hardcoded; it must emerge from the fitness landscape during evolution, and then be preserved or adapted through Hebbian plasticity at runtime.</p>
+  </div>
+  <div class="env-right">
+    <div class="env-img-wrap">
+      <img src="project_assets/base_environment.png" alt="T-shaped maze base environment"/>
+    </div>
+    <p class="env-caption">Base environment in Webots. The robot (blue) starts at the T's base. The light source (yellow) determines which direction it must turn at the junction.</p>
+  </div>
+</section>
+
+<!-- GENETIC TRAINING SECTION -->
+<section class="genetic-section training" id="genetic-training">
+  <div class="genetic-inner">
+    <div class="genetic-header">
+      <span class="genetic-label">Phase 1</span>
+      <h2 class="genetic-heading">Genetic Training</h2>
+      <p class="genetic-body">The first phase trains a controller through a standard genetic algorithm. The T-maze environment serves as the foundation to evolve an optimal genome for the navigation task. This ensures a solid baseline controller is established before any plasticity is applied.</p>
+    </div>
+    <div class="genetic-videos">
+      <div class="genetic-video-block">
+        <span class="genetic-video-label">Evolution Process</span>
+        <div class="genetic-video-wrap">
+          <video autoplay loop muted playsinline preload="auto">
+            <source src="project_assets/video_evolution_process.mp4" type="video/mp4"/>
+          </video>
+        </div>
+      </div>
+      <div class="genetic-video-block">
+        <span class="genetic-video-label">Optimal Gene</span>
+        <div class="genetic-video-wrap">
+          <video autoplay loop muted playsinline preload="auto">
+            <source src="project_assets/video_optimal_gene.mp4" type="video/mp4"/>
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GENETIC FAILURE SECTION -->
+<section class="genetic-section failure" id="genetic-failure">
+  <div class="genetic-inner">
+    <div class="genetic-header">
+      <span class="genetic-label">The Problem in Practice</span>
+      <h2 class="genetic-heading">Genetic Failure</h2>
+      <p class="genetic-body">When the environment changes, even slight modifications can cause the evolved controller to fail. The genome was never trained in the altered environment, and training for every possible variation is computationally expensive. Reusing examples of the same situation can also introduce bias through environmental imbalance.</p>
+    </div>
+    <div class="genetic-videos">
+      <div class="genetic-video-block">
+        <span class="genetic-video-label">Two Obstacles</span>
+        <div class="genetic-video-wrap">
+          <video autoplay loop muted playsinline preload="auto">
+            <source src="project_assets/video_two_obstacles.mp4" type="video/mp4"/>
+          </video>
+        </div>
+      </div>
+      <div class="genetic-video-block">
+        <span class="genetic-video-label">Four Obstacles</span>
+        <div class="genetic-video-wrap">
+          <video autoplay loop muted playsinline preload="auto">
+            <source src="project_assets/video_four_obstacles.mp4" type="video/mp4"/>
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEUROMODULATION SECTION -->
+<section class="neuro-section" id="neuromodulation">
+  <div class="neuro-inner">
+
+    <span class="neuro-label">Hebbian Learning</span>
+    <h2 class="neuro-heading">Neuromodulation Signal</h2>
+    <p class="neuro-body">Neuromodulation is the process of altering nerve activity to normalise nervous system behaviour. Here, the Hebbian learning rate is adaptively scaled using the robot's current fitness as a continuous guiding signal.</p>
+
+    <div class="neuro-img-inline">
+      <div class="neuro-img-inline-left">
+        <div class="neuro-formula-block">
+          <div class="neuro-formula-main">N<sub>e</sub> = N × max(0.2, F)</div>
+          <div class="neuro-formula-vars">
+            <span class="neuro-formula-var"><strong>N</strong>, base Hebbian rate (maximum)</span>
+            <span class="neuro-formula-var"><strong>N<sub>e</sub></strong>, effective rate applied to weight updates</span>
+            <span class="neuro-formula-var"><strong>F</strong>, current fitness value</span>
+          </div>
+        </div>
+        <p class="neuro-body-detail">The equation scales the maximum signal based on fitness. The max function ensures the rate never drops below 0.2, preventing zero modulation. A robot performing poorly still adapts slowly; a robot performing well strengthens connections faster.</p>
+      </div>
+      <div>
+        <div class="neuro-img-wrap">
+          <img src="project_assets/neuromodulation_signal.png" alt="Neuromodulation signal"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="neuro-scenarios">
+      <div class="neuro-scenario">
+        <span class="neuro-scenario-label">Low Fitness · F = 0.1</span>
+        <div class="neuro-scenario-lines">
+          <span class="neuro-scenario-line">max(0.2, 0.1) = 0.2</span>
+          <span class="neuro-scenario-line">N<sub>e</sub> = 0.002 × 0.2</span>
+          <span class="neuro-scenario-line">N<sub>e</sub> = 0.0004</span>
+        </div>
+      </div>
+      <div class="neuro-scenario">
+        <span class="neuro-scenario-label">High Fitness · F = 0.9</span>
+        <div class="neuro-scenario-lines">
+          <span class="neuro-scenario-line">max(0.2, 0.9) = 0.9</span>
+          <span class="neuro-scenario-line">N<sub>e</sub> = 0.002 × 0.9</span>
+          <span class="neuro-scenario-line">N<sub>e</sub> = 0.0018</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- HEBBIAN SYNAPTIC SECTION -->
+<section class="hebbian-section" id="hebbian-synaptic">
+  <div class="hebbian-inner">
+
+    <div class="hebbian-left">
+      <span class="hebbian-label">Mechanism</span>
+      <h2 class="hebbian-heading">Hebbian Synaptic Adaptation</h2>
+      <p class="hebbian-body">Pre- and post-synaptic activations form a correlation matrix that drives Hebbian trace updates. Raw Hebbian updates can cause unstable weight growth, so a trace decay mechanism discards older correlations to prevent runaway growth.</p>
+
+      <div class="hebbian-points">
+        <div class="hebbian-point">
+          <span class="hebbian-point-title">Traces</span>
+          <span class="hebbian-point-text">A temporal history of neural co-activations. The neuromodulation signal scales these traces to produce the final weight update.</span>
+        </div>
+        <div class="hebbian-point">
+          <span class="hebbian-point-title">Decay</span>
+          <span class="hebbian-point-text">Retains 95% of the previous trace while integrating 5% new correlation data, preventing old patterns from dominating.</span>
+        </div>
+        <div class="hebbian-point">
+          <span class="hebbian-point-title">Clipping</span>
+          <span class="hebbian-point-text" id="clip-text">Weights are clipped to ±W<sub>max</sub> after each update to prevent saturation or collapse.</span>
+        </div>
+      </div>
+
+      <div class="hebbian-equations">
+        <div class="hebbian-eq">
+          <span class="hebbian-eq-label">Decay</span>
+          <span class="hebbian-eq-formula">T<sub>i+1</sub> = (T<sub>decay</sub> × T<sub>i</sub>) + (T<sub>update</sub> × C)</span>
+        </div>
+        <div class="hebbian-eq">
+          <span class="hebbian-eq-label">Scaling</span>
+          <span class="hebbian-eq-formula">ΔW = N<sub>e</sub> × T<sub>i+1</sub></span>
+        </div>
+        <div class="hebbian-eq">
+          <span class="hebbian-eq-label">Update</span>
+          <span class="hebbian-eq-formula">W<sub>T+1</sub> = W<sub>T</sub> + ΔW</span>
+        </div>
+        <div class="hebbian-eq">
+          <span class="hebbian-eq-label">Clipping</span>
+          <span class="hebbian-eq-formula">W<sub>T+1</sub> = clip(W<sub>T+1</sub>, −W<sub>max</sub>, W<sub>max</sub>)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hebbian-right">
+      <div class="hebbian-img-wrap">
+        <img src="project_assets/hebbian_diagram.png" alt="Hebbian synaptic adaptation diagram"/>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- HEBBIAN VISUALIZING SECTION -->
+<section class="hebbian-vis-section" id="hebbian-visualizing">
+  <div class="hebbian-vis-inner">
+
+    <div class="hebbian-vis-header">
+      <span class="hebbian-vis-label">Phase 2 · Lifetime Learning</span>
+      <h2 class="hebbian-vis-heading" id="hv-heading">Hebbian Adaptation in Action</h2>
+      <p class="hebbian-vis-body" id="hv-body1">With the evolved genome loaded, Hebbian plasticity activates at runtime. The robot encounters the obstacles it previously failed at, and its synaptic weights begin adapting on-the-fly. The network visualisation shows weight changes as they happen: small flashes indicate minor adjustments, green flashes mark significant positive reinforcement of successful pathways, and orange marks significant negative changes weakening unhelpful connections.</p>
+    </div>
+
+    <!-- Single combined video -->
+    <div class="hebbian-vis-block">
+      <span class="hebbian-vis-block-label">Phenotypic Changes · Live Network</span>
+      <div class="hebbian-vis-wrap network">
+        <video autoplay loop muted playsinline preload="auto">
+          <source src="project_assets/video_hebbian_combined.mp4" type="video/mp4"/>
+        </video>
+      </div>
+      <div class="hebbian-vis-legend">
+        <span class="hebbian-legend-item"><span class="hebbian-legend-dot" style="background:#4ecdc4;"></span>Positive weight</span>
+        <span class="hebbian-legend-item"><span class="hebbian-legend-dot" style="background:#e74c3c;"></span>Negative weight</span>
+        <span class="hebbian-legend-item"><span class="hebbian-legend-dot flash-strengthen" style="background:#2ecc71;"></span>Strengthening</span>
+        <span class="hebbian-legend-item"><span class="hebbian-legend-dot flash-weaken" style="background:#e67e22;"></span>Weakening</span>
+        <span class="hebbian-legend-item"><div class="hebbian-legend-dots"><span class="hebbian-legend-dot flash-small-red" style="background:#e74c3c;"></span><span class="hebbian-legend-dot flash-small-blue" style="background:#4ecdc4;"></span></div>Small changes</span>
+      </div>
+    </div>
+
+    <!-- Success divider -->
+    <div class="hebbian-vis-success-header">
+      <span class="hebbian-vis-label">Hebbian Success</span>
+      <h3 class="hebbian-vis-success-heading" id="hv-success-heading">Zero-Shot Adaptation to Unseen Environments</h3>
+      <p class="hebbian-vis-body" id="hv-body2">Hebbian plasticity lets the robot successfully complete the task on the first attempt in environments it has never trained in. By creating a new observable state of the genome within the same lifetime, without rewriting a new generation, the same code solves both obstacle configurations.</p>
+    </div>
+
+    <div class="hebbian-vis-grid">
+      <div class="hebbian-vis-block">
+        <span class="hebbian-vis-block-label">Two Obstacles</span>
+        <div class="hebbian-vis-wrap">
+          <video autoplay loop muted playsinline preload="auto">
+            <source src="project_assets/video_hebbian_success_two.mp4" type="video/mp4"/>
+          </video>
+        </div>
+      </div>
+      <div class="hebbian-vis-block">
+        <span class="hebbian-vis-block-label">Four Obstacles</span>
+        <div class="hebbian-vis-wrap">
+          <video autoplay loop muted playsinline preload="auto">
+            <source src="project_assets/video_hebbian_success_four.mp4" type="video/mp4"/>
+          </video>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EXPERIMENTAL RESULTS SECTION -->
+<section class="results-section" id="results">
+  <div class="results-inner">
+
+    <div class="results-header">
+      <span class="results-label">Experimental Results</span>
+      <h2 class="results-heading">Performance Comparison</h2>
+      <p class="results-body">The experiments compare the GA-only controller against the Hebbian-adapted controller across three environments: the base training environment, and two unseen obstacle configurations. Key measures are task success, time to reach the goal, path length, speed, position error, and average weight change magnitude.</p>
+      <p class="results-body" id="results-note">Worth noting: the GA controller did avoid some obstacles in certain runs. This is part of how the genetic algorithm works, the evolved behaviour can sometimes generalise partially to new situations. However it is not predictable or reliable. The Hebbian controller, adapting a live network on the same fitness signal it was trained on, performs more consistently, but this does not guarantee 100% success in all cases either. The improvement is real but the system is still probabilistic.</p>
+    </div>
+
+    <div class="results-tables">
+
+      <div class="results-table-block">
+        <span class="results-table-title">GA Only · Genetic Algorithm Controller</span>
+        <div style="overflow-x:auto;">
+        <table class="rtable">
+          <thead>
+            <tr>
+              <th class="row-header"></th>
+              <th colspan="2">Base GA</th>
+              <th colspan="2">2 Obstacles GA</th>
+              <th colspan="2">4 Obstacles GA</th>
+            </tr>
+            <tr>
+              <th class="row-header"></th>
+              <th>Left</th><th>Right</th>
+              <th>Left</th><th>Right</th>
+              <th>Left</th><th>Right</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="row-label">Success (0/1)</td><td class="success">1</td><td class="success">1</td><td class="fail">0</td><td class="fail">0</td><td class="fail">0</td><td class="fail">0</td></tr>
+            <tr><td class="row-label">Time-to-Goal (s)</td><td>213.82</td><td>174.62</td><td class="fail">Failed</td><td class="fail">Failed</td><td class="fail">Failed</td><td class="fail">Failed</td></tr>
+            <tr><td class="row-label">Path Length (m)</td><td>0.9114</td><td>0.8854</td><td>0.6195</td><td>0.7298</td><td>0.6190</td><td>0.5520</td></tr>
+            <tr><td class="row-label">Average Speed (m/s)</td><td>0.0036</td><td>0.0035</td><td>0.0025</td><td>0.0029</td><td>0.0025</td><td>0.0022</td></tr>
+            <tr><td class="row-label">Final Position Error</td><td>0.0221</td><td>0.0319</td><td>0.2592</td><td>0.1225</td><td>0.2592</td><td>0.3428</td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+
+      <div class="results-table-block">
+        <span class="results-table-title">Hebbian · Post-Evolution Adapted Controller</span>
+        <div style="overflow-x:auto;">
+        <table class="rtable">
+          <thead>
+            <tr>
+              <th class="row-header"></th>
+              <th colspan="2">Base Hebbian</th>
+              <th colspan="2">2 Obstacles Hebbian</th>
+              <th colspan="2">4 Obstacles Hebbian</th>
+            </tr>
+            <tr>
+              <th class="row-header"></th>
+              <th>Left</th><th>Right</th>
+              <th>Left</th><th>Right</th>
+              <th>Left</th><th>Right</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="row-label">Success (0/1)</td><td class="success">1</td><td class="success">1</td><td class="success">1</td><td class="success">1</td><td class="success">1</td><td class="success">1</td></tr>
+            <tr><td class="row-label">Time-to-Goal (s)</td><td>192.32</td><td>156.77</td><td>192.29</td><td>156.48</td><td>191.26</td><td>161.25</td></tr>
+            <tr><td class="row-label">Path Length (m)</td><td>0.8915</td><td>0.8828</td><td>0.8915</td><td>0.8836</td><td>0.8893</td><td>0.8813</td></tr>
+            <tr><td class="row-label">Average Speed (m/s)</td><td>0.0036</td><td>0.0035</td><td>0.0036</td><td>0.0035</td><td>0.0036</td><td>0.0035</td></tr>
+            <tr><td class="row-label">Final Position Error</td><td>0.0233</td><td>0.0327</td><td>0.0232</td><td>0.0327</td><td>0.0233</td><td>0.0327</td></tr>
+            <tr><td class="row-label">Weight Change Mean</td><td>2.9702</td><td>2.5906</td><td>3.0132</td><td>2.6165</td><td>3.1106</td><td>2.6973</td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="brain-section">
+      <h3 class="brain-heading">Brain Activity Feedback</h3>
+      <p class="brain-body">Each plot shows how weight change magnitude correlates with fitness and distance sensor response across different runs. The pattern of weight changes reflects the robot actively adapting its synaptic connections in response to its environment. More obstacles produce more weight activity, confirming the Hebbian mechanism is responding to environmental complexity rather than noise.</p>
+      <div class="brain-grid">
+        <div class="brain-plot">
+          <span class="brain-plot-label">2 Obstacles · Fitness vs Weight Change</span>
+          <img src="project_assets/plot_2obs_fit.png" alt="2 obstacles fitness vs weight change"/>
+        </div>
+        <div class="brain-plot">
+          <span class="brain-plot-label">4 Obstacles · Fitness vs Weight Change</span>
+          <img src="project_assets/plot_4obs_fit.png" alt="4 obstacles fitness vs weight change"/>
+        </div>
+        <div class="brain-plot">
+          <span class="brain-plot-label">2 Obstacles · Distance Response vs Weight Change</span>
+          <img src="project_assets/plot_2obs_dist.png" alt="2 obstacles distance response vs weight change"/>
+        </div>
+        <div class="brain-plot">
+          <span class="brain-plot-label">4 Obstacles · Distance Response vs Weight Change</span>
+          <img src="project_assets/plot_4obs_dist.png" alt="4 obstacles distance response vs weight change"/>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- LIGHT EXPERIMENT SECTION -->
+<section class="light-section" id="light-experiment">
+  <div class="light-inner">
+
+    <div class="light-header">
+      <span class="light-label">Experiment 2</span>
+      <h2 class="light-heading">Light Experiment</h2>
+      <p class="light-body">The same genome trained in a high-luminosity environment is then deployed in a low-light setting. The altered light sensor readings cause the genetic controller to fail at the junction task. Hebbian plasticity adapts the synaptic weights on-the-fly, recovering the correct behaviour without any retraining.</p>
+      <p class="light-note" id="light-note">Since this experiment involves more persistent environmental changes rather than physical obstacles, a higher adaptation scale was needed. A higher Hebbian learning rate allows the network to respond more quickly to the shifted light distribution, but at the cost of more erratic and less controlled behaviour.</p>
+    </div>
+
+    <div class="light-videos">
+      <div class="light-video-block">
+        <span class="light-video-label">High Light · Trained Environment</span>
+        <div class="light-video-wrap">
+          <video autoplay loop muted playsinline preload="auto">
+            <source src="project_assets/video_light_high.mp4" type="video/mp4"/>
+          </video>
+        </div>
+      </div>
+      <div class="light-video-block">
+        <span class="light-video-label">Low Light · Gene Fails</span>
+        <div class="light-video-wrap">
+          <video autoplay loop muted playsinline preload="auto">
+            <source src="project_assets/video_light_fail.mp4" type="video/mp4"/>
+          </video>
+        </div>
+      </div>
+      <div class="light-video-block">
+        <span class="light-video-label">Low Light · Hebbian Recovers</span>
+        <div class="light-video-wrap">
+          <video autoplay loop muted playsinline preload="auto">
+            <source src="project_assets/video_light_hebbian.mp4" type="video/mp4"/>
+          </video>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- DISCUSSION SECTION -->
+<section class="disc-section" id="discussion">
+  <div class="disc-inner">
+
+    <div class="disc-header">
+      <span class="disc-label">Discussion</span>
+      <h2 class="disc-heading">Implications</h2>
+      <p class="disc-intro" id="disc-intro">The results sit at the intersection of evolutionary robotics and biological learning theory. Several broader implications emerge from the architecture, each grounded in how biological systems separate memory from adaptation.</p>
+    </div>
+
+    <!-- Baldwin Effect -->
+    <div class="disc-point img-right">
+      <div class="disc-point-text">
+        <span class="disc-point-tag" id="disc-tag1">Biological Parallel</span>
+        <h3 class="disc-point-title" id="disc-t1">The Baldwin Effect</h3>
+        <p class="disc-point-body" id="disc-b1">Starting with a fixed genotype at birth, the robot performs its task within a lifetime of Hebbian learning. This raises performance without changing the inherited genotype, reacting to what the initial gene cannot resolve. When the genome is passed to the next generation it does not inherit the plasticity changes. The lifetime reset prevents genetic assimilation, keeping the core memory clean and generalisable.</p>
+      </div>
+      <div class="disc-point-img">
+        <img src="project_assets/disc_baldwin.png" alt="Baldwin effect diagram"/>
+      </div>
+    </div>
+
+    <!-- Non-changing benefits -->
+    <div class="disc-point img-left">
+      <div class="disc-point-img">
+        <img src="project_assets/disc_nonchanging.png" alt="Non-changing benefits diagram"/>
+      </div>
+      <div class="disc-point-text">
+        <span class="disc-point-tag" id="disc-tag2">Stable Environments</span>
+        <h3 class="disc-point-title" id="disc-t2">Non-Changing Benefits</h3>
+        <p class="disc-point-body" id="disc-b2">The benefit of Hebbian adaptation is not limited to environmental change. Even in stable environments, it can temporarily make the initial gene more optimal. However the plasticity changes are still not saved post-reincarnation, even if they improve performance. Preserving them would accumulate bias over generations, degrading the generality of the core genome.</p>
+      </div>
+    </div>
+
+    <!-- Reincarnation reset -->
+    <div class="disc-point-full">
+      <span class="disc-point-tag" id="disc-tag3">Memory Integrity</span>
+      <h3 class="disc-point-title" id="disc-t3">Benefits of Reincarnation Reset</h3>
+      <p class="disc-point-body" id="disc-b3">If offspring inherit plasticity changes, over generations a bias toward specific environmental changes accumulates. The reset ensures core knowledge stays intact and remains adaptable. It also prevents the genome from becoming overfitted to a single environment, keeping it light enough for zero-shot adaptation wherever it is deployed.</p>
+      <img src="project_assets/disc_reset.png" alt="Reincarnation reset diagram" class="disc-full-img"/>
+    </div>
+
+    <!-- Limitations -->
+    <div class="disc-limitations">
+      <h3 class="disc-limitations-heading" id="disc-lim-heading">Limitations</h3>
+      <p class="disc-limitations-body" id="disc-lim-body">The current implementation uses a static maximum Hebbian learning rate, manually tuned per experiment. Neuromodulation already scales learning using fitness, but it is missing the environmental magnitude of change as a signal. A large rate in an already-familiar environment causes overreaction. A rate too small for a large environmental shift means the robot adapts too slowly within the trial.</p>
+      <div class="disc-lim-img">
+        <img src="project_assets/disc_limitations.png" alt="Environmental feedback limitations diagram"/>
+      </div>
+      <div class="disc-limitations-grid">
+        <div class="disc-lim-item">
+          <span class="disc-lim-label" id="disc-lim-label1">Current Gap</span>
+          <span class="disc-lim-text" id="disc-lim1">The system detects performance drop via fitness but not the degree of environmental novelty. The ideal system would sense how much the environment has changed and scale N accordingly.</span>
+        </div>
+        <div class="disc-lim-item">
+          <span class="disc-lim-label" id="disc-lim-label2">Future Direction</span>
+          <span class="disc-lim-text" id="disc-lim2">Future work aims to detect context shifts by streaming sensory data through a spike-dependent network, allowing N to adapt from the base Hebbian rate to environment-sensitive rates dynamically.</span>
+        </div>
+        <div class="disc-lim-item">
+          <span class="disc-lim-label" id="disc-lim-label3">Network Scale</span>
+          <span class="disc-lim-text" id="disc-lim3">Experiments used a simple MLP with low-dimensional input. Future implementations will test more complex sensory data such as point clouds or LiDAR while retaining the same plasticity mechanism.</span>
+        </div>
+        <div class="disc-lim-item">
+          <span class="disc-lim-label" id="disc-lim-label4">Generalisation</span>
+          <span class="disc-lim-text" id="disc-lim4">All experiments use a single e-puck in a T-maze. The approach needs to be validated on different platforms including drones and legged robots across more complex terrains.</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </section>
 
 <script>
@@ -565,11 +1692,9 @@ window.addEventListener('scroll', () => {
 
   const exactText = {
     'Back to Work': 'العودة إلى الأعمال',
-    'Back to Work ': 'العودة إلى الأعمال',
     'Evolutionary Robotics · Hebbian Learning': 'الروبوتات التطورية · التعلم الهيبي',
-    'Post-Evolution': 'استجابة ما بعد التطور',
-    'Adaptation': 'في الذاكرة الجينية',
-    'E-puck robots pre-evolved in empty environments adapt Hebbian-modified MLP weights to novel obstacles on-the-fly in Webots, without retraining. Genetic memory meets lifetime learning.': 'روبوتات E-puck تطورت مسبقاً في بيئات فارغة تتكيّف مع عقبات جديدة عبر تعديل أوزان MLP بقواعد هيبي لحظياً في Webots، دون إعادة تدريب. ذاكرة جينية تلتقي بتعلم مدى الحياة.',
+    'Presented at': 'قُدِّم في',
+    'ALIFE 2025 · Kyoto / Online': 'ALIFE 2025 · كيوتو / عبر الإنترنت',
     'Read the paper': 'اقرأ الورقة',
     'Research Team': 'فريق البحث',
     'Supervisor': 'المشرف',
@@ -581,11 +1706,179 @@ window.addEventListener('scroll', () => {
     'Mouayad Aldada': 'مؤيد الدادا',
     'Muhammad Saad Munawar': 'محمد سعد منور',
     'Scroll': 'انزل',
+    'The Problem': 'المشكلة',
+    'Genetic Memory,': 'الذاكرة الجينية،',
+    'No Lifetime Learning': 'دون تعلم مدى الحياة',
+    'The Limitation': 'القيود',
+    'The Proposal': 'المقترح',
+    'Genetic controllers are effective at optimising behaviour in fixed environments, but they encode only what evolution has seen. Even small changes at deployment can cause failure, and covering every possible scenario through evolution alone is computationally expensive and impractical.': 'المتحكمات الجينية فعّالة في تحسين السلوك في البيئات الثابتة، لكنها لا تُشفّر إلا ما شهده التطور. حتى التغييرات الطفيفة عند النشر قد تتسبب في الفشل، وتغطية كل سيناريو ممكن مكلفة حسابياً وغير عملية.',
+    'Limited to generational experience, not runtime adaptation.': 'مقيّدة بالخبرة الجيلية، دون تكيّف أثناء التشغيل.',
+    'Brittle under sudden environmental changes.': 'هشّة أمام التغييرات البيئية المفاجئة.',
+    'Retraining from scratch is costly for each new scenario.': 'إعادة التدريب من الصفر مكلفة لكل سيناريو جديد.',
+    'Separate genetic memory from lifetime learning. Keep the evolved genome as a fixed foundation, then apply Hebbian plasticity on top, adapting weights on-the-fly without touching the core knowledge.': 'فصل الذاكرة الجينية عن التعلم مدى الحياة. الاحتفاظ بالجينوم المتطور كأساس ثابت، ثم تطبيق اللدونة الهيبية فوقه، مع تكييف الأوزان لحظياً دون المساس بالمعرفة الأساسية.',
+    'Adapt the genotype to novel situations at runtime.': 'تكييف النمط الجيني مع المواقف الجديدة أثناء التشغيل.',
+    'Preserve core knowledge, reset after each trial.': 'الحفاظ على المعرفة الأساسية، مع إعادة الضبط بعد كل تجربة.',
+    'Zero-shot: weights develop only from neuron co-activation during the robot’s lifetime.': 'دون تدريب مسبق: تتطور الأوزان من التفعيل المشترك للخلايا العصبية خلال عمر الروبوت.',
+    'Figures, add images below': 'الأشكال، أضف الصور أدناه',
+    'Robot trajectories comparing GA-only vs Hebbian-adapted controllers under base and changed environments. Top row: GA alone. Bottom row: post-evolution Hebbian adaptation.': 'مسارات الروبوت مقارنةً بين المتحكمات الجينية فقط والمتحكمات المكيّفة هيبياً. الصف العلوي: الخوارزمية الجينية وحدها. الصف السفلي: تفاعَل ما بعد التطور.',
+    'Genetic Algorithm': 'الخوارزمية الجينية',
+    'Fitness Function': 'دالة اللياقة',
+    'A dual fitness system combining behaviour fitness and a goal reward. The behaviour components penalise spinning and collision while rewarding forward motion and correct junction turns. The goal reward scales with Euclidean distance to the target position.': 'نظام لياقة مزدوج يجمع بين لياقة السلوك ومكافأة الهدف.',
+    'Forward Motion': 'الحركة للأمام',
+    'Collision Avoidance': 'تجنب الاصطدام',
+    'Anti-Spinning': 'منع الدوران',
+    'Junction Decision': 'قرار التقاطع',
+    'Goal Reward': 'مكافأة الهدف',
+    'Combined Behaviour Fitness': 'لياقة السلوك المدمجة',
+    'Final Fitness': 'اللياقة النهائية',
+    'Rewards the robot for moving forward. Clamped to [0, 1], negative values (reversing) are treated as zero.': 'يكافئ الروبوت على التحرك للأمام. مقيّد بـ [0, 1]، القيم السالبة تُعامل كصفر.',
+    'Penalises proximity to obstacles. The cubic exponent gives a sharper penalty as the robot gets closer, given double weight in the combined score.': 'يعاقب على الاقتراب من العوائق. الأس التكعيبي يزيد العقوبة كلما اقترب الروبوت، بوزن مضاعف في الدرجة المدمجة.',
+    'Penalises large velocity differences between wheels. Discourages in-place spinning behaviour that wastes time without progress.': 'يعاقب على فوارق السرعة الكبيرة بين العجلتين. يثبط سلوك الدوران في المكان.',
+    'Binary reward at the T-junction. The robot must turn right when light is present and left when absent, the core behavioural objective of the task.': 'مكافأة ثنائية عند تقاطع T. يجب أن ينعطف الروبوت يميناً حين يكون الضوء موجوداً ويساراً حين يكون غائباً.',
+    'Distance-based reward scaling the robot\'s proximity to the target position. A cubic scaling makes the reward drop off steeply with distance.': 'مكافأة تتناسب مع قرب الروبوت من الموضع المستهدف. القياس التكعيبي يجعل المكافأة تنخفض بسرعة مع المسافة.',
+    'Weighted combination of all four behaviour components. Collision avoidance is given double weight to prioritise safe navigation above all else.': 'تركيبة موزونة من مكونات السلوك الأربعة. يُعطى تجنب الاصطدام وزناً مضاعفاً.',
+    'The average of behaviour fitness and goal reward. Balances the quality of movement with whether the robot actually reaches its target.': 'متوسط لياقة السلوك ومكافأة الهدف. يوازن بين جودة الحركة والوصول الفعلي للهدف.',
+    'Phase 1': 'المرحلة الأولى',
+    'Genetic Training': 'التدريب الجيني',
+    'The first phase trains a controller through a standard genetic algorithm. The T-maze environment serves as the foundation to evolve an optimal genome for the navigation task. This ensures a solid baseline controller is established before any plasticity is applied.': 'تتضمن المرحلة الأولى تدريب متحكم عبر خوارزمية جينية قياسية. تُشكّل بيئة متاهة T الأساس لتطوير جينوم أمثل لمهمة الملاحة.',
+    'Evolution Process': 'عملية التطور',
+    'Optimal Gene': 'الجين الأمثل',
+    'The Problem in Practice': 'المشكلة في التطبيق',
+    'Genetic Failure': 'الفشل الجيني',
+    'When the environment changes, even slight modifications can cause the evolved controller to fail. The genome was never trained in the altered environment, and training for every possible variation is computationally expensive. Reusing examples of the same situation can also introduce bias through environmental imbalance.': 'عند تغيير البيئة، حتى التعديلات الطفيفة قد تتسبب في فشل المتحكم المتطور. لم يُدرَّب الجينوم في البيئة المعدّلة، والتدريب على كل تنويع ممكن مكلف حسابياً.',
+    'Two Obstacles': 'عائقان',
+    'Four Obstacles': 'أربعة عوائق',
+    'Base Environment': 'البيئة الأساسية',
+    'The T-Maze': 'متاهة T',
+    'A T-shaped maze serves as the training and testing environment for the genome’s observable states through Hebbian learning. The robot starts at the base of the T, with a light source that appears or disappears depending on the task.': 'تُستخدم متاهة على شكل حرف T بيئةً للتدريب والاختبار. يبدأ الروبوت من قاعدة حرف T، مع مصدر ضوء يظهر أو يختفي بحسب المهمة.',
+    'The robot must learn to turn right at the junction when light is present, and left when light is absent. This rule is not hardcoded; it must emerge from the fitness landscape during evolution, and then be preserved or adapted through Hebbian plasticity at runtime.': 'يجب أن يتعلم الروبوت الانعطاف يميناً عند التقاطع حين يكون الضوء موجوداً، ويساراً حين يكون غائباً. هذه القاعدة ليست مُبرمجة مسبقاً؛ بل تظهر من منظومة اللياقة أثناء التطور.',
+    'Base environment in Webots. The robot (blue) starts at the T’s base. The light source (yellow) determines which direction it must turn at the junction.': 'البيئة الأساسية في Webots. يبدأ الروبوت (الأزرق) من قاعدة حرف T. مصدر الضوء (الأصفر) يحدد الاتجاه عند التقاطع.',
+    'Hebbian Learning': 'التعلم الهيبي',
+    'Neuromodulation Signal': 'إشارة التعديل العصبي',
+    'Neuromodulation is the process of altering nerve activity to normalise nervous system behaviour. Here, the Hebbian learning rate is adaptively scaled using the robot\'s current fitness as a continuous guiding signal.': 'التعديل العصبي هو عملية تغيير نشاط الأعصاب لتطبيع سلوك الجهاز العصبي. هنا، يتم ضبط معدل التعلم الهيبي تكيّفياً باستخدام لياقة الروبوت الحالية كإشارة توجيه مستمرة.',
+    'The equation scales the maximum signal based on fitness. The max function ensures the rate never drops below 0.2, preventing zero modulation. A robot performing poorly still adapts slowly; a robot performing well strengthens connections faster.': 'تقيس المعادلة الإشارة القصوى بناءً على اللياقة. تضمن دالة max ألا ينخفض المعدل عن 0.2 لمنع انعدام التعديل.',
+    'Low Fitness · F = 0.1': 'لياقة منخفضة · F = 0.1',
+    'High Fitness · F = 0.9': 'لياقة عالية · F = 0.9',
+    'Mechanism': 'الآلية',
+    'Hebbian Synaptic Adaptation': 'التكيّف التشابكي الهيبي',
+    'Pre- and post-synaptic activations form a correlation matrix that drives Hebbian trace updates. Raw Hebbian updates can cause unstable weight growth, so a trace decay mechanism discards older correlations to prevent runaway growth.': 'تُشكّل التنشيطات قبل التشابكية وبعدها مصفوفة ارتباط تقود تحديثات الآثار الهيبية.',
+    'Traces': 'الآثار',
+    'A temporal history of neural co-activations. The neuromodulation signal scales these traces to produce the final weight update.': 'سجل زمني للتنشيطات العصبية المشتركة. تقيس إشارة التعديل العصبي هذه الآثار لإنتاج تحديث الأوزان النهائي.',
+    'Decay': 'التلاشي',
+    'Retains 95% of the previous trace while integrating 5% new correlation data, preventing old patterns from dominating.': 'يحتفظ بـ 95% من الأثر السابق مع دمج 5% بيانات جديدة، مما يمنع هيمنة الأنماط القديمة.',
+    'Clipping': 'القطع',
+    'Scaling': 'القياس',
+    'Update': 'التحديث',
+    'Phase 2 · Lifetime Learning': 'المرحلة الثانية · التعلم مدى الحياة',
+    'Hebbian Adaptation in Action': 'تفاعَل الهيبي في العمل',
+    'With the evolved genome loaded, Hebbian plasticity activates at runtime. The robot encounters the obstacles it previously failed at, and its synaptic weights begin adapting on-the-fly. The network visualisation shows weight changes as they happen: small flashes indicate minor adjustments, green flashes mark significant positive reinforcement of successful pathways, and orange marks significant negative changes weakening unhelpful connections.': 'مع تحميل الجينوم المتطور، تنشط اللدونة الهيبية أثناء التشغيل. يواجه الروبوت العوائق التي فشل فيها سابقاً، وتبدأ أوزانه التشابكية في التكيّف لحظياً. تُظهر مرئيات الشبكة تغيّرات الأوزان فور حدوثها: الوميض الصغير يدل على تعديلات طفيفة، الأخضر يُشير إلى تعزيز إيجابي كبير، والبرتقالي يُشير إلى تضعيف كبير للروابط غير المفيدة.',
+    'Environment View': 'عرض البيئة',
+    'Phenotypic Changes · Live Network': 'التغيّرات الظاهرية · الشبكة المباشرة',
+    'Positive weight': 'وزن إيجابي',
+    'Negative weight': 'وزن سلبي',
+    'Strengthening': 'تقوية',
+    'Weakening': 'إضعاف',
+    'Small changes': 'تغيّرات صغيرة',
+    'Phenotypic Changes · Live Network': 'التغيّرات الظاهرية · الشبكة المباشرة',
+    'Hebbian Success': 'نجاح هيبي',
+    'Experimental Results': 'النتائج التجريبية',
+    'Worth noting: the GA controller did avoid some obstacles in certain runs. This is part of how the genetic algorithm works, the evolved behaviour can sometimes generalise partially to new situations. However it is not predictable or reliable. The Hebbian controller, adapting a live network on the same fitness signal it was trained on, performs more consistently, but this does not guarantee 100% success in all cases either. The improvement is real but the system is still probabilistic.': 'تجدر الإشارة إلى أن المتحكم الجيني تمكّن من تجنب بعض العوائق في حالات معينة. هذا جزء من طريقة عمل الخوارزمية الجينية، إذ يمكن للسلوك المتطور أن يتعمم جزئياً أحياناً على مواقف جديدة، إلا أن ذلك غير قابل للتنبؤ أو الاعتماد عليه. أما المتحكم الهيبي، الذي يكيّف شبكة حية على نفس إشارة اللياقة التي دُرِّب عليها، فيُحقق أداءً أكثر اتساقاً، غير أن ذلك لا يضمن نجاحاً بنسبة 100% في جميع الحالات. التحسن حقيقي لكن النظام لا يزال احتمالياً.',
+    'Performance Comparison': 'مقارنة الأداء',
+    'The experiments compare the GA-only controller against the Hebbian-adapted controller across three environments: the base training environment, and two unseen obstacle configurations. Key measures are task success, time to reach the goal, path length, speed, position error, and average weight change magnitude.': 'تقارن التجارب المتحكم الجيني فقط مع المتحكم المكيّف هيبياً عبر ثلاث بيئات: بيئة التدريب الأساسية وتكويني عوائق غير مألوفين. المقاييس الرئيسية هي نجاح المهمة، الوقت للوصول للهدف، طول المسار، السرعة، خطأ الموضع، ومتوسط تغيّر الأوزان.',
+    'Hebbian success rate across all environments': 'معدل نجاح هيبي عبر جميع البيئات',
+    'GA success rate with obstacles present': 'معدل نجاح GA عند وجود عوائق',
+    'Average weight change magnitude with 4 obstacles': 'متوسط حجم تغيّر الأوزان مع 4 عوائق',
+    'GA Only · Genetic Algorithm Controller': 'الخوارزمية الجينية فقط',
+    'The GA controller succeeds only in the environment it was trained in. Any change to the environment causes failure. Position errors increase substantially with obstacles, and the robot never reaches the goal.': 'ينجح المتحكم الجيني فقط في البيئة التي دُرِّب فيها. أي تغيير في البيئة يتسبب في الفشل. تزداد أخطاء الموضع بشكل ملحوظ مع العوائق.',
+    'Hebbian · Post-Evolution Adapted Controller': 'هيبي · المتحكم المكيّف ما بعد التطور',
+    'The Hebbian controller maintains 100% success across all configurations. Position errors remain consistent regardless of obstacles. Weight change magnitude increases with more obstacles, showing the adaptation is reactive to the environment.': 'يحافظ المتحكم الهيبي على نسبة نجاح 100% عبر جميع التكوينات. تبقى أخطاء الموضع ثابتة بغض النظر عن العوائق. يزداد حجم تغيّر الأوزان مع المزيد من العوائق، مما يُظهر أن التكيّف استجابي للبيئة.',
+    'Brain Activity Feedback': 'تغذية راجعة لنشاط الشبكة',
+    'Each plot shows how weight change magnitude correlates with fitness and distance sensor response across different runs. The pattern of weight changes reflects the robot actively adapting its synaptic connections in response to its environment. More obstacles produce more weight activity, confirming the Hebbian mechanism is responding to environmental complexity rather than noise.': 'يُظهر كل رسم بياني كيف يرتبط حجم تغيّر الأوزان باللياقة واستجابة مستشعر المسافة عبر تشغيلات مختلفة. يعكس نمط تغيّرات الأوزان تكيّف الروبوت الفعلي. المزيد من العوائق ينتج المزيد من نشاط الأوزان، مما يؤكد استجابة الآلية الهيبية للتعقيد البيئي.',
+    '2 Obstacles · Fitness vs Weight Change': 'عائقان · اللياقة مقابل تغيّر الأوزان',
+    '4 Obstacles · Fitness vs Weight Change': 'أربعة عوائق · اللياقة مقابل تغيّر الأوزان',
+    '2 Obstacles · Distance Response vs Weight Change': 'عائقان · استجابة المسافة مقابل تغيّر الأوزان',
+    '4 Obstacles · Distance Response vs Weight Change': 'أربعة عوائق · استجابة المسافة مقابل تغيّر الأوزان',
+    'Experiment 2': 'التجربة الثانية',
+    'Light Experiment': 'تجربة الإضاءة',
+    'The same genome trained in a high-luminosity environment is then deployed in a low-light setting. The altered light sensor readings cause the genetic controller to fail at the junction task. Hebbian plasticity adapts the synaptic weights on-the-fly, recovering the correct behaviour without any retraining.': 'يُنشر نفس الجينوم المدرَّب في بيئة عالية الإضاءة في بيئة منخفضة الإضاءة. تتسبب قراءات مستشعر الضوء المتغيرة في فشل المتحكم الجيني عند مهمة التقاطع. تكيّف اللدونة الهيبية الأوزان التشابكية لحظياً لاسترداد السلوك الصحيح دون إعادة تدريب.',
+    'Since this experiment involves more persistent environmental changes rather than physical obstacles, a higher adaptation scale was needed. A higher Hebbian learning rate allows the network to respond more quickly to the shifted light distribution, but at the cost of more erratic and less controlled behaviour.': 'بما أن هذه التجربة تتضمن تغييرات بيئية أكثر ثباتاً بدلاً من عوائق مادية، كانت هناك حاجة إلى مقياس تكيّف أعلى. معدل تعلم هيبي أعلى يسمح للشبكة بالاستجابة بسرعة أكبر للتوزيع الضوئي المتغير، لكن على حساب سلوك أكثر تذبذباً وأقل تحكماً.',
+    'High Light · Trained Environment': 'إضاءة عالية · البيئة المدربة',
+    'Low Light · Gene Fails': 'إضاءة منخفضة · فشل الجين',
+    'Low Light · Hebbian Recovers': 'إضاءة منخفضة · تعافي هيبي',
+    'Discussion': 'النقاش',
+    'Implications': 'الدلالات والاستنتاجات',
+    'The results sit at the intersection of evolutionary robotics and biological learning theory. Several broader implications emerge from the architecture, each grounded in how biological systems separate memory from adaptation.': 'تقع النتائج عند تقاطع الروبوتات التطورية ونظرية التعلم البيولوجي. تنبثق عدة دلالات أوسع من هذه البنية، كل منها مؤسس على كيفية فصل الأنظمة البيولوجية بين الذاكرة والتكيّف.',
+    'Biological Parallel': 'التوازي البيولوجي',
+    'The Baldwin Effect': 'تأثير بالدوين',
+    'Stable Environments': 'البيئات المستقرة',
+    'Non-Changing Benefits': 'فوائد البيئة غير المتغيرة',
+    'Memory Integrity': 'سلامة الذاكرة',
+    'Benefits of Reincarnation Reset': 'فوائد إعادة ضبط التقمص',
+    'Limitations': 'القيود',
+    'Current Gap': 'الفجوة الحالية',
+    'Future Direction': 'التوجه المستقبلي',
+    'Network Scale': 'حجم الشبكة',
+    'Generalisation': 'التعميم',
+    'GA Only · Genetic Algorithm Controller': 'الخوارزمية الجينية فقط',
+    'Hebbian · Post-Evolution Adapted Controller': 'هيبي · المتحكم المكيّف ما بعد التطور',
+    'Success (0/1)': 'النجاح (0/1)',
+    'Time-to-Goal (s)': 'الوقت للهدف (ث)',
+    'Path Length (m)': 'طول المسار (م)',
+    'Average Speed (m/s)': 'متوسط السرعة (م/ث)',
+    'Final Position Error': 'خطأ الموضع النهائي',
+    'Weight Change Mean': 'متوسط تغيّر الأوزان',
+    'Left': 'يسار',
+    'Right': 'يمين',
+    'Base GA': 'GA أساسي',
+    'Base Hebbian': 'هيبي أساسي',
+    'Failed': 'فشل',
+    'GA Only · Genetic Algorithm Controller': 'الخوارزمية الجينية فقط',
+    'Performance Comparison': 'مقارنة الأداء',
+    'Brain Activity Feedback': 'تغذية راجعة لنشاط الشبكة',
+    'GA ONLY · GENETIC ALGORITHM CONTROLLER': 'الخوارزمية الجينية فقط',
+    'HEBBIAN · POST-EVOLUTION ADAPTED CONTROLLER': 'هيبي · المتحكم المكيّف ما بعد التطور',
+    'Zero-Shot Adaptation to Unseen Environments': 'تكيّف فوري مع بيئات غير مألوفة',
+    'Hebbian plasticity lets the robot successfully complete the task on the first attempt in environments it has never trained in. By creating a new observable state of the genome within the same lifetime, without rewriting a new generation, the same code solves both obstacle configurations.': 'تتيح اللدونة الهيبية للروبوت إكمال المهمة بنجاح في المحاولة الأولى في بيئات لم يتدرب فيها قط. من خلال إنشاء حالة جديدة قابلة للملاحظة للجينوم داخل نفس العمر التشغيلي، دون إعادة كتابة جيل جديد، يحل نفس الكود كلا تكويني العوائق.',
+  };
+
+  const htmlMap = {
+    '#hero-main-title': { ar: '<em>تفاعَل</em><br/>ما بعد التطور', en: 'Post-Evolution <em>Adaptation</em>' },
+    '#clip-text': { ar: 'تُقطع الأوزان إلى ±W<sub>max</sub> بعد كل تحديث لمنع التشبع أو الانهيار.', en: 'Weights are clipped to ±W<sub>max</sub> after each update to prevent saturation or collapse.' },
+    '#tmaze-body1': { ar: 'تُستخدم متاهة على شكل حرف T بيئةً للتدريب والاختبار لحالات الجينوم القابلة للملاحظة عبر التعلم الهيبي. يبدأ الروبوت من قاعدة حرف T، مع مصدر ضوء يظهر أو يختفي بحسب المهمة.', en: 'A T-shaped maze serves as the training and testing environment for the genome\'s observable states through Hebbian learning. The robot starts at the base of the T, with a light source that appears or disappears depending on the task.' },
+    '#zeroshot-li': { ar: 'دون تدريب مسبق: تتطور الأوزان من التفعيل المشترك للخلايا العصبية خلال عمر الروبوت.', en: 'Zero-shot: weights develop only from neuron co-activation during the robot\'s lifetime.' },
+    '#hv-heading': { ar: 'تفاعَل الهيبي في العمل', en: 'Hebbian Adaptation in Action' },
+    '#hv-success-heading': { ar: 'تكيّف فوري مع بيئات غير مألوفة', en: 'Zero-Shot Adaptation to Unseen Environments' },
+    '#hv-body1': { ar: 'مع تحميل الجينوم المتطور، تنشط اللدونة الهيبية أثناء التشغيل. يواجه الروبوت العوائق التي فشل فيها سابقاً، وتبدأ أوزانه التشابكية في التكيّف لحظياً. تُظهر مرئيات الشبكة تغيّرات الأوزان فور حدوثها: الوميض الصغير يدل على تعديلات طفيفة، الأخضر يُشير إلى تعزيز إيجابي كبير، والبرتقالي يُشير إلى تضعيف كبير للروابط غير المفيدة.', en: 'With the evolved genome loaded, Hebbian plasticity activates at runtime. The robot encounters the obstacles it previously failed at, and its synaptic weights begin adapting on-the-fly. The network visualisation shows weight changes as they happen: small flashes indicate minor adjustments, green flashes mark significant positive reinforcement of successful pathways, and orange marks significant negative changes weakening unhelpful connections.' },
+    '#hv-body2': { ar: 'تتيح اللدونة الهيبية للروبوت إكمال المهمة بنجاح في المحاولة الأولى في بيئات لم يتدرب فيها قط. من خلال إنشاء حالة جديدة قابلة للملاحظة للجينوم داخل نفس العمر التشغيلي، دون إعادة كتابة جيل جديد، يحل نفس الكود كلا تكويني العوائق.', en: 'Hebbian plasticity lets the robot successfully complete the task on the first attempt in environments it has never trained in. By creating a new observable state of the genome within the same lifetime, without rewriting a new generation, the same code solves both obstacle configurations.' },
+    '#disc-intro': { ar: 'تقع النتائج عند تقاطع الروبوتات التطورية ونظرية التعلم البيولوجي. تنبثق عدة دلالات أوسع من هذه البنية، كل منها مؤسس على كيفية فصل الأنظمة البيولوجية بين الذاكرة والتكيّف.', en: 'The results sit at the intersection of evolutionary robotics and biological learning theory. Several broader implications emerge from the architecture, each grounded in how biological systems separate memory from adaptation.' },
+    '#disc-tag1': { ar: 'التوازي البيولوجي', en: 'Biological Parallel' },
+    '#disc-tag2': { ar: 'البيئات المستقرة', en: 'Stable Environments' },
+    '#disc-tag3': { ar: 'سلامة الذاكرة', en: 'Memory Integrity' },
+    '#disc-t1': { ar: 'تأثير بالدوين', en: 'The Baldwin Effect' },
+    '#disc-t2': { ar: 'فوائد البيئة غير المتغيرة', en: 'Non-Changing Benefits' },
+    '#disc-t3': { ar: 'فوائد إعادة ضبط التقمص', en: 'Benefits of Reincarnation Reset' },
+    '#disc-b1': { ar: 'بدءاً بنمط جيني ثابت عند الولادة، يؤدي الروبوت مهمته خلال عمر تشغيلي من التعلم الهيبي. يرفع ذلك الأداء دون تغيير النمط الجيني الموروث، مستجيباً لما لا يستطيع الجين الأولي حله. عند انتقال الجينوم للجيل التالي لا يرث التغيّرات الهيبية. إعادة الضبط تمنع الاستيعاب الجيني وتبقي الذاكرة الأساسية نظيفة وقابلة للتعميم.', en: 'Starting with a fixed genotype at birth, the robot performs its task within a lifetime of Hebbian learning. This raises performance without changing the inherited genotype, reacting to what the initial gene cannot resolve. When the genome is passed to the next generation it does not inherit the plasticity changes. The lifetime reset prevents genetic assimilation, keeping the core memory clean and generalisable.' },
+    '#disc-b2': { ar: 'فائدة التكيّف الهيبي لا تقتصر على التغيّر البيئي. حتى في البيئات المستقرة يمكنه جعل الجين الأولي أكثر أمثلية مؤقتاً. غير أن تغيّرات اللدونة لا تُحفظ بعد التقمص حتى لو حسّنت الأداء. الحفاظ عليها سيراكم تحيزاً عبر الأجيال ويُضعف عمومية الجينوم الأساسي.', en: 'The benefit of Hebbian adaptation is not limited to environmental change. Even in stable environments, it can temporarily make the initial gene more optimal. However the plasticity changes are still not saved post-reincarnation, even if they improve performance. Preserving them would accumulate bias over generations, degrading the generality of the core genome.' },
+    '#disc-b3': { ar: 'إذا ورث الأبناء تغيّرات اللدونة، يتراكم عبر الأجيال تحيز نحو تغيّرات بيئية بعينها. إعادة الضبط تضمن بقاء المعرفة الأساسية سليمة وقابلة للتكيّف. كما تمنع الجينوم من الإفراط في التخصص لبيئة واحدة، مما يبقيه خفيفاً بما يكفي للتكيّف الفوري أينما نُشر.', en: 'If offspring inherit plasticity changes, over generations a bias toward specific environmental changes accumulates. The reset ensures core knowledge stays intact and remains adaptable. It also prevents the genome from becoming overfitted to a single environment, keeping it light enough for zero-shot adaptation wherever it is deployed.' },
+    '#disc-lim-heading': { ar: 'القيود', en: 'Limitations' },
+    '#disc-lim-body': { ar: 'يستخدم التطبيق الحالي معدل تعلم هيبي أقصى ثابت يُضبط يدوياً لكل تجربة. التعديل العصبي يقيس التعلم باستخدام اللياقة، لكنه يفتقر إلى حجم التغيّر البيئي كإشارة. معدل كبير في بيئة مألوفة يسبب ردود فعل مبالغاً فيها، بينما معدل صغير جداً في تغيّر بيئي كبير يعني تكيّفاً بطيئاً داخل التجربة.', en: 'The current implementation uses a static maximum Hebbian learning rate, manually tuned per experiment. Neuromodulation already scales learning using fitness, but it is missing the environmental magnitude of change as a signal. A large rate in an already-familiar environment causes overreaction. A rate too small for a large environmental shift means the robot adapts too slowly within the trial.' },
+    '#disc-lim-label1': { ar: 'الفجوة الحالية', en: 'Current Gap' },
+    '#disc-lim-label2': { ar: 'التوجه المستقبلي', en: 'Future Direction' },
+    '#disc-lim-label3': { ar: 'حجم الشبكة', en: 'Network Scale' },
+    '#disc-lim-label4': { ar: 'التعميم', en: 'Generalisation' },
+    '#disc-lim1': { ar: 'يكتشف النظام انخفاض الأداء عبر اللياقة لكن ليس درجة الجِدَّة البيئية. النظام المثالي سيستشعر حجم التغيّر البيئي ويضبط N وفقاً لذلك.', en: 'The system detects performance drop via fitness but not the degree of environmental novelty. The ideal system would sense how much the environment has changed and scale N accordingly.' },
+    '#disc-lim2': { ar: 'يهدف العمل المستقبلي إلى اكتشاف تحولات السياق بتدفق البيانات الحسية عبر شبكة تعتمد على التوقيت الشرارياتي، مما يسمح لـ N بالتكيّف من معدل هيبي أساسي إلى معدلات حساسة للبيئة بشكل ديناميكي.', en: 'Future work aims to detect context shifts by streaming sensory data through a spike-dependent network, allowing N to adapt from the base Hebbian rate to environment-sensitive rates dynamically.' },
+    '#disc-lim3': { ar: 'استخدمت التجارب شبكة MLP بسيطة ذات مدخلات منخفضة الأبعاد. ستختبر التطبيقات المستقبلية بيانات حسية أكثر تعقيداً كالسحب النقطية أو LiDAR مع الحفاظ على نفس آلية اللدونة.', en: 'Experiments used a simple MLP with low-dimensional input. Future implementations will test more complex sensory data such as point clouds or LiDAR while retaining the same plasticity mechanism.' },
+    '#disc-lim4': { ar: 'تستخدم جميع التجارب روبوتاً واحداً من نوع e-puck في متاهة T. يحتاج النهج إلى التحقق على منصات مختلفة تشمل الطائرات المسيّرة والروبوتات ذات الأرجل عبر تضاريس أكثر تعقيداً.', en: 'All experiments use a single e-puck in a T-maze. The approach needs to be validated on different platforms including drones and legged robots across more complex terrains.' }
   };
 
   function storeOriginals() {
     document.querySelectorAll('body *').forEach(el => {
       if (!el.dataset.enText && el.children.length === 0) el.dataset.enText = el.textContent;
+    });
+    Object.keys(htmlMap).forEach(sel => {
+      const el = document.querySelector(sel);
+      if (el && !el.dataset.enHtml) el.dataset.enHtml = el.innerHTML;
     });
   }
 
@@ -631,6 +1924,10 @@ window.addEventListener('scroll', () => {
         if (exactText[key]) el.textContent = raw.replace(key, exactText[key]);
       }
     });
+    Object.keys(htmlMap).forEach(sel => {
+      const el = document.querySelector(sel);
+      if (el) el.innerHTML = htmlMap[sel].ar;
+    });
   }
 
   function applyEnglishText() {
@@ -640,10 +1937,14 @@ window.addEventListener('scroll', () => {
     document.querySelectorAll('body *').forEach(el => {
       if (el.dataset.enText && el.children.length === 0) el.textContent = el.dataset.enText;
     });
+    Object.keys(htmlMap).forEach(sel => {
+      const el = document.querySelector(sel);
+      if (el && el.dataset.enHtml) el.innerHTML = el.dataset.enHtml;
+    });
   }
 
   function setLogoDefault() {
-    logo.textContent = 'تفاعل';
+    logo.textContent = 'تفاعَل';
     logo.lang = 'ar';
     logo.dir = 'rtl';
     logo.title = arabic ? 'Change language to English' : 'غيّر اللغة إلى العربية';
@@ -672,7 +1973,7 @@ window.addEventListener('scroll', () => {
     if (isSwitching && !force) return;
     if (!logoHovering && !force) return;
     logoHovering = false;
-    typeLogo('تفاعل', 'rtl');
+    typeLogo('تفاعَل', 'rtl');
   }
 
   function handleLogoProximity(event) {
@@ -714,7 +2015,7 @@ window.addEventListener('scroll', () => {
           document.body.classList.remove('language-switching');
           document.body.classList.add('language-settling');
 
-          typeLogo('تفاعل', 'rtl', () => {
+          typeLogo('تفاعَل', 'rtl', () => {
             document.body.classList.remove('language-settling');
             isSwitching = false;
             logoHovering = false;
@@ -747,91 +2048,32 @@ window.addEventListener('scroll', () => {
 
 })();
 
-// Roaming e-puck robot — hero-constrained, obstacle-aware
+// Roaming e-puck robot — smooth physics, hero-constrained
 (function(){
   const robo = document.getElementById('robo');
   const hero = document.getElementById('top');
   const SIZE = 48;
   const RADIUS = SIZE / 2;
-  const SPEED = 1.6;
-  const WALL_MARGIN = 12;
-  const SENSOR_RANGE = 110;
-  const PAD = 14;
-  const TURN_CHANCE = 0.007;
+  const SPEED  = 1.8;
+  const WALL_MARGIN = 10;
 
-  const OBS_SELECTOR = 'h1, h2, h3, p, .hero-eyebrow, .hero-team-label, .team-name, .team-role, .hero-paper-link, .back-link';
+  let angVel = 0;
+  const ANG_DAMP   = 0.90;
+  const ANG_WANDER = 0.016;
+  const ANG_MAX    = 0.06;
+  const WALL_TURN  = 0.14;
 
-  // start bottom-center of hero
-  let x = 0;
-  let y = 0;
-  let angle = -Math.PI / 2 + (Math.random() - 0.5) * 0.6; // heading upward with slight random spread
-  let heroRect = hero.getBoundingClientRect();
-
-  let obsRects = [];
-
-  function buildRects(){
-    heroRect = hero.getBoundingClientRect();
-    obsRects = [];
-    const seen = new Set();
-    document.querySelectorAll(OBS_SELECTOR).forEach(el => {
-      if (el.closest('#robo')) return;
-      // only elements inside the hero
-      if (!hero.contains(el)) return;
-      const r = el.getBoundingClientRect();
-      if (r.width < 10 || r.height < 6) return;
-      // convert to hero-relative coords
-      const rel = {
-        l: r.left   - heroRect.left - PAD,
-        t: r.top    - heroRect.top  - PAD,
-        r: r.right  - heroRect.left + PAD,
-        b: r.bottom - heroRect.top  + PAD
-      };
-      const key = Math.round(rel.l) + ',' + Math.round(rel.t) + ',' + Math.round(rel.r) + ',' + Math.round(rel.b);
-      if (seen.has(key)) return;
-      seen.add(key);
-      obsRects.push(rel);
-    });
-  }
-
-  buildRects();
-  x = (hero.offsetWidth / 2) - RADIUS;
-  y = hero.offsetHeight - SIZE - WALL_MARGIN;
-  window.addEventListener('scroll', buildRects, { passive: true });
-  window.addEventListener('resize', buildRects, { passive: true });
+  let x = 0, y = 0;
+  let angle = -Math.PI / 2 + (Math.random() - 0.5) * 0.8;
 
   function clamp(v, lo, hi){ return Math.max(lo, Math.min(hi, v)); }
 
-  function castRay(px, py, rayAngle){
-    const dx = Math.cos(rayAngle);
-    const dy = Math.sin(rayAngle);
-    let best = SENSOR_RANGE;
-    for (const ob of obsRects){
-      let tmin = 0, tmax = SENSOR_RANGE;
-      if (Math.abs(dx) < 1e-9){
-        if (px < ob.l || px > ob.r) continue;
-      } else {
-        let t1 = (ob.l - px) / dx, t2 = (ob.r - px) / dx;
-        if (t1 > t2){ const tmp=t1; t1=t2; t2=tmp; }
-        tmin = Math.max(tmin, t1); tmax = Math.min(tmax, t2);
-        if (tmin > tmax) continue;
-      }
-      if (Math.abs(dy) < 1e-9){
-        if (py < ob.t || py > ob.b) continue;
-      } else {
-        let t1 = (ob.t - py) / dy, t2 = (ob.b - py) / dy;
-        if (t1 > t2){ const tmp=t1; t1=t2; t2=tmp; }
-        tmin = Math.max(tmin, t1); tmax = Math.min(tmax, t2);
-        if (tmin > tmax) continue;
-      }
-      if (tmin >= 0 && tmin < best) best = tmin;
-    }
-    return best;
+  function buildStart(){
+    x = (hero.offsetWidth  / 2) - RADIUS;
+    y =  hero.offsetHeight - SIZE - WALL_MARGIN;
   }
-
-  const SENSOR_ANGLES = [
-    -0.3, -Math.PI/2, -Math.PI + 0.3, Math.PI,
-     Math.PI - 0.3,  Math.PI/2,  0.3, 0
-  ];
+  buildStart();
+  window.addEventListener('resize', buildStart, { passive: true });
 
   function tick(){
     const W = hero.offsetWidth;
@@ -839,46 +2081,31 @@ window.addEventListener('scroll', () => {
     const cx = x + RADIUS;
     const cy = y + RADIUS;
 
-    let steer = 0;
-    let anyHit = false;
+    angVel += (Math.random() - 0.5) * ANG_WANDER;
 
-    for (let s = 0; s < 8; s++){
-      const sa = angle + SENSOR_ANGLES[s];
-      const dist = castRay(cx, cy, sa);
-      if (dist < SENSOR_RANGE){
-        anyHit = true;
-        const prox = 1 - dist / SENSOR_RANGE;
-        const side = Math.sin(SENSOR_ANGLES[s]);
-        steer -= side * prox * 0.18;
-      }
-    }
+    const wallR = 90;
+    const ml = cx - WALL_MARGIN, mr = (W - WALL_MARGIN) - cx;
+    const mt = cy - WALL_MARGIN, mb = (H - WALL_MARGIN) - cy;
+    if (ml < wallR) angVel += WALL_TURN * (1 - ml / wallR);
+    if (mr < wallR) angVel -= WALL_TURN * (1 - mr / wallR);
+    if (mt < wallR) angVel += WALL_TURN * (1 - mt / wallR) * Math.sign(Math.cos(angle));
+    if (mb < wallR) angVel -= WALL_TURN * (1 - mb / wallR) * Math.sign(Math.cos(angle));
 
-    if (anyHit){
-      angle += steer;
-    } else if (Math.random() < TURN_CHANCE){
-      angle += (Math.random() - 0.5) * 0.45;
-    }
-
-    const nx = x + Math.cos(angle) * SPEED;
-    const ny = y + Math.sin(angle) * SPEED;
-    if (nx < WALL_MARGIN || nx > W - SIZE - WALL_MARGIN){
-      angle = Math.PI - angle + (Math.random() - 0.5) * 0.4;
-    }
-    if (ny < WALL_MARGIN || ny > H - SIZE - WALL_MARGIN){
-      angle = -angle + (Math.random() - 0.5) * 0.4;
-    }
+    angVel = clamp(angVel, -ANG_MAX, ANG_MAX);
+    angVel *= ANG_DAMP;
+    angle  += angVel;
 
     x = clamp(x + Math.cos(angle) * SPEED, WALL_MARGIN, W - SIZE - WALL_MARGIN);
     y = clamp(y + Math.sin(angle) * SPEED, WALL_MARGIN, H - SIZE - WALL_MARGIN);
 
     const deg = (angle * 180 / Math.PI) + 90;
     robo.style.transform = `translate(${x}px, ${y}px) rotate(${deg}deg)`;
-
     requestAnimationFrame(tick);
   }
 
   requestAnimationFrame(tick);
 })();
+
 </script>
 </body>
 </html>
