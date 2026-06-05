@@ -1009,10 +1009,10 @@ body.arabic-mode .disc-point.img-right .disc-point-img  { order: 1; }
 <div class="cursor-ring" id="ring"></div>
 
 <nav id="mainNav">
-  <a class="nav-logo" dir="rtl" href="#top" lang="ar">تفاعَل</a>
+  <a class="nav-logo" dir="rtl" href="#top" lang="ar">التكيّف</a>
   <a class="nav-back-sticky" href="work.html#project-alife" id="navBackBtn">
     <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2L3 6.5l5 4.5"/></svg>
-    Back to Work
+    <span id="nav-back-text">Back to Work</span>
   </a>
 </nav>
 
@@ -1025,7 +1025,7 @@ body.arabic-mode .disc-point.img-right .disc-point-img  { order: 1; }
 
   <a href="work.html#project-alife" class="back-link">
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2L4 7l5 5"/></svg>
-    Back to Work
+    <span id="back-link-text">Back to Work</span>
   </a>
 
   <div class="hero-inner">
@@ -1097,7 +1097,7 @@ body.arabic-mode .disc-point.img-right .disc-point-img  { order: 1; }
 
   <div class="problem-left">
     <span class="problem-label">The Problem</span>
-    <h2 class="problem-heading">Genetic Memory,<br/>No Lifetime Learning</h2>
+    <h2 class="problem-heading" id="problem-heading">Genetic Memory,<br/>No Lifetime Learning</h2>
 
     <div class="problem-block">
       <span class="problem-block-label">The Limitation</span>
@@ -1720,7 +1720,7 @@ window.addEventListener('scroll', () => {
     'Preserve core knowledge, reset after each trial.': 'الحفاظ على المعرفة الأساسية، مع إعادة الضبط بعد كل تجربة.',
     'Zero-shot: weights develop only from neuron co-activation during the robot’s lifetime.': 'دون تدريب مسبق: تتطور الأوزان من التفعيل المشترك للخلايا العصبية خلال عمر الروبوت.',
     'Figures, add images below': 'الأشكال، أضف الصور أدناه',
-    'Robot trajectories comparing GA-only vs Hebbian-adapted controllers under base and changed environments. Top row: GA alone. Bottom row: post-evolution Hebbian adaptation.': 'مسارات الروبوت مقارنةً بين المتحكمات الجينية فقط والمتحكمات المكيّفة هيبياً. الصف العلوي: الخوارزمية الجينية وحدها. الصف السفلي: تفاعَل ما بعد التطور.',
+    'Robot trajectories comparing GA-only vs Hebbian-adapted controllers under base and changed environments. Top row: GA alone. Bottom row: post-evolution Hebbian adaptation.': 'مسارات الروبوت مقارنةً بين المتحكمات الجينية فقط والمتحكمات المكيّفة هيبياً. الصف العلوي: الخوارزمية الجينية وحدها. الصف السفلي: التكيّف ما بعد التطور.',
     'Genetic Algorithm': 'الخوارزمية الجينية',
     'Fitness Function': 'دالة اللياقة',
     'A dual fitness system combining behaviour fitness and a goal reward. The behaviour components penalise spinning and collision while rewarding forward motion and correct junction turns. The goal reward scales with Euclidean distance to the target position.': 'نظام لياقة مزدوج يجمع بين لياقة السلوك ومكافأة الهدف.',
@@ -1760,7 +1760,7 @@ window.addEventListener('scroll', () => {
     'Low Fitness · F = 0.1': 'لياقة منخفضة · F = 0.1',
     'High Fitness · F = 0.9': 'لياقة عالية · F = 0.9',
     'Mechanism': 'الآلية',
-    'Hebbian Synaptic Adaptation': 'التكيّف التشابكي الهيبي',
+    'Hebbian Synaptic Adaptation': 'التكيّف التشابكي الهيبي (التكيّف)',
     'Pre- and post-synaptic activations form a correlation matrix that drives Hebbian trace updates. Raw Hebbian updates can cause unstable weight growth, so a trace decay mechanism discards older correlations to prevent runaway growth.': 'تُشكّل التنشيطات قبل التشابكية وبعدها مصفوفة ارتباط تقود تحديثات الآثار الهيبية.',
     'Traces': 'الآثار',
     'A temporal history of neural co-activations. The neuromodulation signal scales these traces to produce the final weight update.': 'سجل زمني للتنشيطات العصبية المشتركة. تقيس إشارة التعديل العصبي هذه الآثار لإنتاج تحديث الأوزان النهائي.',
@@ -1770,7 +1770,7 @@ window.addEventListener('scroll', () => {
     'Scaling': 'القياس',
     'Update': 'التحديث',
     'Phase 2 · Lifetime Learning': 'المرحلة الثانية · التعلم مدى الحياة',
-    'Hebbian Adaptation in Action': 'تفاعَل الهيبي في العمل',
+    'Hebbian Adaptation in Action': 'التكيّف الهيبي في العمل',
     'With the evolved genome loaded, Hebbian plasticity activates at runtime. The robot encounters the obstacles it previously failed at, and its synaptic weights begin adapting on-the-fly. The network visualisation shows weight changes as they happen: small flashes indicate minor adjustments, green flashes mark significant positive reinforcement of successful pathways, and orange marks significant negative changes weakening unhelpful connections.': 'مع تحميل الجينوم المتطور، تنشط اللدونة الهيبية أثناء التشغيل. يواجه الروبوت العوائق التي فشل فيها سابقاً، وتبدأ أوزانه التشابكية في التكيّف لحظياً. تُظهر مرئيات الشبكة تغيّرات الأوزان فور حدوثها: الوميض الصغير يدل على تعديلات طفيفة، الأخضر يُشير إلى تعزيز إيجابي كبير، والبرتقالي يُشير إلى تضعيف كبير للروابط غير المفيدة.',
     'Environment View': 'عرض البيئة',
     'Phenotypic Changes · Live Network': 'التغيّرات الظاهرية · الشبكة المباشرة',
@@ -1842,11 +1842,11 @@ window.addEventListener('scroll', () => {
   };
 
   const htmlMap = {
-    '#hero-main-title': { ar: '<em>تفاعَل</em><br/>ما بعد التطور', en: 'Post-Evolution <em>Adaptation</em>' },
+    '#hero-main-title': { ar: '<em>التكيّف</em><br/>ما بعد التطور', en: 'Post-Evolution <em>Adaptation</em>' },
     '#clip-text': { ar: 'تُقطع الأوزان إلى ±W<sub>max</sub> بعد كل تحديث لمنع التشبع أو الانهيار.', en: 'Weights are clipped to ±W<sub>max</sub> after each update to prevent saturation or collapse.' },
     '#tmaze-body1': { ar: 'تُستخدم متاهة على شكل حرف T بيئةً للتدريب والاختبار لحالات الجينوم القابلة للملاحظة عبر التعلم الهيبي. يبدأ الروبوت من قاعدة حرف T، مع مصدر ضوء يظهر أو يختفي بحسب المهمة.', en: 'A T-shaped maze serves as the training and testing environment for the genome\'s observable states through Hebbian learning. The robot starts at the base of the T, with a light source that appears or disappears depending on the task.' },
     '#zeroshot-li': { ar: 'دون تدريب مسبق: تتطور الأوزان من التفعيل المشترك للخلايا العصبية خلال عمر الروبوت.', en: 'Zero-shot: weights develop only from neuron co-activation during the robot\'s lifetime.' },
-    '#hv-heading': { ar: 'تفاعَل الهيبي في العمل', en: 'Hebbian Adaptation in Action' },
+    '#hv-heading': { ar: 'التكيّف الهيبي في العمل', en: 'Hebbian Adaptation in Action' },
     '#hv-success-heading': { ar: 'تكيّف فوري مع بيئات غير مألوفة', en: 'Zero-Shot Adaptation to Unseen Environments' },
     '#hv-body1': { ar: 'مع تحميل الجينوم المتطور، تنشط اللدونة الهيبية أثناء التشغيل. يواجه الروبوت العوائق التي فشل فيها سابقاً، وتبدأ أوزانه التشابكية في التكيّف لحظياً. تُظهر مرئيات الشبكة تغيّرات الأوزان فور حدوثها: الوميض الصغير يدل على تعديلات طفيفة، الأخضر يُشير إلى تعزيز إيجابي كبير، والبرتقالي يُشير إلى تضعيف كبير للروابط غير المفيدة.', en: 'With the evolved genome loaded, Hebbian plasticity activates at runtime. The robot encounters the obstacles it previously failed at, and its synaptic weights begin adapting on-the-fly. The network visualisation shows weight changes as they happen: small flashes indicate minor adjustments, green flashes mark significant positive reinforcement of successful pathways, and orange marks significant negative changes weakening unhelpful connections.' },
     '#hv-body2': { ar: 'تتيح اللدونة الهيبية للروبوت إكمال المهمة بنجاح في المحاولة الأولى في بيئات لم يتدرب فيها قط. من خلال إنشاء حالة جديدة قابلة للملاحظة للجينوم داخل نفس العمر التشغيلي، دون إعادة كتابة جيل جديد، يحل نفس الكود كلا تكويني العوائق.', en: 'Hebbian plasticity lets the robot successfully complete the task on the first attempt in environments it has never trained in. By creating a new observable state of the genome within the same lifetime, without rewriting a new generation, the same code solves both obstacle configurations.' },
@@ -1869,7 +1869,10 @@ window.addEventListener('scroll', () => {
     '#disc-lim1': { ar: 'يكتشف النظام انخفاض الأداء عبر اللياقة لكن ليس درجة الجِدَّة البيئية. النظام المثالي سيستشعر حجم التغيّر البيئي ويضبط N وفقاً لذلك.', en: 'The system detects performance drop via fitness but not the degree of environmental novelty. The ideal system would sense how much the environment has changed and scale N accordingly.' },
     '#disc-lim2': { ar: 'يهدف العمل المستقبلي إلى اكتشاف تحولات السياق بتدفق البيانات الحسية عبر شبكة تعتمد على التوقيت الشرارياتي، مما يسمح لـ N بالتكيّف من معدل هيبي أساسي إلى معدلات حساسة للبيئة بشكل ديناميكي.', en: 'Future work aims to detect context shifts by streaming sensory data through a spike-dependent network, allowing N to adapt from the base Hebbian rate to environment-sensitive rates dynamically.' },
     '#disc-lim3': { ar: 'استخدمت التجارب شبكة MLP بسيطة ذات مدخلات منخفضة الأبعاد. ستختبر التطبيقات المستقبلية بيانات حسية أكثر تعقيداً كالسحب النقطية أو LiDAR مع الحفاظ على نفس آلية اللدونة.', en: 'Experiments used a simple MLP with low-dimensional input. Future implementations will test more complex sensory data such as point clouds or LiDAR while retaining the same plasticity mechanism.' },
-    '#disc-lim4': { ar: 'تستخدم جميع التجارب روبوتاً واحداً من نوع e-puck في متاهة T. يحتاج النهج إلى التحقق على منصات مختلفة تشمل الطائرات المسيّرة والروبوتات ذات الأرجل عبر تضاريس أكثر تعقيداً.', en: 'All experiments use a single e-puck in a T-maze. The approach needs to be validated on different platforms including drones and legged robots across more complex terrains.' }
+    '#disc-lim4': { ar: 'تستخدم جميع التجارب روبوتاً واحداً من نوع e-puck في متاهة T. يحتاج النهج إلى التحقق على منصات مختلفة تشمل الطائرات المسيّرة والروبوتات ذات الأرجل عبر تضاريس أكثر تعقيداً.', en: 'All experiments use a single e-puck in a T-maze. The approach needs to be validated on different platforms including drones and legged robots across more complex terrains.' },
+    '#nav-back-text': { ar: 'العودة إلى الأعمال', en: 'Back to Work' },
+    '#back-link-text': { ar: 'العودة إلى الأعمال', en: 'Back to Work' },
+    '#problem-heading': { ar: 'الذاكرة الجينية،<br/>دون تعلم مدى الحياة', en: 'Genetic Memory,<br/>No Lifetime Learning' }
   };
 
   function storeOriginals() {
@@ -1944,9 +1947,9 @@ window.addEventListener('scroll', () => {
   }
 
   function setLogoDefault() {
-    logo.textContent = 'تفاعَل';
-    logo.lang = 'ar';
-    logo.dir = 'rtl';
+    logo.textContent = arabic ? 'Adaptation' : 'التكيّف';
+    logo.lang = arabic ? 'en' : 'ar';
+    logo.dir = arabic ? 'ltr' : 'rtl';
     logo.title = arabic ? 'Change language to English' : 'غيّر اللغة إلى العربية';
   }
 
@@ -1973,7 +1976,7 @@ window.addEventListener('scroll', () => {
     if (isSwitching && !force) return;
     if (!logoHovering && !force) return;
     logoHovering = false;
-    typeLogo('تفاعَل', 'rtl');
+    typeLogo('التكيّف', 'rtl');
   }
 
   function handleLogoProximity(event) {
@@ -2015,7 +2018,7 @@ window.addEventListener('scroll', () => {
           document.body.classList.remove('language-switching');
           document.body.classList.add('language-settling');
 
-          typeLogo('تفاعَل', 'rtl', () => {
+          typeLogo('التكيّف', 'rtl', () => {
             document.body.classList.remove('language-settling');
             isSwitching = false;
             logoHovering = false;
