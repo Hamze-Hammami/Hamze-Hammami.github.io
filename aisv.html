@@ -214,7 +214,7 @@ li.has-dropdown:hover .nav-dropdown {
 }
 .system-link {
   display: inline-flex; align-items: center; gap: 7px;
-  font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase;
+  font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
   font-family: -apple-system, sans-serif; font-weight: 600;
   text-decoration: none; width: fit-content;
   padding-bottom: 1px;
@@ -808,6 +808,9 @@ li.has-dropdown:hover .nav-dropdown {
   .sushi-side-img .burger-img-box img { width: 100%; height: 200px; }
   .sushi-full-img { max-width: 100%; }
   .sushi-full-img .burger-img-box img { height: 180px; }
+  .sushi-side-img.portrait { width: 100%; padding: 0 0 28px; align-self: auto; }
+  .sushi-side-img.portrait .burger-img-box { height: auto; }
+  .sushi-side-img.portrait .burger-img-box img { width: 100%; height: auto; object-fit: contain; object-position: center; }
 }
 
 .sushi-control-stack {
@@ -980,12 +983,13 @@ body.language-settling .back-link {
 
   <!-- Left: logo -->
   <div class="hero-left">
-    <div class="hero-logo-wrap" style="display:flex;flex-direction:column;gap:16px;align-items:flex-start;width:fit-content;">
+    <div class="hero-logo-wrap" style="display:flex;flex-direction:column;gap:20px;align-items:flex-start;width:fit-content;">
       <img src="project_assets/aisv_logo.png" alt="The AISV Project" style="width:clamp(200px, 28vw, 360px);height:auto;display:block;"/>
-      <a href="https://github.com/Hamze-Hammami/AISV" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;font-size:18px;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal);text-decoration:none;border-bottom:2px solid rgba(29,106,106,0.4);padding-bottom:3px;font-family:-apple-system,sans-serif;font-weight:700;transition:opacity 0.2s;opacity:0.8;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.7">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+      <a href="https://github.com/Hamze-Hammami/AISV" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:12px;font-size:22px;letter-spacing:0.06em;text-transform:uppercase;color:var(--teal);text-decoration:none;border-bottom:2px solid rgba(29,106,106,0.4);padding-bottom:4px;font-family:-apple-system,sans-serif;font-weight:700;transition:opacity 0.2s;opacity:0.8;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.8">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
         Code
       </a>
+    </div>
     </div>
   </div>
 
@@ -1085,7 +1089,7 @@ body.language-settling .back-link {
   <div class="burger-header">
     <span class="burger-label">B.U.R.G.E.R</span>
     <h2 class="burger-heading">What is B.U.R.G.E.R?</h2>
-    <p class="burger-body" id="i18n-burger-intro"><strong>BURGER represents a significant advancement in autonomous surface vessel (ASV) aimed at addressing debris collection in water bodies.</strong> This ASV features a seabin-inspired collection mechanism, with a custom-built battery and smart system behaviour that enables the bot for effective debris collection even in the challenging nature of the open waters. Mechanical design led by <strong>Saif Alsaad</strong>, electrical system led by <strong>Laith Mohamed</strong>, embedded systems led by <strong>Abdul Maajid Aga</strong>.</p>
+    <p class="burger-body" id="i18n-burger-intro"><strong>BURGER represents a significant advancement in autonomous surface vessel (ASV) aimed at addressing debris collection in water bodies.</strong> This ASV features a seabin-inspired collection mechanism, with a custom-built battery and smart system behaviour that enables the bot for effective debris collection even in the challenging nature of the open waters. Mechanical design led by <strong>Saif Alsaad</strong>, electrical system led by <strong>Laith Mohamed</strong>, embedded systems led by <strong><a href="https://www.linkedin.com/in/abdulmaajidaga/" target="_blank" rel="noopener" style="color:inherit;">Abdul Maajid Aga</a></strong>.</p>
   </div>
 
   <!-- 2 bot images -->
