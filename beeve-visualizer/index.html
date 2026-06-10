@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<link rel="icon" href="data:,">
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>BeeVe Visualizer</title>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0f;--bg2:#111117;--bg3:#18181f;--bd:#22222e;
+  --amber:#f59e0b;--teal:#0d9488;--green:#16a34a;--red:#dc2626;--gray:#6b7280;
+  --text:#d4d8e8;--text2:#7b82a0;--muted:#3d3d52;
+  --font:'Inter',system-ui,sans-serif
+}
+html,body{width:100%;height:100%;background:var(--bg);color:var(--text);
+  font-family:var(--font);font-size:12px;overflow:hidden}
+#root{display:grid;grid-template-rows:44px 1fr 196px;height:100vh}
+
+/* ── Header ── */
+#hdr{display:flex;align-items:center;gap:0;padding:0;
+  background:var(--bg2);border-bottom:1px solid var(--bd);overflow:hidden}
+#hdr-brand{font-size:13px;font-weight:700;color:var(--amber);padding:0 14px;
+  border-right:1px solid var(--bd);height:100%;display:flex;align-items:center;
+  white-space:nowrap}
+#hdr-brand span{color:var(--teal)}
+.hdr-group{display:flex;align-items:center;gap:2px;padding:0 8px;
+  border-right:1px solid var(--bd);height:100%}
+.tb{padding:3px 11px;border-radius:4px;border:1px solid transparent;
+  background:transparent;color:var(--text2);font-size:11px;cursor:pointer;
+  transition:all .12s;height:26px}
+.tb:hover{border-color:var(--bd);color:var(--text)}
+.tb.on{background:var(--amber);color:#000;font-weight:700}
+.tb.on-state{background:var(--green);color:#fff;font-weight:700}
+#exp-sel{background:var(--bg3);border:1px solid var(--bd);border-radius:4px;
+  color:var(--text);font-size:11px;padding:3px 8px;cursor:pointer;
+  display:none;margin:0 10px}
+
+/* ── Main ── */
+#main{display:grid;grid-template-columns:1fr 220px;overflow:hidden;background:var(--bg)}
+#canvas-area{position:relative;min-height:0;overflow:hidden}
+#c3d{position:absolute;inset:0;width:100%!important;height:100%!important}
+#tt{position:absolute;z-index:20;pointer-events:none;display:none;
+  background:rgba(10,10,15,.94);border:1px solid var(--bd);border-radius:6px;
+  padding:7px 11px;font-size:11px;min-width:150px;line-height:1.7}
+.tr{color:var(--text2)}.tr b{color:var(--text)}
+/* Info overlay top-left */
+#info{position:absolute;top:10px;left:10px;z-index:10;font-size:10px;
+  color:var(--muted);line-height:1.8;pointer-events:none}
+#info b{color:var(--text2)}
+
+/* ── Audio panel ── */
+#audio{background:var(--bg2);border-top:1px solid var(--bd);
+  display:grid;grid-template-rows:36px 70px 28px 28px 34px;padding:0}
+/* Row 1: controls */
+#audio-ctrl{display:flex;align-items:center;gap:8px;padding:0 12px;
+  border-bottom:1px solid var(--bd)}
+#file-sel{flex:0 0 auto;max-width:240px;background:var(--bg3);border:1px solid var(--bd);
+  border-radius:4px;color:var(--text);font-size:11px;padding:3px 7px;cursor:pointer}
+#pbtn{padding:3px 14px;border-radius:4px;border:1px solid var(--bd);
+  background:var(--bg3);color:var(--text2);font-size:12px;font-weight:700;
+  cursor:pointer;transition:all .12s}
+#pbtn:hover{border-color:var(--green);color:var(--green)}
+#pbtn.on{background:var(--green);border-color:var(--green);color:#fff}
+#pbtn:disabled{opacity:.3;cursor:not-allowed}
+.mode-btn{padding:3px 10px;border-radius:4px;border:1px solid var(--bd);
+  background:var(--bg3);color:var(--text2);font-size:10px;cursor:pointer;transition:all .12s}
+.mode-btn.on{background:var(--teal);border-color:var(--teal);color:#fff}
+#tdsp{font-size:10px;color:var(--text2);font-variant-numeric:tabular-nums;
+  margin-left:auto;white-space:nowrap}
+/* Row 2: cochleagram */
+#coch-wrap{position:relative;overflow:hidden;background:#080810}
+#coch{position:absolute;inset:0;width:100%;height:100%}
+#coch-label{position:absolute;left:4px;top:2px;font-size:8px;
+  color:rgba(255,255,255,.3);pointer-events:none}
+/* Row 3: token timeline strip */
+#tl-wrap{position:relative;cursor:pointer;border-top:1px solid var(--bd)}
+#tl-canvas{position:absolute;inset:0;width:100%;height:100%}
+#tl-cursor{position:absolute;top:0;bottom:0;width:2px;
+  background:var(--amber);pointer-events:none;transform:translateX(-50%);
+  box-shadow:0 0 4px var(--amber);display:none}
+/* Row 4: scrubber */
+#scrub-row{display:flex;align-items:center;padding:0 12px;
+  border-top:1px solid var(--bd)}
+#scrubber{flex:1;-webkit-appearance:none;appearance:none;height:3px;
+  background:var(--bd);border-radius:2px;cursor:pointer;outline:none}
+#scrubber::-webkit-slider-thumb{-webkit-appearance:none;width:11px;height:11px;
+  border-radius:50%;background:var(--amber);cursor:pointer}
+#scrubber::-moz-range-thumb{width:11px;height:11px;border-radius:50%;
+  background:var(--amber);cursor:pointer;border:none}
+/* Row 5: token legend */
+/* ── Sidebar ── */
+#sidebar{background:var(--bg2);border-left:1px solid var(--bd);
+  display:flex;flex-direction:column;overflow:hidden}
+#gal-hdr{padding:7px 10px 5px;font-size:9px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.1em;color:var(--muted);flex-shrink:0;border-bottom:1px solid var(--bd)}
+#gallery{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:4px;padding:5px}
+.tc{border:1px solid var(--bd);border-radius:5px;background:var(--bg3);flex-shrink:0;overflow:hidden}
+.tc:hover{border-color:var(--muted)}
+.tc-hdr{display:flex;align-items:center;gap:6px;padding:5px 8px}
+.tc-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.tc-name{font-weight:700;font-size:11px}
+.tc-pct{margin-left:auto;font-size:9px;color:var(--text2)}
+.tc-spec{width:100%;height:44px;object-fit:cover;display:block;
+  border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+.tc-btns{display:flex;gap:4px;padding:5px 8px}
+.tc-btn{flex:1;padding:4px 2px;border-radius:4px;border:1px solid var(--bd);
+  background:var(--bg);color:var(--text2);font-size:9px;cursor:pointer;
+  transition:all .12s;text-align:center}
+.tc-btn:hover{border-color:var(--amber);color:var(--amber)}
+.tc-btn.on{background:var(--amber);border-color:var(--amber);color:#000}
+.tc-btn:disabled{opacity:.3;cursor:not-allowed;pointer-events:none}
+
+#tok-legend{display:flex;align-items:center;gap:6px;padding:0 12px;
+  overflow-x:auto;border-top:1px solid var(--bd)}
+.tl-item{display:flex;align-items:center;gap:3px;cursor:pointer;
+  padding:2px 5px;border-radius:3px;flex-shrink:0;transition:all .15s}
+.tl-item:hover{background:var(--bg3)}
+.tl-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;transition:box-shadow .15s}
+.tl-id{font-size:9px;color:var(--text2)}
+.tl-item.active-tok .tl-dot{box-shadow:0 0 0 2px var(--amber)}
+/* Token filter states */
+.tl-item.tl-selected{background:rgba(245,158,11,.12)}
+.tl-item.tl-selected .tl-dot{box-shadow:0 0 0 2px var(--amber),0 0 6px var(--amber)}
+.tl-item.tl-selected .tl-id{color:var(--amber);font-weight:700}
+.tl-item.tl-dimmed{opacity:0.22}
+#tok-filter-clear{padding:1px 7px;border-radius:3px;border:1px solid var(--bd);
+  background:transparent;color:var(--muted);font-size:9px;cursor:pointer;
+  flex-shrink:0;transition:all .12s;display:none}
+#tok-filter-clear:hover{border-color:var(--red);color:var(--red)}
+
+/* Loading */
+#loading{position:fixed;inset:0;background:var(--bg);z-index:9999;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+#loading h2{color:var(--amber);font-size:16px;font-weight:700}
+#loading p{color:var(--muted);font-size:11px}
+#loading.gone{display:none}
+.spin{width:28px;height:28px;border:2px solid var(--bd);
+  border-top-color:var(--amber);border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+::-webkit-scrollbar{height:3px}
+::-webkit-scrollbar-thumb{background:var(--bd)}
+</style>
+</head>
+<body>
+<div id="loading"><div class="spin"></div><h2>BeeVe</h2><p id="lmsg">Loading…</p></div>
+
+<div id="root">
+  <div id="hdr">
+    <div id="hdr-brand">🐝 BeeVe <span>Visualizer</span></div>
+
+    <select id="exp-sel"></select>
+
+    <div class="hdr-group">
+      <button class="tb on"   data-annot="token">Token</button>
+      <button class="tb"      data-annot="state">State</button>
+      <button class="tb"      data-annot="substate">Sub-states</button>
+      <button class="tb"      data-annot="entropy">Entropy</button>
+    </div>
+    <div class="hdr-group">
+      <button class="tb on"  data-dim="3d">3D</button>
+      <button class="tb"     data-dim="2d">2D</button>
+    </div>
+    <div class="hdr-group">
+      <button class="tb on"  data-proj="pca">PCA</button>
+      <button class="tb"     data-proj="umap">UMAP</button>
+      <button class="tb"     data-proj="tsne">t-SNE</button>
+    </div>
+    <div class="hdr-group">
+      <button class="tb" id="btn-postquant">Post-Quant</button>
+    </div>
+    <div class="hdr-group">
+      <button class="tb" id="btn-arrows" title="Transition arrows between token centroids">Arrows</button>
+      <button class="tb" id="btn-dwell"  title="Dwell time spheres + hover info">Dwell</button>
+    </div>
+    <div id="hdr-info" style="padding:0 12px;font-size:10px;color:var(--muted)"></div>
+  </div>
+
+  <div id="main">
+    <div id="canvas-area">
+      <canvas id="c3d"></canvas>
+      <div id="tt"></div>
+      <div id="info"></div>
+    </div>
+    <div id="sidebar">
+      <div id="gal-hdr">Token Gallery</div>
+      <div id="gallery"></div>
+    </div>
+  </div>
+
+  <div id="audio">
+    <div id="audio-ctrl">
+      <select id="file-sel"><option value="">— recording —</option></select>
+      <button id="pbtn" disabled>▶</button>
+      <button class="mode-btn on"  id="btn-real">Real Audio</button>
+      <button class="mode-btn"     id="btn-avg">Avg Mode</button>
+      <button class="mode-btn"     id="btn-hpss-mode">HPSS Mode</button>
+      <span id="tdsp">0:00 / 0:00</span>
+    </div>
+    <div id="coch-wrap"><canvas id="coch"></canvas><img id="coch-hpss" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:fill" alt=""/><span id="coch-label">Spectral Analysis</span></div>
+    <div id="tl-wrap"><canvas id="tl-canvas"></canvas><div id="tl-cursor"></div></div>
+    <div id="scrub-row"><input type="range" id="scrubber" min="0" max="1000" value="0" step="1"/></div>
+    <div id="tok-legend"><button id="tok-filter-clear">× clear</button></div>
+  </div>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+// ═══════════════════════════════════════════
+// Plotly qualitative palette (from analysis.py)
+// ═══════════════════════════════════════════
+const PLOTLY_Q = [
+  '#636EFA','#EF553B','#00CC96','#AB63FA','#FFA15A',
+  '#19D3F3','#FF6692','#B6E880','#FF97FF','#FECB52',
+  '#72B7B2','#EECA3B','#54A24B','#F58518','#E45756',
+  '#4C78A8','#B279A2','#FF9DA6','#9D755D','#BAB0AC'
+];
+const QUEEN_COL    = {queenright:'#16a34a', queenless:'#e74c3c', unknown:'#6b7280'};
+const SUBSTATE_COL   = ['#e74c3c','#e67e22','#f1c40f'];
+const SUBSTATE_NAMES = ['Sub-state A','Sub-state B','Sub-state C'];
+const QR_MUTED       = '#2d4a2d';
+
+// Entropy gradient stops: blue → cyan → yellow → red
+const ENTROPY_STOPS = [[30,64,175],[6,182,212],[234,179,8],[220,38,38]];
+let TOKEN_ENTROPY_MIN=0, TOKEN_ENTROPY_MAX=4;
+
+function entropyColor(h){
+  const t = TOKEN_ENTROPY_MAX > TOKEN_ENTROPY_MIN
+    ? Math.max(0, Math.min(1, (h - TOKEN_ENTROPY_MIN) / (TOKEN_ENTROPY_MAX - TOKEN_ENTROPY_MIN)))
+    : 0.5;
+  const n=ENTROPY_STOPS.length-1, i=Math.min(Math.floor(t*n),n-1), f=t*n-i;
+  const a=ENTROPY_STOPS[i], b=ENTROPY_STOPS[i+1];
+  return `rgb(${~~(a[0]+(b[0]-a[0])*f)},${~~(a[1]+(b[1]-a[1])*f)},${~~(a[2]+(b[2]-a[2])*f)})`;
+}
+
+function frameColor(fr, annotMode){
+  if(annotMode==='token') return TOKEN_COLOR[fr.token]||PLOTLY_Q[0];
+  if(annotMode==='entropy'){
+    const H=DATA?.temporal?.per_token_entropy?.[fr.token];
+    return H!=null ? entropyColor(H) : '#6b7280';
+  }
+  if(annotMode==='substate'){
+    if(fr.queen==='queenright') return QR_MUTED;
+    const s=fr.substate;
+    if(s>=0&&s<3) return SUBSTATE_COL[s];
+    return '#6b2020';
+  }
+  if(fr.queen==='queenright') return QUEEN_COL.queenright;
+  if(fr.queen==='queenless')  return QUEEN_COL.queenless;
+  return QUEEN_COL.unknown;
+}
+const HOP = 0.96;
+
+// ═══════════════════════════════════════════
+// State
+// ═══════════════════════════════════════════
+let DATA=null, TOKEN_COLOR={};
+let dim='3d', proj='pca', annot='token', postQuant=false;
+let showArrows=false, showDwell=false;
+let arrowGroup=null, dwellGroup=null;
+let gridHelper=null;
+let selectedTokens=new Set();
+
+// ── Fast single-frame accessor (builds object on demand) ──
+function getFrame(i){
+  const F=DATA.frames, M=DATA.meta, Q=DATA._QUEEN_DEC||['queenright','queenless','unknown'];
+  return {
+    id:i, file_idx:F.file_idx[i], queen:Q[F.queen[i]]||'unknown',
+    frame_in_file:F.frame_in_file[i],
+    t:F.t[i], token:F.token[i],
+    substate: F.substate ? (F.substate[i]??-1) : -1,
+    x3d:[F.x3d[i*3],F.x3d[i*3+1],F.x3d[i*3+2]],
+    x2d:[F.x2d[i*2],F.x2d[i*2+1]],
+    x_umap:[F.x_umap[i*3],F.x_umap[i*3+1],F.x_umap[i*3+2]],
+    x_tsne:[F.x_tsne[i*3],F.x_tsne[i*3+1],F.x_tsne[i*3+2]],
+    audio:F.audio[i]?audioURL(F.audio[i]):null,
+    file:(M.files[F.file_idx[i]]||{}).stem||'',
+  };
+}
+function nFrames(){ return DATA.frames.token.length; }
+let audioMode='real';
+let activeGlobalIdx=-1;
+let fileFrames=[], fileMeta=null;
+
+// Three.js
+let renderer,scene,cam,controls,ptsMesh,markerMesh,ripples=[];
+let trailLine=null;
+const TRAIL_MAX=40;
+let trailGIdxs=[];
+let camPos3D=new THREE.Vector3(2,1.2,2.5);
+let camPos2D=new THREE.Vector3(0,0,3.2);
+let camTgt = new THREE.Vector3(0,0,0);
+
+// Lerps
+let posLerp={from:null,to:null,born:0,dur:600,active:false};
+let colLerp={from:null,to:null,born:0,dur:400,active:false};
+let camLerp={fromPos:null,toPos:null,born:0,dur:600,active:false};
+let mrkLerp={from:new THREE.Vector3(),to:new THREE.Vector3(),born:0,dur:800,active:false};
+
+// Audio
+let audioEl=null, audioCtx=null, analyser=null, analyserBuf=null;
+let waveRAF=null, syncRAF=null;
+let avgActive=false, avgTimer=null, avgAudioEl=null;
+let lastSyncFrameIdx=-1;
+
+// ═══════════════════════════════════════════
+// Load
+// ═══════════════════════════════════════════
+async function bootstrap(){
+  setMsg('Loading manifest…');
+  // Sensible default in case manifest.json is missing
+  let exps=[{name:'E1_baseline',data:'experiments/E1_baseline/viz_data.json'}];
+  try{
+    const r=await fetch('manifest.json');
+    if(r.ok){ const m=await r.json(); if(m.experiments?.length) exps=m.experiments; }
+  }catch{}
+
+  const sel=document.getElementById('exp-sel');
+  if(exps.length>1){
+    sel.style.display='block';
+    exps.forEach(e=>{const o=document.createElement('option');o.value=e.data;o.textContent=e.name;sel.appendChild(o);});
+    sel.addEventListener('change',()=>loadData(sel.value, true));
+  }
+  await loadData(exps[0].data);
+}
+
+let DATA_BASE_PATH='';
+function audioURL(p){if(!p)return null;if(p.startsWith('http')||p.startsWith('/'))return p;return DATA_BASE_PATH+p;}
+
+async function loadData(path, animate=false){
+  // Always stop audio and clear file state before switching experiments
+  stopAll();
+  fileFrames=[];
+  fileMeta=null;
+
+  setMsg('Fetching data…');
+  const r=await fetch(path);
+  if(!r.ok) throw new Error(path+' not found ('+r.status+')');
+
+  DATA_BASE_PATH=path.includes('/')?path.substring(0,path.lastIndexOf('/')+1):'';
+  setMsg('Parsing…');
+  const raw=await r.json();
+
+  const prevN = DATA?.frames?.token?.length||0;
+  const newN  = raw?.frames?.token?.length||0;
+  const doAnim = animate && renderer && ptsMesh && prevN===newN && prevN>0;
+
+  DATA=raw;
+  DATA._QUEEN_DEC=['queenright','queenless','unknown'];
+  TOKEN_COLOR={};
+  DATA.meta.active_tokens.forEach((t,i)=>{ TOKEN_COLOR[t]=PLOTLY_Q[i%PLOTLY_Q.length]; });
+  selectedTokens.clear();
+  if(DATA.temporal?.per_token_entropy){
+    const vals=Object.values(DATA.temporal.per_token_entropy);
+    TOKEN_ENTROPY_MIN=Math.min(...vals);
+    TOKEN_ENTROPY_MAX=Math.max(...vals);
+  }
+
+  if(doAnim){
+    // ── Animated cross-experiment transition ────────────────────
+    removeArrowOverlay();
+    removeDwellOverlay();
+    markerMesh.visible=false;
+    trailGIdxs=[];
+    // Lerp points to new positions over 1.4 s
+    startPosLerp(postQuant ? getPostQuantPositions() : getTargetPositions(), 1400);
+    // Crossfade colours halfway through
+    setTimeout(()=>snapColors(), 700);
+    // Rebuild UI after the lerp settles
+    setTimeout(()=>{
+      buildFileSelector();
+      buildTokenLegend();
+      buildGallery();
+      updateHdrInfo();
+      showTokenOverlay();
+      if(showArrows) buildArrowOverlay();
+      if(showDwell)  buildDwellOverlay();
+    }, 1450);
+  } else {
+    // ── Full scene init (first load or mismatched frame count) ──
+    setMsg('Building scene…');
+    try{ init3D(); }
+    catch(e){
+      document.getElementById('lmsg').textContent='❌ 3D init failed: '+e.message;
+      console.error(e); return;
+    }
+    document.getElementById('loading').classList.add('gone');
+    setTimeout(()=>{
+      buildFileSelector();
+      buildTokenLegend();
+      buildGallery();
+      updateHdrInfo();
+      showTokenOverlay();
+    }, 0);
+  }
+}
+
+function setMsg(m){document.getElementById('lmsg').textContent=m;}
+function updateHdrInfo(){
+  if(!DATA) return;
+  const m=DATA.meta;
+  const v=(m.pca3_variance||[]).reduce((a,b)=>a+b,0);
+  let txt=`${m.n_active_tokens} tokens · ${m.n_frames_total} frames · PCA ${v?(v*100).toFixed(0)+'%':'—'}`;
+  document.getElementById('hdr-info').innerHTML=txt;
+}
+
+// ═══════════════════════════════════════════
+// Three.js init
+// ═══════════════════════════════════════════
+function init3D(){
+  const wrap=document.getElementById('canvas-area');
+  if(renderer){ renderer.dispose(); }
+  arrowGroup=null; dwellGroup=null; gridHelper=null;
+
+  renderer=new THREE.WebGLRenderer({canvas:document.getElementById('c3d'),antialias:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  renderer.setClearColor(0x0a0a0f);
+  renderer.setSize(wrap.clientWidth,wrap.clientHeight);
+
+  scene=new THREE.Scene();
+  {
+    const tg=new THREE.BufferGeometry();
+    tg.setAttribute('position',new THREE.BufferAttribute(new Float32Array(TRAIL_MAX*3),3));
+    tg.setAttribute('color',new THREE.BufferAttribute(new Float32Array(TRAIL_MAX*3),3));
+    tg.setDrawRange(0,0);
+    trailLine=new THREE.Line(tg,new THREE.LineBasicMaterial({vertexColors:true,transparent:true,opacity:0.9,depthTest:false}));
+    trailLine.renderOrder=1; trailLine.visible=false;
+    scene.add(trailLine);
+  }
+
+  cam=new THREE.PerspectiveCamera(52,wrap.clientWidth/wrap.clientHeight,.001,100);
+  cam.position.copy(camPos3D);
+  cam.lookAt(camTgt);
+
+  controls=new OrbitControls(cam,renderer.domElement);
+  controls.enableDamping=true; controls.dampingFactor=.07;
+  controls.target.copy(camTgt);
+
+  gridHelper=new THREE.GridHelper(4,24,0x16161f,0x16161f);
+  scene.add(gridHelper);
+
+  buildPoints();
+  buildMarker();
+
+  // Raycaster for hover
+  const rc=new THREE.Raycaster();
+  rc.params.Points.threshold=.04;
+  rc.params.Line={threshold:0.025};
+  const mouse=new THREE.Vector2();
+  renderer.domElement.addEventListener('mousemove',e=>{
+    const rect=wrap.getBoundingClientRect();
+    mouse.x=((e.clientX-rect.left)/rect.width)*2-1;
+    mouse.y=-((e.clientY-rect.top)/rect.height)*2+1;
+    rc.setFromCamera(mouse,cam);
+    // 1. Main point cloud
+    const hits=rc.intersectObject(ptsMesh);
+    if(hits.length){ showTT(getFrame(hits[0].index),e.clientX,e.clientY); return; }
+    // 2. Dwell spheres
+    if(dwellGroup&&dwellGroup.children.length){
+      const dh=rc.intersectObjects(dwellGroup.children);
+      if(dh.length&&dh[0].object.userData?.type==='dwell'){
+        showDwellTT(dh[0].object.userData,e.clientX,e.clientY); return;
+      }
+    }
+    // 3. Arrow cones / line shafts
+    if(arrowGroup&&arrowGroup.children.length){
+      const ah=rc.intersectObjects(arrowGroup.children,true);
+      if(ah.length&&ah[0].object.userData?.type==='transition'){
+        showArrowTT(ah[0].object.userData,e.clientX,e.clientY); return;
+      }
+    }
+    hideTT();
+  });
+  renderer.domElement.addEventListener('mouseleave',hideTT);
+
+  window.addEventListener('resize',onResize);
+  renderLoop();
+}
+
+function buildPoints(){
+  if(ptsMesh){scene.remove(ptsMesh);ptsMesh.geometry.dispose();}
+  const N=nFrames();
+  const pos=getTargetPositions();
+  const col=getTargetColors();
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  geo.setAttribute('color',new THREE.BufferAttribute(col,3));
+  ptsMesh=new THREE.Points(geo,new THREE.PointsMaterial(
+    {vertexColors:true,size:.02,sizeAttenuation:true,transparent:true,opacity:.82}));
+  scene.add(ptsMesh);
+}
+
+function buildMarker(){
+  if(markerMesh) scene.remove(markerMesh);
+  markerMesh=new THREE.Mesh(
+    new THREE.SphereGeometry(.055,16,16),
+    new THREE.MeshBasicMaterial({color:0xfbbf24})
+  );
+  markerMesh.visible=false;
+  scene.add(markerMesh);
+}
+
+// ═══════════════════════════════════════════
+// Position & color computation
+// ═══════════════════════════════════════════
+function getTargetPositions(projKey, dimKey){
+  projKey=projKey||proj; dimKey=dimKey||dim;
+  const F=DATA.frames, N=F.token.length;
+  const k=projKey==='pca'?'x3d':projKey==='umap'?'x_umap':'x_tsne';
+  const src=F[k], is2d=dimKey==='2d';
+  const arr=new Float32Array(N*3);
+  if(!is2d && k==='x3d'){
+    arr.set(src); // fastest: direct copy for default case
+  } else {
+    const stride=k==='x2d'?2:3;
+    for(let i=0;i<N;i++){
+      arr[i*3]=src[i*stride]; arr[i*3+1]=src[i*stride+1];
+      arr[i*3+2]=is2d?0:(stride===3?src[i*3+2]:0);
+    }
+  }
+  return arr;
+}
+
+function getPostQuantPositions(){
+  // Compute centroids live from whichever projection+dim is currently active
+  const F=DATA.frames, N=F.token.length;
+  const k=proj==='pca'?'x3d':proj==='umap'?'x_umap':'x_tsne';
+  const src=F[k];
+  const sums={}, cnts={};
+  DATA.meta.active_tokens.forEach(t=>{sums[t]=[0,0,0];cnts[t]=0;});
+  for(let i=0;i<N;i++){
+    const t=F.token[i],s=sums[t];
+    if(!s) continue;
+    s[0]+=src[i*3];s[1]+=src[i*3+1];s[2]+=src[i*3+2];cnts[t]++;
+  }
+  const centroids={};
+  DATA.meta.active_tokens.forEach(t=>{
+    const n=cnts[t]||1;
+    centroids[t]=[sums[t][0]/n,sums[t][1]/n,sums[t][2]/n];
+  });
+  const arr=new Float32Array(N*3);
+  for(let i=0;i<N;i++){
+    const c=centroids[F.token[i]]||[0,0,0];
+    arr[i*3]=c[0];arr[i*3+1]=c[1];arr[i*3+2]=dim==='2d'?0:c[2];
+  }
+  return arr;
+}
+
+function getTargetColors(annotKey){
+  annotKey=annotKey||annot;
+  const F=DATA.frames, N=F.token.length;
+  const Q=['queenright','queenless','unknown'];
+  const arr=new Float32Array(N*3);
+  const entMap=DATA?.temporal?.per_token_entropy||{};
+  const hasFilter=selectedTokens.size>0;
+  for(let i=0;i<N;i++){
+    if(hasFilter && !selectedTokens.has(F.token[i])){
+      arr[i*3]=0.04; arr[i*3+1]=0.04; arr[i*3+2]=0.04;
+      continue;
+    }
+    let css;
+    if(annotKey==='token') css=TOKEN_COLOR[F.token[i]]||PLOTLY_Q[0];
+    else if(annotKey==='entropy'){
+      const H=entMap[F.token[i]];
+      css = H!=null ? entropyColor(H) : '#6b7280';
+    } else if(annotKey==='substate'){
+      const q=Q[F.queen[i]];
+      const s=F.substate ? (F.substate[i]??-1) : -1;
+      if(q==='queenright') css=QR_MUTED;
+      else if(s>=0&&s<3) css=SUBSTATE_COL[s];
+      else css='#6b2020';
+    } else {
+      const q=Q[F.queen[i]];
+      if(q==='queenright') css=QUEEN_COL.queenright;
+      else if(q==='queenless') css=QUEEN_COL.queenless;
+      else css=QUEEN_COL.unknown;
+    }
+    const [r,g,b]=css2rgb(css);
+    arr[i*3]=r; arr[i*3+1]=g; arr[i*3+2]=b;
+  }
+  return arr;
+}
+
+function getFramePos(fr){
+  const k=proj==='pca'?'x3d':proj==='umap'?'x_umap':'x_tsne';
+  const s=fr[k]||fr.x3d;
+  return new THREE.Vector3(s[0],s[1],dim==='2d'?0.02:s[2]);
+}
+
+// ═══════════════════════════════════════════
+// Lerp helpers
+// ═══════════════════════════════════════════
+function ease(t){return t<.5?2*t*t:-1+(4-2*t)*t;}
+
+function startPosLerp(to,dur){
+  posLerp.from=ptsMesh.geometry.attributes.position.array.slice();
+  posLerp.to=to; posLerp.born=performance.now(); posLerp.dur=dur||600; posLerp.active=true;
+}
+
+function startColLerp(to,dur){
+  colLerp.from=ptsMesh.geometry.attributes.color.array.slice();
+  colLerp.to=to; colLerp.born=performance.now(); colLerp.dur=dur||400; colLerp.active=true;
+}
+
+function startCamLerp(toPos,dur){
+  camLerp.fromPos=cam.position.clone();
+  camLerp.toPos=toPos.clone();
+  camLerp.born=performance.now(); camLerp.dur=dur||600; camLerp.active=true;
+}
+
+function tickLerps(now){
+  if(posLerp.active){
+    const t=Math.min((now-posLerp.born)/posLerp.dur,1); const e=ease(t);
+    const a=ptsMesh.geometry.attributes.position.array;
+    for(let i=0;i<a.length;i++) a[i]=posLerp.from[i]+(posLerp.to[i]-posLerp.from[i])*e;
+    ptsMesh.geometry.attributes.position.needsUpdate=true;
+    if(t>=1) posLerp.active=false;
+  }
+  // color lerp removed — snapColors() is instant
+  if(camLerp.active){
+    const t=Math.min((now-camLerp.born)/camLerp.dur,1); const e=ease(t);
+    cam.position.lerpVectors(camLerp.fromPos,camLerp.toPos,e);
+    if(t>=1) camLerp.active=false;
+  }
+  if(mrkLerp.active){
+    const t=Math.min((now-mrkLerp.born)/mrkLerp.dur,1);
+    markerMesh.position.lerpVectors(mrkLerp.from,mrkLerp.to,ease(t));
+    if(t>=1) mrkLerp.active=false;
+  }
+  // Ripples
+  ripples=ripples.filter(rp=>{
+    const t=Math.min((now-rp.born)/rp.dur,1);
+    const s=1+t*2.6; rp.m.scale.set(s,s,s); rp.mat.opacity=.7*(1-t);
+    rp.m.lookAt(cam.position);
+    if(t>=1){scene.remove(rp.m);return false;} return true;
+  });
+}
+
+function spawnRipple(pos,css){
+  const mat=new THREE.MeshBasicMaterial({
+    color:new THREE.Color(...css2rgb(css)),side:THREE.DoubleSide,transparent:true,opacity:.7});
+  const m=new THREE.Mesh(new THREE.RingGeometry(.04,.065,26),mat);
+  m.position.copy(pos); m.lookAt(cam.position);
+  scene.add(m); ripples.push({m,mat,born:performance.now(),dur:500});
+}
+
+// ═══════════════════════════════════════════
+// Render loop
+// ═══════════════════════════════════════════
+function renderLoop(){
+  requestAnimationFrame(renderLoop);
+  const now=performance.now();
+  controls.update();
+  tickLerps(now);
+  renderer.render(scene,cam);
+}
+
+function onResize(){
+  const w=document.getElementById('canvas-area');
+  cam.aspect=w.clientWidth/w.clientHeight;
+  cam.updateProjectionMatrix();
+  renderer.setSize(w.clientWidth,w.clientHeight);
+}
+
+// ═══════════════════════════════════════════
+// ── Instant color snap (no lerp — avoids per-frame GPU upload) ──
+function snapColors(){
+  if(!ptsMesh) return;
+  const arr=getTargetColors();
+  ptsMesh.geometry.attributes.color.array.set(arr);
+  ptsMesh.geometry.attributes.color.needsUpdate=true;
+  colLerp.active=false;
+}
+
+document.getElementById('btn-postquant')?.addEventListener('click',()=>{
+  postQuant=!postQuant;
+  document.getElementById('btn-postquant').classList.toggle('on', postQuant);
+  startPosLerp(postQuant ? getPostQuantPositions() : getTargetPositions());
+  if(showDwell) buildDwellOverlay();
+});
+
+document.getElementById('btn-arrows')?.addEventListener('click',()=>{
+  showArrows=!showArrows;
+  document.getElementById('btn-arrows').classList.toggle('on', showArrows);
+  if(showArrows) buildArrowOverlay(); else removeArrowOverlay();
+});
+
+document.getElementById('btn-dwell')?.addEventListener('click',()=>{
+  showDwell=!showDwell;
+  document.getElementById('btn-dwell').classList.toggle('on', showDwell);
+  if(showDwell) buildDwellOverlay(); else removeDwellOverlay();
+});
+
+
+
+// ═══════════════════════════════════════════
+// Header controls
+// ═══════════════════════════════════════════
+document.querySelectorAll('[data-annot]').forEach(b=>{
+  b.addEventListener('click',()=>{
+    annot=b.dataset.annot;
+    document.querySelectorAll('[data-annot]').forEach(x=>x.classList.toggle('on',x===b));
+    snapColors();
+    if(annot==='substate') showSubstateOverlay();
+    else if(annot==='entropy') showEntropyOverlay();
+    else if(annot==='token') showTokenOverlay();
+    else if(annot==='state') showStateOverlay();
+  });
+});
+
+document.querySelectorAll('[data-dim]').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const newDim=b.dataset.dim;
+    if(newDim===dim) return;
+    dim=newDim;
+    document.querySelectorAll('[data-dim]').forEach(x=>x.classList.toggle('on',x===b));
+    // Black background + no grid in 2D; restore in 3D
+    renderer.setClearColor(dim==='2d' ? 0x000000 : 0x0a0a0f);
+    if(gridHelper) gridHelper.visible=(dim==='3d');
+    startPosLerp(postQuant ? getPostQuantPositions() : getTargetPositions());
+    const tgtPos=dim==='2d'?camPos2D:camPos3D;
+    startCamLerp(tgtPos);
+    controls.enableRotate=(dim==='3d');
+    if(activeGlobalIdx>=0) moveMarkerTo(DATA.frames[activeGlobalIdx]);
+    rebuildOverlays();
+  });
+});
+
+document.querySelectorAll('[data-proj]').forEach(b=>{
+  b.addEventListener('click',()=>{
+    proj=b.dataset.proj;
+    document.querySelectorAll('[data-proj]').forEach(x=>x.classList.toggle('on',x===b));
+    startPosLerp(postQuant ? getPostQuantPositions() : getTargetPositions());
+    if(activeGlobalIdx>=0) moveMarkerTo(DATA.frames[activeGlobalIdx]);
+    rebuildOverlays();
+  });
+});
+
+// ═══════════════════════════════════════════
+// Token centroid helper
+// ═══════════════════════════════════════════
+function getTokenCentroids(){
+  const F=DATA.frames, k=proj==='pca'?'x3d':proj==='umap'?'x_umap':'x_tsne';
+  const src=F[k], sums={}, cnts={};
+  DATA.meta.active_tokens.forEach(t=>{sums[t]=[0,0,0];cnts[t]=0;});
+  for(let i=0;i<F.token.length;i++){
+    const t=F.token[i],s=sums[t]; if(!s) continue;
+    s[0]+=src[i*3];s[1]+=src[i*3+1];s[2]+=src[i*3+2];cnts[t]++;
+  }
+  const out={};
+  DATA.meta.active_tokens.forEach(t=>{
+    const n=cnts[t]||1;
+    out[t]=[sums[t][0]/n, sums[t][1]/n, sums[t][2]/n];
+  });
+  return out;
+}
+
+// ═══════════════════════════════════════════
+// Transition arrow overlay
+// ═══════════════════════════════════════════
+function buildArrowOverlay(){
+  removeArrowOverlay();
+  if(!DATA?.temporal?.transitions?.length) return;
+  const centroids=getTokenCentroids();
+  arrowGroup=new THREE.Group();
+  arrowGroup.renderOrder=3;
+
+  // Max prob for scaling
+  const maxP=Math.max(...DATA.temporal.transitions.map(t=>t.prob));
+
+  for(const tr of DATA.temporal.transitions){
+    if(selectedTokens.size>0 && !selectedTokens.has(tr.from) && !selectedTokens.has(tr.to)) continue;
+    const cF=centroids[tr.from], cT=centroids[tr.to];
+    if(!cF||!cT) continue;
+    const z2=(a)=>dim==='2d'?0:a;
+    const ox=cF[0], oy=cF[1], oz=z2(cF[2]);
+    const tx=cT[0], ty=cT[1], tz=z2(cT[2]);
+    const dx=tx-ox, dy=ty-oy, dz=tz-oz;
+    const len=Math.sqrt(dx*dx+dy*dy+dz*dz);
+    if(len<0.001) continue;
+
+    const dir=new THREE.Vector3(dx/len,dy/len,dz/len);
+    const origin=new THREE.Vector3(ox,oy,oz);
+    const prob=tr.prob, normP=prob/maxP;
+    const drawLen=len*0.82;                            // leave a gap before destination
+    const headLen=Math.max(0.025,Math.min(0.10,normP*0.09));
+    const headWid=headLen*0.55;
+
+    const col=new THREE.Color(...css2rgb(TOKEN_COLOR[tr.from]||PLOTLY_Q[0]));
+    const arrow=new THREE.ArrowHelper(dir,origin,drawLen,col,headLen,headWid);
+    arrow.line.material.transparent=true;
+    arrow.line.material.opacity=Math.min(0.95, 0.15+normP*0.80);
+    arrow.cone.material.transparent=true;
+    arrow.cone.material.opacity=Math.min(0.95, 0.25+normP*0.70);
+    // Tag for raycaster tooltip
+    const ud={type:'transition',from:tr.from,to:tr.to,prob:tr.prob};
+    arrow.line.userData=ud;
+    arrow.cone.userData=ud;
+    arrowGroup.add(arrow);
+  }
+  scene.add(arrowGroup);
+}
+
+function removeArrowOverlay(){
+  if(arrowGroup){ scene.remove(arrowGroup); arrowGroup=null; }
+}
+
+// ═══════════════════════════════════════════
+// Dwell-time sphere overlay
+// ═══════════════════════════════════════════
+function buildDwellOverlay(){
+  removeDwellOverlay();
+  if(!DATA?.temporal?.dwell_summary) return;
+  const centroids=getTokenCentroids();
+  const ds=DATA.temporal.dwell_summary;
+  const dwellVals=Object.values(ds).map(d=>d.mean_ms);
+  if(!dwellVals.length) return;
+  const minD=Math.min(...dwellVals), maxD=Math.max(...dwellVals);
+  const range=maxD-minD||1;
+
+  dwellGroup=new THREE.Group();
+  dwellGroup.renderOrder=4;
+
+  DATA.meta.active_tokens.forEach(tok=>{
+    if(selectedTokens.size>0 && !selectedTokens.has(tok)) return;
+    const d=ds[tok]; if(!d) return;
+    const c=centroids[tok]; if(!c) return;
+    const t=(d.mean_ms-minD)/range;
+    const radius=0.025+t*0.10;
+    const geo=new THREE.SphereGeometry(radius,14,10);
+    const col=new THREE.Color(...css2rgb(TOKEN_COLOR[tok]||'#888'));
+    const mat=new THREE.MeshBasicMaterial(
+      {color:col,transparent:true,opacity:0.38,depthWrite:false});
+    const mesh=new THREE.Mesh(geo,mat);
+    mesh.position.set(c[0],c[1],dim==='2d'?0:c[2]);
+    mesh.userData={type:'dwell',token:tok,mean_ms:d.mean_ms,std_ms:d.std_ms,median_ms:d.median_ms||null};
+    dwellGroup.add(mesh);
+  });
+  scene.add(dwellGroup);
+}
+
+function removeDwellOverlay(){
+  if(dwellGroup){ scene.remove(dwellGroup); dwellGroup=null; }
+}
+
+function rebuildOverlays(){
+  if(showArrows) buildArrowOverlay();
+  if(showDwell)  buildDwellOverlay();
+}
+
+// ═══════════════════════════════════════════
+// Sub-state overlay info
+// ═══════════════════════════════════════════
+function showTokenOverlay(){
+  if(!DATA?.frames?.token) return;
+  const counts={};
+  DATA.frames.token.forEach(t=>{ counts[t]=(counts[t]||0)+1; });
+  const total=DATA.frames.token.length;
+  const top=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,4);
+  const parts=top.map(([t,n])=>
+    `<span style="color:${TOKEN_COLOR[t]||'#888'}">T${t} ${(n/total*100).toFixed(0)}%</span>`);
+  document.getElementById('info').innerHTML=
+    `${DATA.meta.n_active_tokens} tokens · ${parts.join(' · ')}`;
+}
+
+function showStateOverlay(){
+  if(!DATA?.frames?.queen) return;
+  const Q=['queenright','queenless','unknown'];
+  const counts=[0,0,0];
+  DATA.frames.queen.forEach(q=>counts[q]=(counts[q]||0)+1);
+  const total=DATA.frames.queen.length||1;
+  const qr =(counts[0]/total*100).toFixed(0);
+  const qnl=(counts[1]/total*100).toFixed(0);
+  document.getElementById('info').innerHTML=
+    `<span style="color:${QUEEN_COL.queenright}">QR ${qr}%</span> · `+
+    `<span style="color:${QUEEN_COL.queenless}">QNL ${qnl}%</span>`;
+}
+
+function showSubstateOverlay(){
+  if(!DATA?.qnl_substates) return;
+  const sub=DATA.qnl_substates;
+  const parts=['0','1','2'].map((k,i)=>{
+    const d=sub[k]; if(!d) return null;
+    return `<span style="color:${SUBSTATE_COL[i]}">${'ABC'[i]} ${d.size_pct?.toFixed(0)}%</span>`;
+  }).filter(Boolean);
+  document.getElementById('info').innerHTML=`QNL: ${parts.join(' · ')}`;
+}
+
+function showEntropyOverlay(){
+  if(!DATA?.temporal?.per_token_entropy) return;
+  document.getElementById('info').innerHTML=
+    `H: <span style="color:${entropyColor(TOKEN_ENTROPY_MIN)}">${TOKEN_ENTROPY_MIN.toFixed(2)}</span>`+
+    ` – <span style="color:${entropyColor(TOKEN_ENTROPY_MAX)}">${TOKEN_ENTROPY_MAX.toFixed(2)}</span> bits`;
+}
+
+// ═══════════════════════════════════════════
+// Tooltip
+// ═══════════════════════════════════════════
+function _positionTT(tt,cx,cy){
+  tt.style.display='block';
+  const vw=window.innerWidth, vh=window.innerHeight;
+  const w=tt.offsetWidth||170, h=tt.offsetHeight||80;
+  tt.style.left=Math.min(cx+14, vw-w-6)+'px';
+  tt.style.top =Math.max(cy-40, 6)+'px';
+}
+
+function showTT(fr,cx,cy){
+  const tt=document.getElementById('tt');
+  const col=frameColor(fr,annot);
+  let extra='';
+  if(annot==='substate'&&fr.substate>=0&&fr.substate<3) extra=` · ${SUBSTATE_NAMES[fr.substate]}`;
+  if(annot==='entropy'){
+    const H=DATA?.temporal?.per_token_entropy?.[fr.token];
+    if(H!=null) extra=` · H=${H.toFixed(2)} b`;
+  }
+  let dwellRow='';
+  if(showDwell){
+    const d=DATA?.temporal?.dwell_summary?.[fr.token];
+    if(d) dwellRow=`<div class="tr">Dwell <b>${d.mean_ms.toFixed(0)} ms</b> ± ${d.std_ms.toFixed(0)} ms</div>`;
+  }
+  tt.innerHTML=
+    `<div style="font-size:13px;font-weight:700;color:${col};margin-bottom:2px">Frame ${fr.id}</div>`+
+    `<div class="tr">Token <b>T${fr.token}</b> · <b>${fr.queen||'—'}${extra}</b></div>`+
+    `<div class="tr">t = <b>${fr.t.toFixed(2)}s</b> · ${(fr.file||'').replace('PaSST_','').substring(0,20)}</div>`+
+    dwellRow;
+  _positionTT(tt,cx,cy);
+}
+
+function showArrowTT(ud,cx,cy){
+  const tt=document.getElementById('tt');
+  const fc=TOKEN_COLOR[ud.from]||'#888', tc=TOKEN_COLOR[ud.to]||'#888';
+  const pct=(ud.prob*100).toFixed(1);
+  // bar width proportional to prob (max shown prob ≈ 1)
+  const barW=Math.round(ud.prob*100);
+  tt.innerHTML=
+    `<div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px">Transition</div>`+
+    `<div class="tr"><b style="color:${fc}">T${ud.from}</b>`+
+    ` <span style="color:var(--muted)">→</span> `+
+    `<b style="color:${tc}">T${ud.to}</b></div>`+
+    `<div class="tr" style="margin-top:3px">`+
+    `<div style="background:var(--bd);border-radius:2px;height:5px;width:100px;overflow:hidden">`+
+    `<div style="background:${fc};height:100%;width:${barW}px;transition:width .2s"></div></div></div>`+
+    `<div class="tr">P = <b>${pct}%</b></div>`;
+  _positionTT(tt,cx,cy);
+}
+
+function showDwellTT(ud,cx,cy){
+  const tt=document.getElementById('tt');
+  const col=TOKEN_COLOR[ud.token]||'#888';
+  const ms=ud.mean_ms.toFixed(0), sd=ud.std_ms.toFixed(0);
+  const med=ud.median_ms!=null?`<div class="tr">Median <b>${ud.median_ms.toFixed(0)} ms</b></div>`:'';
+  tt.innerHTML=
+    `<div style="font-size:13px;font-weight:700;color:${col};margin-bottom:2px">Token T${ud.token}</div>`+
+    `<div class="tr">Mean dwell <b>${ms} ms</b></div>`+
+    `<div class="tr">σ = <b>${sd} ms</b></div>`+
+    med;
+  _positionTT(tt,cx,cy);
+}
+
+function hideTT(){document.getElementById('tt').style.display='none';}
+
+// ═══════════════════════════════════════════
+// Marker
+// ═══════════════════════════════════════════
+function moveMarkerTo(fr){
+  const newPos=getFramePos(fr);
+  const col=frameColor(fr,annot);
+  markerMesh.material.color.set(...css2rgb(col));
+  if(!markerMesh.visible){
+    markerMesh.position.copy(newPos);
+    markerMesh.visible=true;
+    mrkLerp.active=false;
+  } else {
+    mrkLerp.from.copy(markerMesh.position);
+    mrkLerp.to.copy(newPos);
+    mrkLerp.born=performance.now();
+    mrkLerp.dur=HOP*800;
+    mrkLerp.active=true;
+  }
+  spawnRipple(newPos, col);
+}
+
+function updateInfo(fr){
+  const col=frameColor(fr,annot);
+  document.getElementById('info').innerHTML=
+    `<b style="color:${col}">Token ${fr.token}</b> · ${fr.t.toFixed(1)}s · <b>${fr.queen||'—'}</b>`;
+  // Highlight legend item
+  document.querySelectorAll('.tl-item').forEach(el=>{
+    el.classList.toggle('active-tok',parseInt(el.dataset.tok)===fr.token);
+  });
+}
+
+// ═══════════════════════════════════════════
+// File selector
+// ═══════════════════════════════════════════
+function buildFileSelector(){
+  const sel=document.getElementById('file-sel');
+  sel.innerHTML='<option value="">— select recording —</option>';
+  (DATA.meta.files||[]).forEach((f,i)=>{
+    if(typeof f==='object'&&!f.audio_path) return;
+    const stem=typeof f==='object'?f.stem:f;
+    const q=typeof f==='object'?f.queen:'';
+    const o=document.createElement('option');
+    o.value=i;
+    const qLabel=q==='queenright'?'QR':q==='queenless'?'QNL':'?';
+    o.textContent=stem.replace('PaSST_','').substring(0,26)+` [${qLabel}]`;
+    sel.appendChild(o);
+  });
+  sel.addEventListener('change',()=>{
+    const i=parseInt(sel.value);
+    if(isNaN(i)) return;
+    selectFile(i);
+  });
+}
+
+function selectFile(fi){
+  stopAll();
+  fileMeta=DATA.meta.files[fi];
+  const F2=DATA.frames, N2=F2.token.length;
+  fileFrames=[];
+  for(let i=0;i<N2;i++){ if(F2.file_idx[i]===fi){ const fr=getFrame(i); fr._gIdx=i; fileFrames.push(fr); } }
+  fileFrames.sort((a,b)=>a.t-b.t);
+  activeGlobalIdx=-1;
+  markerMesh.visible=false;
+  mrkLerp.active=false;
+  lastSyncFrameIdx=-1;
+  const hasAudio=!!(fileMeta?.audio_path);
+  document.getElementById('pbtn').disabled=!hasAudio;
+  document.getElementById('scrubber').value=0;
+  document.getElementById('tdsp').textContent='0:00 / '+fmt(fileFrames.length>0?fileFrames[fileFrames.length-1].t+HOP:0);
+  drawTimeline(-1);
+  clearCoch();
+  // Restore annotation info (stopAll() blanked it)
+  if(annot==='token') showTokenOverlay();
+  else if(annot==='state') showStateOverlay();
+  else if(annot==='entropy') showEntropyOverlay();
+  else if(annot==='substate') showSubstateOverlay();
+}
+
+// ═══════════════════════════════════════════
+// Token legend
+// ═══════════════════════════════════════════
+function buildGallery(){
+  const g=document.getElementById('gallery');
+  if(!g) return;
+  g.innerHTML='';
+  DATA.tokens.forEach(tk=>{
+    const col=TOKEN_COLOR[tk.id]||'#888';
+    const div=document.createElement('div');
+    div.className='tc';
+    const specSrc=tk.spectrogram?audioURL(tk.spectrogram):'';
+    const entH=DATA?.temporal?.per_token_entropy?.[tk.id];
+    const dwellD=DATA?.temporal?.dwell_summary?.[tk.id];
+    const entTxt=entH!=null?`<span style="color:${entropyColor(entH)};font-size:9px;margin-left:4px">H=${entH.toFixed(2)}b</span>`:'';
+    const dwellTxt=dwellD?`<span style="color:var(--text2);font-size:9px;margin-left:4px">⏱${dwellD.mean_ms.toFixed(0)}ms</span>`:'';
+    div.innerHTML=
+      `<div class="tc-hdr">
+         <div class="tc-dot" style="background:${col}"></div>
+         <span class="tc-name" style="color:${col}">T${tk.id}</span>
+         <span class="tc-pct">${(tk.usage*100).toFixed(1)}% · ${tk.count.toLocaleString()}</span>
+         ${entTxt}${dwellTxt}
+       </div>`+
+      (specSrc?`<img class="tc-spec" src="${specSrc}" loading="lazy" title="Token ${tk.id} mel spectrogram"/>`:'') +
+      `<div class="tc-btns">
+         <button class="tc-btn" id="gb-o-${tk.id}" ${tk.orig_audio?'':'disabled'}>▶ Avg</button>
+         <button class="tc-btn" id="gb-h-${tk.id}" ${tk.hpss_audio?'':'disabled'}>▶ HPSS</button>
+       </div>`;
+    g.appendChild(div);
+    g.querySelector('#gb-o-'+tk.id).addEventListener('click',()=>playGalTok(tk,'orig'));
+    g.querySelector('#gb-h-'+tk.id).addEventListener('click',()=>playGalTok(tk,'hpss'));
+  });
+}
+
+let galAudioEl=null;
+function playGalTok(tk,type){
+  if(galAudioEl){galAudioEl.pause();galAudioEl=null;}
+  document.querySelectorAll('.tc-btn.on').forEach(b=>{b.classList.remove('on');b.textContent=b.id.startsWith('gb-h')?'▶ HPSS':'▶ Avg';});
+  showCochLive();
+  const src=type==='hpss'?tk.hpss_audio:tk.orig_audio;
+  if(!src) return;
+  const btn=document.getElementById((type==='hpss'?'gb-h-':'gb-o-')+tk.id);
+  btn.textContent='⏹'; btn.classList.add('on');
+  if(type==='hpss'&&tk.hpss_spec) showCochHpss(audioURL(tk.hpss_spec));
+  galAudioEl=new Audio(audioURL(src));
+  galAudioEl.addEventListener('ended',()=>{
+    btn.textContent=type==='hpss'?'▶ HPSS':'▶ Avg';
+    btn.classList.remove('on');
+    galAudioEl=null;
+    showCochLive();
+  });
+  galAudioEl.play().catch(()=>{});
+}
+
+function buildTokenLegend(){
+  const leg=document.getElementById('tok-legend');
+  leg.innerHTML='';
+  // Prepend the clear button (re-appended to keep it first in DOM order)
+  const clearBtn=document.createElement('button');
+  clearBtn.id='tok-filter-clear'; clearBtn.textContent='× clear';
+  clearBtn.addEventListener('click', clearTokenFilter);
+  leg.appendChild(clearBtn);
+
+  DATA.tokens.forEach(tk=>{
+    const col=TOKEN_COLOR[tk.id]||'#888';
+    const div=document.createElement('div');
+    div.className='tl-item'; div.dataset.tok=tk.id;
+    div.innerHTML=`<div class="tl-dot" style="background:${col}"></div><span class="tl-id">T${tk.id}</span>`;
+    div.title=`Click to filter · Token ${tk.id} · ${(tk.usage*100).toFixed(1)}%`;
+    div.addEventListener('click',()=>toggleTokenFilter(tk.id));
+    leg.appendChild(div);
+  });
+}
+
+function toggleTokenFilter(tokId){
+  if(selectedTokens.has(tokId)) selectedTokens.delete(tokId);
+  else selectedTokens.add(tokId);
+  applyTokenFilter();
+}
+
+function clearTokenFilter(){
+  selectedTokens.clear();
+  applyTokenFilter();
+}
+
+function applyTokenFilter(){
+  const hasFilter=selectedTokens.size>0;
+  // Update legend visuals
+  document.querySelectorAll('.tl-item').forEach(el=>{
+    const t=parseInt(el.dataset.tok);
+    el.classList.toggle('tl-selected', selectedTokens.has(t));
+    el.classList.toggle('tl-dimmed', hasFilter && !selectedTokens.has(t));
+  });
+  // Show/hide clear button
+  const cb=document.getElementById('tok-filter-clear');
+  if(cb) cb.style.display=hasFilter?'block':'none';
+  // Re-colour the scatter
+  snapColors();
+  // Rebuild active overlays (arrows/dwell respect filter)
+  if(showArrows) buildArrowOverlay();
+  if(showDwell)  buildDwellOverlay();
+  // Info bar
+  if(hasFilter){
+    const names=[...selectedTokens].sort((a,b)=>a-b).map(t=>`<b style="color:${TOKEN_COLOR[t]||'#888'}">T${t}</b>`).join(' ');
+    document.getElementById('info').innerHTML=`Filter: ${names}`;
+  } else if(annot==='entropy') showEntropyOverlay();
+  else if(annot==='substate') showSubstateOverlay();
+  else if(annot==='token') showTokenOverlay();
+  else if(annot==='state') showStateOverlay();
+}
+
+function playTokenPreview(tk){
+  stopAll();
+  if(!tk.orig_audio) return;
+  const a=new Audio(audioURL(tk.orig_audio));
+  a.play().catch(()=>{});
+}
+
+// ═══════════════════════════════════════════
+// Timeline strip
+// ═══════════════════════════════════════════
+function dimAllExcept(tokenId){
+  if(!ptsMesh) return;
+  const F=DATA.frames, N=F.token.length;
+  const arr=new Float32Array(N*3);
+  for(let i=0;i<N;i++){
+    if(F.token[i]===tokenId){
+      const [r,g,b]=css2rgb(TOKEN_COLOR[tokenId]||PLOTLY_Q[0]);
+      arr[i*3]=r; arr[i*3+1]=g; arr[i*3+2]=b;
+    } else {
+      arr[i*3]=0.04; arr[i*3+1]=0.04; arr[i*3+2]=0.04;
+    }
+  }
+  ptsMesh.geometry.attributes.color.array.set(arr);
+  ptsMesh.geometry.attributes.color.needsUpdate=true;
+}
+
+function highlightTimelineToken(tokenId){
+  // Highlight this token's segments in the timeline strip
+  if(!fileFrames.length) return;
+  const canvas=document.getElementById('tl-canvas');
+  const wrap=document.getElementById('tl-wrap');
+  canvas.width=wrap.clientWidth; canvas.height=wrap.clientHeight;
+  const W=canvas.width, H=canvas.height;
+  const ctx=canvas.getContext('2d');
+  ctx.fillStyle='#0a0a0f'; ctx.fillRect(0,0,W,H);
+  const bw=W/fileFrames.length;
+  fileFrames.forEach((fr,i)=>{
+    if(fr.token===tokenId){
+      ctx.fillStyle=TOKEN_COLOR[tokenId]||'#888';
+    } else {
+      ctx.fillStyle='#1a1a22';
+    }
+    ctx.fillRect(i*bw,0,Math.max(1,bw-0.5),H);
+  });
+  // Token legend highlight
+  document.querySelectorAll('.tl-item').forEach(el=>{
+    const active=parseInt(el.dataset.tok)===tokenId;
+    el.classList.toggle('active-tok', active);
+    el.style.background=active?'var(--bg3)':'';
+  });
+}
+
+function clearPointDim(){
+  trailGIdxs=[];
+  if(trailLine){ trailLine.visible=false; trailLine.geometry.setDrawRange(0,0); }
+  if(!ptsMesh) return;
+  const arr=getTargetColors();   // respects selectedTokens filter
+  ptsMesh.geometry.attributes.color.array.set(arr);
+  ptsMesh.geometry.attributes.color.needsUpdate=true;
+  const hasFilter=selectedTokens.size>0;
+  document.querySelectorAll('.tl-item').forEach(el=>{
+    const t=parseInt(el.dataset.tok);
+    el.classList.remove('active-tok');
+    el.classList.toggle('tl-selected', selectedTokens.has(t));
+    el.classList.toggle('tl-dimmed', hasFilter && !selectedTokens.has(t));
+    el.style.background='';
+  });
+}
+
+function drawTimeline(currentTimeSec){
+  const canvas=document.getElementById('tl-canvas');
+  const wrap=document.getElementById('tl-wrap');
+  canvas.width=wrap.clientWidth; canvas.height=wrap.clientHeight;
+  const W=canvas.width, H=canvas.height;
+  const ctx=canvas.getContext('2d');
+  ctx.fillStyle='#0a0a0f'; ctx.fillRect(0,0,W,H);
+  if(!fileFrames.length) return;
+
+  const maxT=fileFrames[fileFrames.length-1].t+HOP;
+  const bw=W/fileFrames.length;
+
+  fileFrames.forEach((fr,i)=>{
+    const col=frameColor(fr,annot);
+    ctx.fillStyle=col;
+    ctx.fillRect(i*bw,0,Math.max(1,bw-0.5),H);
+  });
+
+  // Cursor
+  if(currentTimeSec>=0){
+    const x=Math.min(currentTimeSec/maxT,1)*W;
+    const cursor=document.getElementById('tl-cursor');
+    cursor.style.left=x+'px'; cursor.style.display='block';
+  } else {
+    document.getElementById('tl-cursor').style.display='none';
+  }
+}
+
+// Scrubber — seek directly on every input tick; pause during drag, resume on release
+let isSeeking=false, wasPlaying=false;
+const scrubEl=document.getElementById('scrubber');
+
+scrubEl.addEventListener('mousedown', ()=>{
+  if(!audioEl) return;
+  isSeeking=true;
+  wasPlaying=!audioEl.paused;
+  if(wasPlaying) audioEl.pause();
+});
+
+scrubEl.addEventListener('input', ()=>{
+  if(!audioEl) return;
+  const dur=audioEl.duration;
+  if(!dur||isNaN(dur)) return;
+  const t=(parseInt(scrubEl.value)/1000)*dur;
+  audioEl.currentTime=t;
+  document.getElementById('tdsp').textContent=fmt(t)+' / '+fmt(dur);
+  drawTimeline(t);
+});
+
+scrubEl.addEventListener('mouseup', ()=>{
+  if(!audioEl||!isSeeking) return;
+  isSeeking=false;
+  if(wasPlaying){
+    audioEl.play().catch(()=>{});
+    // Restart sync loop if it stopped
+    if(!syncRAF) syncLoop();
+  }
+});
+
+// Also wire the token timeline click to seek
+document.getElementById('tl-wrap')?.addEventListener('click',e=>{
+  if(!fileFrames.length||!audioEl) return;
+  const rect=e.currentTarget.getBoundingClientRect();
+  const pct=(e.clientX-rect.left)/rect.width;
+  const maxT=fileFrames[fileFrames.length-1].t+HOP;
+  audioEl.currentTime=pct*maxT;
+  if(audioEl.paused) audioEl.play().catch(()=>{});
+  if(!syncRAF) syncLoop();
+});
+
+// ═══════════════════════════════════════════
+// Cochleagram (scrolling spectrogram)
+// ═══════════════════════════════════════════
+function showCochHpss(src){
+  const cv=document.getElementById('coch');
+  const img=document.getElementById('coch-hpss');
+  const lbl=document.getElementById('coch-label');
+  if(cv)  cv.style.display='none';
+  if(lbl) lbl.style.display='none';
+  if(img){ img.src=src; img.style.display='block'; }
+}
+function showCochLive(){
+  const cv=document.getElementById('coch');
+  const img=document.getElementById('coch-hpss');
+  const lbl=document.getElementById('coch-label');
+  if(cv)  cv.style.display='';
+  if(lbl) lbl.style.display='';
+  if(img){ img.style.display='none'; img.src=''; }
+}
+
+function clearCoch(){
+  const c=document.getElementById('coch');
+  c.width=c.clientWidth||800; c.height=c.clientHeight||70;
+  const ctx=c.getContext('2d');
+  ctx.fillStyle='#080810'; ctx.fillRect(0,0,c.width,c.height);
+}
+
+function infrared(v){
+  // inferno-like: black→purple→orange→yellow
+  const s=[
+    [0,0,4],[40,11,84],[101,21,110],[159,42,99],
+    [212,72,66],[245,125,21],[252,186,45],[252,255,164]
+  ];
+  const n=s.length-1; const i=Math.min(Math.floor(v*n),n-1);
+  const f=v*n-i; const a=s[i],b=s[i+1];
+  return `rgb(${~~(a[0]+(b[0]-a[0])*f)},${~~(a[1]+(b[1]-a[1])*f)},${~~(a[2]+(b[2]-a[2])*f)})`;
+}
+
+function drawCochFrame(){
+  if(!analyser) return;
+  const c=document.getElementById('coch');
+  if(!c||c.style.display==='none') return;
+  if(c.width!==c.clientWidth||c.height!==c.clientHeight){
+    c.width=c.clientWidth||300; c.height=c.clientHeight||80;
+  }
+  const W=c.width, H=c.height;
+  if(!W||!H) return;
+  const ctx=c.getContext('2d');
+  ctx.drawImage(c,-1,0);
+  // New column on right
+  analyser.getByteFrequencyData(analyserBuf);
+  const n=analyserBuf.length;
+  for(let i=0;i<H;i++){
+    const bin=Math.floor((H-1-i)/H*n);
+    ctx.fillStyle=infrared(analyserBuf[bin]/255);
+    ctx.fillRect(W-1,i,1,1);
+  }
+}
+
+function drawCochLoop(){
+  if(!analyser){waveRAF=null;return;}
+  waveRAF=requestAnimationFrame(drawCochLoop);
+  drawCochFrame();
+}
+
+// ═══════════════════════════════════════════
+// Real audio playback
+// ═══════════════════════════════════════════
+document.getElementById('pbtn')?.addEventListener('click',()=>{
+  if(audioMode==='avg'||audioMode==='hpss'){
+    if(avgActive) stopAll(); else startAvgMode();
+  } else {
+    if(audioEl&&!audioEl.paused) pauseReal(); else startReal();
+  }
+});
+
+function setAudioMode(mode){
+  audioMode=mode;
+  ['btn-real','btn-avg','btn-hpss-mode'].forEach(id=>{
+    document.getElementById(id)?.classList.toggle('on', false);
+  });
+  const map={real:'btn-real',avg:'btn-avg',hpss:'btn-hpss-mode'};
+  if(map[mode]) document.getElementById(map[mode])?.classList.toggle('on', true);
+  stopAll();
+}
+document.getElementById('btn-real')?.addEventListener('click',()=>setAudioMode('real'));
+document.getElementById('btn-avg')?.addEventListener('click', ()=>setAudioMode('avg'));
+document.getElementById('btn-hpss-mode')?.addEventListener('click',()=>setAudioMode('hpss'));
+
+function startReal(){
+  if(!fileMeta?.audio_path) return;
+  const url=audioURL(fileMeta.audio_path);
+  if(!url) return;
+
+  if(!audioEl){
+    audioEl=new Audio();
+    audioEl.crossOrigin='anonymous';
+    audioEl.src=url;
+    audioEl.addEventListener('timeupdate',onTimeUpdate);
+    audioEl.addEventListener('ended',()=>{pauseReal();document.getElementById('pbtn').textContent='▶';});
+
+    try{
+      if(!audioCtx) audioCtx=new AudioContext();
+      // Create analyser only once — reuse across file switches to avoid orphaned graph nodes
+      if(!analyser){
+        analyser=audioCtx.createAnalyser(); analyser.fftSize=512;
+        analyserBuf=new Uint8Array(analyser.frequencyBinCount);
+        analyser.connect(audioCtx.destination);
+      }
+      const src=audioCtx.createMediaElementSource(audioEl);
+      src.connect(analyser);
+    }catch(e){
+      console.warn('Web Audio setup failed (cochleagram unavailable):',e);
+    }
+  }
+  if(audioCtx?.state==='suspended') audioCtx.resume();
+  audioEl.play().catch(e=>{ if(e.name!=='AbortError') console.error('play() failed:',e); });
+  document.getElementById('pbtn').textContent='⏸';
+  document.getElementById('pbtn').classList.add('on');
+  lastSyncFrameIdx=-1;
+  if(markerMesh) markerMesh.visible=false;
+  if(analyser) drawCochLoop();
+  syncLoop();
+}
+
+function pauseReal(){
+  if(audioEl) audioEl.pause();
+  if(waveRAF){cancelAnimationFrame(waveRAF);waveRAF=null;}
+  if(syncRAF){cancelAnimationFrame(syncRAF);syncRAF=null;}
+  clearPointDim();
+  document.getElementById('pbtn').textContent='▶';
+  document.getElementById('pbtn').classList.remove('on');
+}
+
+function onTimeUpdate(){
+  if(!audioEl||isSeeking) return;
+  const t=audioEl.currentTime, dur=audioEl.duration||1;
+  document.getElementById('scrubber').value=Math.round((t/dur)*1000);
+  document.getElementById('tdsp').textContent=fmt(t)+' / '+fmt(dur);
+  drawTimeline(t);
+}
+
+function dimWithTrail(currentGIdx){
+  if(!ptsMesh||currentGIdx<0) return;
+  const F=DATA.frames, N=F.token.length;
+  const arr=new Float32Array(N*3);
+  for(let i=0;i<N*3;i++) arr[i]=0.04;
+  const curCol=TOKEN_COLOR[F.token[currentGIdx]]||PLOTLY_Q[0];
+  const [cr,cg,cb]=css2rgb(curCol);
+  const tlen=trailGIdxs.length;
+  trailGIdxs.forEach((gi,i)=>{
+    if(gi<0||gi>=N) return;
+    const t=i/Math.max(tlen-1,1);
+    const oldCol=TOKEN_COLOR[F.token[gi]]||PLOTLY_Q[0];
+    const [or,og,ob]=css2rgb(oldCol);
+    const b=Math.pow(1-t,1.5)*0.75+0.05;
+    arr[gi*3]  =(cr*(1-t)+or*t)*b;
+    arr[gi*3+1]=(cg*(1-t)+og*t)*b;
+    arr[gi*3+2]=(cb*(1-t)+ob*t)*b;
+  });
+  arr[currentGIdx*3]=cr; arr[currentGIdx*3+1]=cg; arr[currentGIdx*3+2]=cb;
+  ptsMesh.geometry.attributes.color.array.set(arr);
+  ptsMesh.geometry.attributes.color.needsUpdate=true;
+  if(trailLine&&tlen>1){
+    const pkey=proj==='pca'?'x3d':proj==='umap'?'x_umap':'x_tsne';
+    const src=F[pkey];
+    const pArr=trailLine.geometry.attributes.position.array;
+    const cArr=trailLine.geometry.attributes.color.array;
+    for(let i=0;i<TRAIL_MAX;i++){
+      if(i<tlen){
+        const gi=trailGIdxs[i];
+        pArr[i*3]=src[gi*3]; pArr[i*3+1]=src[gi*3+1];
+        pArr[i*3+2]=dim==='2d'?0.02:src[gi*3+2];
+        const t=i/Math.max(tlen-1,1);
+        const oc=TOKEN_COLOR[F.token[gi]]||PLOTLY_Q[0];
+        const [or,og,ob]=css2rgb(oc);
+        const b=Math.pow(1-t,1.2);
+        cArr[i*3]  =(cr*(1-t)+or*t)*b;
+        cArr[i*3+1]=(cg*(1-t)+og*t)*b;
+        cArr[i*3+2]=(cb*(1-t)+ob*t)*b;
+      } else {
+        const last=Math.max(tlen-1,0)*3;
+        pArr[i*3]=pArr[last]; pArr[i*3+1]=pArr[last+1]; pArr[i*3+2]=pArr[last+2];
+        cArr[i*3]=cArr[i*3+1]=cArr[i*3+2]=0;
+      }
+    }
+    trailLine.geometry.attributes.position.needsUpdate=true;
+    trailLine.geometry.attributes.color.needsUpdate=true;
+    trailLine.geometry.setDrawRange(0,Math.min(tlen,TRAIL_MAX));
+    trailLine.visible=true;
+  }
+}
+
+function syncLoop(){
+  if(!audioEl||audioEl.paused||audioEl.ended){syncRAF=null;return;}
+  syncRAF=requestAnimationFrame(syncLoop);
+  const t=audioEl.currentTime;
+  let best=-1, bestD=Infinity;
+  fileFrames.forEach((fr,i)=>{const d=Math.abs(fr.t-t);if(d<bestD){bestD=d;best=i;}});
+  if(best===-1||best===lastSyncFrameIdx) return;
+  const prev=lastSyncFrameIdx;
+  lastSyncFrameIdx=best;
+  const fr=fileFrames[best];
+  const gIdx=fr._gIdx??-1;
+  if(gIdx<0){updateInfo(fr);return;}
+  activeGlobalIdx=gIdx;
+
+  // Fill in all intermediate frames between prev and best (handles seeks/skips)
+  if(prev>=0 && Math.abs(best-prev)>1){
+    const step=best>prev?1:-1;
+    const intermediates=[];
+    for(let fi=prev+step; fi!==best; fi+=step){
+      if(fi<0||fi>=fileFrames.length) break;
+      const ig=fileFrames[fi]._gIdx;
+      if(ig!=null&&ig>=0) intermediates.push(ig);
+      if(intermediates.length>=TRAIL_MAX) break;
+    }
+    // Add in time order (oldest first into trail head = most recent)
+    for(let i=intermediates.length-1;i>=0;i--){
+      trailGIdxs.unshift(intermediates[i]);
+      if(trailGIdxs.length>TRAIL_MAX) trailGIdxs.pop();
+    }
+  }
+
+  trailGIdxs.unshift(gIdx);
+  if(trailGIdxs.length>TRAIL_MAX) trailGIdxs.pop();
+  dimWithTrail(gIdx);
+  updateInfo(fr);
+}
+
+// ═══════════════════════════════════════════
+// Average mode — plays token avg clips sequentially
+// ═══════════════════════════════════════════
+async function startAvgMode(){
+  if(!fileFrames.length){ setMsg('Select a recording first'); return; }
+  avgActive=true;
+  document.getElementById('pbtn').textContent='⏸';
+  document.getElementById('pbtn').classList.add('on');
+
+  if(!audioCtx){ try{ audioCtx=new AudioContext(); }catch(e){} }
+  if(audioCtx&&!analyser){
+    try{
+      analyser=audioCtx.createAnalyser(); analyser.fftSize=512;
+      analyserBuf=new Uint8Array(analyser.frequencyBinCount);
+      analyser.connect(audioCtx.destination);
+    }catch(e){}
+  }
+  if(analyser) drawCochLoop();
+
+  const useHpss = audioMode==='hpss';
+
+  // Build ordered list of distinct token runs from the file timeline
+  const tokenRuns = [];
+  let lastTok = -1;
+  for(const fr of fileFrames){
+    if(fr.token !== lastTok){
+      const tk = DATA.tokens.find(t=>t.id===fr.token);
+      if(tk) tokenRuns.push({tk, fr});
+      lastTok = fr.token;
+    }
+  }
+
+  let runIdx = 0;
+
+  const playNext = async()=>{
+    if(!avgActive||runIdx>=tokenRuns.length){stopAll();return;}
+    const {tk, fr} = tokenRuns[runIdx];
+    const col = TOKEN_COLOR[tk.id]||'#f59e0b';
+    const isHpss = audioMode==='hpss';
+
+    // Cochleagram
+    if(isHpss&&tk.hpss_spec) showCochHpss(audioURL(tk.hpss_spec));
+    else showCochLive();
+
+    // Dim all other points, highlight this token's points + timeline + legend
+    dimAllExcept(tk.id);
+    highlightTimelineToken(tk.id);
+
+    // Gallery highlight
+    document.querySelectorAll('.tc').forEach(el=>el.style.outline='');
+    const card = document.getElementById('gb-o-'+tk.id)?.closest('.tc');
+    if(card){ card.style.outline='2px solid '+col; card.scrollIntoView({block:'nearest',behavior:'smooth'}); }
+
+    document.getElementById('info').innerHTML=
+      `<b style="color:${col}">Token ${tk.id}</b> · ${(tk.usage*100).toFixed(1)}% · ${fr.t.toFixed(1)}s`;
+    document.getElementById('tdsp').textContent=
+      `T${tk.id}  (${runIdx+1}/${tokenRuns.length})`;
+
+    // Play audio
+    const audioSrc = useHpss ? tk.hpss_audio : tk.orig_audio;
+    if(audioSrc){
+      await new Promise(resolve=>{
+        const a=new Audio();
+        a.crossOrigin='anonymous';
+        a.src=audioURL(audioSrc);
+        avgAudioEl=a;
+        if(audioCtx&&analyser){
+          try{ const ms=audioCtx.createMediaElementSource(a); ms.connect(analyser); }catch(e){}
+        }
+        a.addEventListener('ended', resolve);
+        a.addEventListener('error', resolve);
+        a.addEventListener('pause', resolve);   // resolves if externally paused/stopped
+        a.play().catch(e=>{ if(e.name!=='AbortError') console.warn('avg play:',e.message); resolve(); });
+      });
+    } else {
+      await new Promise(r=>setTimeout(r, 500));
+    }
+
+    showCochLive();
+    clearPointDim();
+    runIdx++;
+    if(avgActive) avgTimer=setTimeout(playNext, 150);
+  };
+
+  playNext();
+}
+
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+
+// ═══════════════════════════════════════════
+// Stop all
+// ═══════════════════════════════════════════
+function stopAll(){
+  avgActive=false;
+  if(avgTimer){clearTimeout(avgTimer);avgTimer=null;}
+  if(avgAudioEl){avgAudioEl.pause();avgAudioEl.src='';avgAudioEl=null;}
+  if(audioEl){audioEl.pause();audioEl.src='';audioEl=null;}
+  if(waveRAF){cancelAnimationFrame(waveRAF);waveRAF=null;}
+  if(syncRAF){cancelAnimationFrame(syncRAF);syncRAF=null;}
+  document.getElementById('pbtn').textContent='▶';
+  document.getElementById('pbtn').classList.remove('on');
+  document.getElementById('scrubber').value=0;
+  activeGlobalIdx=-1; lastSyncFrameIdx=-1;
+  if(markerMesh) markerMesh.visible=false;
+  document.getElementById('info').innerHTML='';
+  document.querySelectorAll('.tc').forEach(el=>el.style.outline='');
+  clearPointDim();
+  showCochLive();
+  clearCoch();
+}
+
+// ═══════════════════════════════════════════
+// Utilities
+// ═══════════════════════════════════════════
+const _RGB_CACHE={};
+function css2rgb(css){
+  if(_RGB_CACHE[css]) return _RGB_CACHE[css];
+  const c=document.createElement('canvas');c.width=c.height=1;
+  const x=c.getContext('2d');x.fillStyle=css;x.fillRect(0,0,1,1);
+  const d=x.getImageData(0,0,1,1).data;
+  return (_RGB_CACHE[css]=[d[0]/255,d[1]/255,d[2]/255]);
+}
+function fmt(s){
+  const m=Math.floor(s/60),ss=Math.floor(s%60);
+  return `${m}:${ss.toString().padStart(2,'0')}`;
+}
+
+// ═══════════════════════════════════════════
+// Boot
+// ═══════════════════════════════════════════
+bootstrap().catch(e=>{
+  document.getElementById('lmsg').textContent='❌ '+e.message;
+  document.querySelector('#loading .spin').style.display='none';
+});
+</script>
+</body>
+</html>

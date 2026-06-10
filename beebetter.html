@@ -1,0 +1,1997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BeeBetter · Hamze Hammami</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230e0e0e'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Times New Roman,serif' font-size='15' font-weight='700' fill='%23f5c200'>H&#x663;</text></svg>"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --black:       #0e0e0e;
+  --black-mid:   #151515;
+  --yellow:      #f5c200;
+  --yellow-dim:  rgba(245,194,0,0.12);
+  --yellow-faint:rgba(245,194,0,0.06);
+  --white:       #efefef;
+  --muted:       #777;
+  --border-dark: #252525;
+  --border-light:#d4d0cc;
+}
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 400;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ─── CURSOR ─── */
+.cursor {
+  position: fixed; width: 12px; height: 12px;
+  background: var(--yellow); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: width 0.2s, height 0.2s;
+}
+.cursor-ring {
+  position: fixed; width: 36px; height: 36px;
+  border: 1.5px solid var(--yellow); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%,-50%);
+  opacity: 0.3;
+  transition: width 0.3s, height 0.3s, opacity 0.3s;
+}
+
+/* ─── SCROLL PROGRESS ─── */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; height: 2px; width: 0%;
+  background: var(--yellow); z-index: 9999;
+  transition: width 0.1s linear;
+}
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 48px;
+  background: var(--black);
+  border-bottom: 1px solid var(--border-dark);
+  pointer-events: none;
+}
+nav a { pointer-events: all; }
+.nav-logo {
+  font-family: 'Amiri', 'Times New Roman', serif;
+  font-size: 26px; font-weight: 700;
+  color: var(--yellow); text-decoration: none;
+  direction: rtl; line-height: 1;
+  transition: opacity 0.25s; cursor: pointer;
+  min-width: 32px; display: inline-block;
+}
+.nav-logo:hover { opacity: 0.6; }
+.nav-logo.typing { opacity: 0.8; }
+
+.nav-back-sticky {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--white); text-decoration: none; font-weight: 500;
+  font-family: -apple-system, sans-serif;
+  opacity: 0; pointer-events: none;
+  transform: translateX(6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.nav-back-sticky.visible { opacity: 0.5; pointer-events: all; transform: translateX(0); }
+.nav-back-sticky:hover   { opacity: 1; }
+
+@media(max-width:900px) { nav { padding: 16px 24px; } }
+
+/* ─── BACK LINK ─── */
+.back-link {
+  position: absolute; top: 84px; left: 48px;
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--muted); text-decoration: none;
+  transition: color 0.2s; font-family: -apple-system, sans-serif;
+}
+.back-link:hover { color: var(--white); }
+@media(max-width:900px) { .back-link { left: 24px; top: 68px; } }
+
+/* ─── HERO ─── */
+.hero {
+  background: var(--black);
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  position: relative;
+  padding: 140px 48px 72px;
+  border-bottom: 1px solid var(--border-dark);
+}
+
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 48px 64px;
+  align-items: start;
+}
+
+/* BeeBetter column */
+.hero-col-beebetter {
+  grid-column: 1; grid-row: 1;
+  display: flex; flex-direction: column; gap: 28px;
+  border-right: 1px solid var(--border-dark);
+  padding-right: 64px;
+}
+
+/* BeeVe column */
+.hero-col-beeve {
+  grid-column: 2; grid-row: 1;
+  display: flex; flex-direction: column; gap: 24px;
+}
+
+/* Team row spanning full width */
+.hero-team-section {
+  grid-column: 1 / -1; grid-row: 2;
+  border-top: 1px solid var(--border-dark);
+  padding-top: 32px;
+  display: flex; flex-direction: column; gap: 14px;
+}
+
+.hero-eyebrow-dim {
+  font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase;
+  color: rgba(245,194,0,0.5); font-family: -apple-system, sans-serif; font-weight: 600;
+}
+
+.hero-eyebrow {
+  font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--yellow); font-family: -apple-system, sans-serif; font-weight: 600;
+}
+
+.hero-title {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: clamp(46px, 6.5vw, 82px);
+  font-weight: 700; line-height: 1.02; letter-spacing: -1.5px;
+  color: var(--white);
+}
+.hero-title em { font-style: italic; color: var(--yellow); }
+
+.hero-tagline {
+  font-size: 15px; line-height: 1.7; font-weight: 400;
+  color: rgba(239,239,239,0.6); max-width: 500px;
+  font-family: -apple-system, sans-serif;
+}
+
+/* BeeVe extension row */
+.hero-ext-row {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+}
+.hero-ext-arrow {
+  color: var(--yellow); font-size: 20px; opacity: 0.5; line-height: 1; flex-shrink: 0;
+}
+.hero-ext-logo {
+  height: 56px; width: auto;
+  object-fit: contain; display: block;
+  opacity: 0.88; flex-shrink: 0;
+  transition: opacity 0.2s;
+}
+.hero-ext-logo:hover { opacity: 1; }
+.hero-ext-text {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.hero-ext-name {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 30px; font-weight: 700;
+  color: var(--yellow); letter-spacing: -0.5px; line-height: 1;
+}
+.hero-ext-desc {
+  font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--muted); font-family: -apple-system, sans-serif;
+}
+
+/* Papers */
+.hero-paper-block {
+  display: flex; flex-direction: column; gap: 10px;
+  border-top: 1px solid var(--border-dark);
+  padding-top: 22px;
+  margin-top: 6px;
+}
+
+.paper-project-tag {
+  font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--yellow); opacity: 0.7; font-family: -apple-system, sans-serif; font-weight: 500;
+}
+
+.hero-paper-row {
+  display: flex; align-items: center; gap: 18px;
+}
+
+.hero-paper-link {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--yellow); text-decoration: none;
+  border-bottom: 1px solid rgba(245,194,0,0.3);
+  padding-bottom: 2px; width: fit-content;
+  transition: border-color 0.2s, opacity 0.2s;
+  font-family: -apple-system, sans-serif;
+}
+.hero-paper-link:hover { border-color: var(--yellow); opacity: 0.7; }
+
+.hero-pub-logo {
+  display: inline-flex; align-items: center;
+  text-decoration: none;
+  border-left: 1px solid var(--border-dark);
+  padding-left: 18px;
+  transition: opacity 0.2s;
+}
+.hero-pub-logo img {
+  height: 26px; width: auto;
+  object-fit: contain; display: block;
+  background: #fff; padding: 4px 8px;
+  border-radius: 3px; opacity: 0.88;
+  transition: opacity 0.2s;
+}
+.hero-pub-logo:hover img { opacity: 1; }
+
+.hero-team-label {
+  font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--muted); font-family: -apple-system, sans-serif; font-weight: 500;
+}
+
+.hero-team-grid {
+  display: grid; grid-template-columns: 200px 200px;
+  gap: 1px; border: 1px solid var(--border-dark);
+  background: var(--border-dark);
+  width: fit-content;
+}
+
+.team-card {
+  padding: 18px 18px; background: var(--black-mid);
+  display: flex; flex-direction: column; gap: 5px;
+  transition: background 0.18s;
+}
+.team-card:hover { background: #1c1c1c; }
+
+.team-role {
+  font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); font-family: -apple-system, sans-serif; font-weight: 500;
+}
+.team-name {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 16px; font-weight: 700; color: var(--white); line-height: 1.2;
+}
+
+.team-card.supervisor { border-left: 2px solid var(--yellow); }
+.team-card.supervisor .team-role { color: var(--yellow); }
+.team-card.lead .team-role { color: var(--white); opacity: 0.5; }
+
+/* Scroll hint */
+.hero-scroll {
+  grid-row: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  color: var(--muted); opacity: 0.35; margin-top: 56px;
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  font-family: -apple-system, sans-serif;
+  animation: bounce 2.4s ease-in-out infinite;
+  justify-self: center;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(8px); }
+}
+
+/* ─── PLACEHOLDER SECTIONS ─── */
+.section-ph {
+  min-height: 200px; display: flex; align-items: center; justify-content: center;
+  font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase;
+  font-family: -apple-system, sans-serif; opacity: 0.25;
+}
+
+/* ─── MOBILE ─── */
+@media(max-width:900px) {
+  .hero { padding: 120px 24px 64px; min-height: auto; }
+  .hero-inner { grid-template-columns: 1fr; grid-template-rows: auto auto auto; gap: 40px; }
+  .hero-col-beebetter { grid-column: 1; grid-row: 1; border-right: none; padding-right: 0; border-bottom: 1px solid var(--border-dark); padding-bottom: 40px; }
+  .hero-col-beeve     { grid-column: 1; grid-row: 2; }
+  .hero-team-section  { grid-column: 1; grid-row: 3; }
+  .hero-team-grid { grid-template-columns: 1fr 1fr; width: 100%; }
+}
+
+/* ─── ARABIC ─── */
+body.arabic-mode .hero-title,
+body.arabic-mode .hero-eyebrow,
+body.arabic-mode .hero-eyebrow-dim,
+body.arabic-mode .hero-tagline,
+body.arabic-mode .hero-team-label,
+body.arabic-mode .team-role,
+body.arabic-mode .team-name,
+body.arabic-mode .hero-ext-desc {
+  direction: rtl; text-align: right;
+  font-family: 'Noto Naskh Arabic', 'Times New Roman', serif;
+}
+body.arabic-mode .hero-col-beeve  { direction: rtl; }
+body.arabic-mode .hero-paper-link { direction: rtl; }
+body.arabic-mode .team-card.supervisor { border-left: none; border-right: 2px solid var(--yellow); }
+body.arabic-mode .nav-back-sticky { transform: translateX(-6px); }
+body.arabic-mode .nav-back-sticky.visible { transform: translateX(0); }
+
+/* ─── SECTIONS SHARED ─── */
+.section-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.section-label-tag {
+  font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase;
+  font-family: -apple-system, sans-serif; font-weight: 600;
+  display: block; margin-bottom: 20px;
+}
+.section-heading {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: clamp(30px, 4vw, 50px);
+  font-weight: 700; line-height: 1.08; letter-spacing: -0.5px;
+  margin-bottom: 24px; max-width: 720px;
+}
+.section-body-text {
+  font-size: 15px; line-height: 1.75; font-weight: 400;
+  max-width: 640px; margin-bottom: 56px;
+  font-family: -apple-system, sans-serif;
+}
+
+/* ─── PROBLEM SECTION (yellow) ─── */
+.section-problem {
+  background: var(--yellow);
+  color: var(--black);
+  padding: 96px 48px;
+}
+.section-problem .section-label-tag { color: rgba(0,0,0,0.4); }
+.section-problem .section-heading   { color: var(--black); }
+.section-problem .section-body-text { color: rgba(0,0,0,0.65); }
+
+.problem-stats {
+  display: flex; flex-direction: column;
+  border: 1px solid rgba(0,0,0,0.12);
+  margin-bottom: 64px; max-width: 560px;
+}
+.stat-block {
+  padding: 14px 20px;
+  display: flex; align-items: baseline; gap: 18px;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  background: var(--yellow);
+}
+.stat-block:last-child { border-bottom: none; }
+.stat-num {
+  font-family: 'Times New Roman', serif;
+  font-size: 20px; font-weight: 700; color: var(--black);
+  min-width: 52px; flex-shrink: 0;
+}
+.stat-desc {
+  font-size: 13px; font-weight: 400; line-height: 1.45;
+  color: rgba(0,0,0,0.62); font-family: -apple-system, sans-serif;
+}
+
+.problem-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 56px; align-items: start;
+}
+.problem-col-label {
+  font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase;
+  color: rgba(0,0,0,0.4); font-family: -apple-system, sans-serif; font-weight: 600;
+  margin-bottom: 20px; display: block;
+}
+
+.threat-card {
+  background: var(--black); padding: 22px 24px;
+  display: flex; flex-direction: column; gap: 7px;
+  margin-bottom: 2px;
+  border-left: 2px solid var(--yellow);
+  transition: background 0.18s;
+}
+.threat-card:hover { background: #1a1a1a; }
+.threat-title {
+  font-family: 'Times New Roman', serif;
+  font-size: 17px; font-weight: 700; color: var(--yellow);
+}
+.threat-body {
+  font-size: 13px; font-weight: 400; line-height: 1.65;
+  color: rgba(239,239,239,0.6); font-family: -apple-system, sans-serif;
+}
+
+.tech-gap-quote {
+  border-left: 3px solid var(--black); padding-left: 24px; margin-bottom: 28px;
+}
+.tech-gap-quote p {
+  font-family: 'Times New Roman', serif;
+  font-size: 21px; font-style: italic; line-height: 1.55; color: var(--black);
+}
+.tech-gap-year {
+  font-family: 'Times New Roman', serif;
+  font-size: 72px; font-weight: 700;
+  color: rgba(0,0,0,0.1); line-height: 1; margin-bottom: 20px;
+}
+.tech-gap-body {
+  font-size: 14px; line-height: 1.75; color: rgba(0,0,0,0.68);
+  font-family: -apple-system, sans-serif; font-weight: 400;
+}
+
+.problem-top-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+  margin-bottom: 64px;
+}
+.problem-top-left { display: flex; flex-direction: column; }
+.problem-bee-area {
+  position: relative;
+  height: 420px;
+  overflow: hidden;
+}
+#roamingBee {
+  position: absolute;
+  width: 90px; height: auto;
+  left: 0; top: 0;
+  pointer-events: none;
+  will-change: transform;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.2));
+}
+@media(max-width:900px) {
+  .section-problem { padding: 72px 24px; }
+  .problem-stats { grid-template-columns: 1fr; }
+  .problem-grid  { grid-template-columns: 1fr; gap: 40px; }
+  .problem-top-grid { grid-template-columns: 1fr; margin-bottom: 40px; }
+  .problem-bee-area { height: 200px; }
+}
+
+.bb-wide-imgs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: #252525;
+  margin-bottom: 2px;
+}
+.bb-wide-img {
+  display: flex;
+  flex-direction: column;
+  background: #111111;
+}
+.bb-wide-img img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  border-bottom: 1px solid #252525;
+}
+.bb-wide-caption {
+  padding: 16px 20px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.bb-wide-caption p {
+  font-size: 13px; line-height: 1.65; font-weight: 400;
+  color: rgba(255,255,255,0.5); font-family: -apple-system, sans-serif;
+}
+
+@media(max-width:900px) {
+  .bb-wide-imgs { grid-template-columns: 1fr; }
+}
+
+/* ─── BEEBETTER CORE TOP LAYOUT ─── */
+.bb-core-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 64px;
+  align-items: stretch;
+  margin-bottom: 56px;
+  border-bottom: 1px solid #252525;
+  padding-bottom: 56px;
+}
+.bb-core-left { display: flex; flex-direction: column; }
+.bb-core-right {
+  position: relative;
+  min-height: 360px;
+  border-left: 1px solid #252525;
+  background: var(--black);
+  overflow: hidden;
+}
+
+/* YOLO bounding box */
+.yolo-bbox {
+  position: absolute;
+  border: 2px solid #00cc44;
+  pointer-events: none;
+  z-index: 5;
+  transition: left 0.05s linear, top 0.05s linear,
+              width 0.05s linear, height 0.05s linear;
+}
+.yolo-label {
+  position: absolute;
+  top: -22px; left: -2px;
+  background: #00cc44;
+  color: #fff;
+  font: 700 11px/20px monospace;
+  padding: 0 7px;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+@media(max-width:900px) {
+  .bb-core-top { grid-template-columns: 1fr; padding-bottom: 0; margin-bottom: 0; }
+  .bb-core-right { min-height: 240px; border-left: none; border-top: 1px solid #252525; margin-top: 40px; }
+}
+
+/* ─── BEEBETTER CORE SECTION (black) ─── */
+.section-bb-core {
+  background: var(--black);
+  padding: 96px 48px;
+  border-top: 1px solid #252525;
+}
+
+.bb-figures {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  background: #252525;
+  border: 1px solid #252525;
+  margin-bottom: 72px;
+}
+
+.bb-fig {
+  background: #111111;
+  display: flex;
+  flex-direction: column;
+}
+
+.bb-fig-img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  border-bottom: 1px solid #252525;
+  background: #1a1a1a;
+}
+.bb-fig-img img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  display: block;
+  transition: transform 0.4s ease;
+  filter: brightness(0.9);
+}
+.bb-fig:hover .bb-fig-img img { transform: scale(1.03); filter: brightness(1); }
+
+.bb-fig-caption {
+  padding: 20px 22px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.bb-fig-label {
+  font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--yellow); font-family: -apple-system, sans-serif; font-weight: 600;
+}
+.bb-fig-caption p {
+  font-size: 13px; line-height: 1.65; font-weight: 400;
+  color: rgba(255,255,255,0.5); font-family: -apple-system, sans-serif;
+}
+
+.bb-video-section {
+  border-top: 1px solid #252525;
+  padding-top: 48px;
+  margin-top: 2px;
+}
+.bb-video-wrap {
+  width: 100%;
+  border: 1px solid #252525;
+  background: #0a0a0a;
+}
+.bb-video-wrap video {
+  width: 100%; display: block;
+}
+
+.bb-fig-landscape {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  align-items: stretch;
+}
+.bb-fig-img-landscape {
+  aspect-ratio: unset;
+  min-height: 200px;
+  flex: 1.6;
+  border-bottom: none;
+  border-right: 1px solid #252525;
+  background: #fff;
+}
+.bb-fig-img-landscape img {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  filter: none;
+}
+.bb-fig-img-landscape:hover img { transform: none; filter: none; }
+.bb-fig-landscape .bb-fig-caption {
+  flex: 0 0 240px;
+  justify-content: center;
+}
+
+@media(max-width:900px) {
+  .section-bb-core { padding: 72px 24px; }
+  .bb-figures { grid-template-columns: 1fr; }
+  .bb-video-block { grid-template-columns: 1fr; gap: 28px; }
+  .bb-fig-landscape { flex-direction: column; }
+  .bb-fig-img-landscape { flex: unset; border-right: none; border-bottom: 1px solid #252525; min-height: 180px; }
+  .bb-fig-landscape .bb-fig-caption { flex: unset; }
+}
+
+/* ─── BEEVE CONCEPT SECTION (black) ─── */
+.section-beeve {
+  background: var(--yellow);
+  color: var(--black);
+  padding: 96px 48px;
+}
+
+.beeve-header {
+  display: flex; align-items: center; gap: 20px;
+  margin-bottom: 56px;
+  border-bottom: 1px solid #252525;
+  padding-bottom: 32px;
+}
+.beeve-logo-mark {
+  height: 52px; width: auto; object-fit: contain;
+  filter: brightness(0);
+  opacity: 0.85;
+}
+.beeve-name {
+  font-family: 'Times New Roman', serif;
+  font-size: 32px; font-weight: 700; color: var(--black);
+  line-height: 1;
+}
+
+.beeve-history {
+  margin-bottom: 56px;
+  border-left: 3px solid rgba(0,0,0,0.2);
+  padding-left: 24px;
+}
+.beeve-history-text {
+  font-size: 14px; line-height: 1.75; font-weight: 400;
+  color: rgba(0,0,0,0.7); font-family: -apple-system, sans-serif;
+  max-width: 820px;
+}
+
+.beeve-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
+  align-items: start;
+}
+.beeve-left { display: flex; flex-direction: column; gap: 20px; }
+
+.beeve-right {
+  display: flex; flex-direction: column; gap: 0;
+  border: 1px solid rgba(0,0,0,0.14);
+}
+
+.beeve-finding {
+  display: flex; align-items: flex-start; gap: 20px;
+  padding: 20px 22px;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  background: rgba(0,0,0,0.03);
+  transition: background 0.18s;
+}
+.beeve-finding:last-child { border-bottom: none; }
+.beeve-finding:hover { background: rgba(0,0,0,0.07); }
+
+.beeve-finding-num {
+  font-family: 'Times New Roman', serif;
+  font-size: 22px; font-weight: 700; color: var(--black);
+  min-width: 100px; flex-shrink: 0; line-height: 1.2;
+  border-right: 2px solid rgba(0,0,0,0.15);
+  padding-right: 18px;
+  display: flex; align-items: flex-start;
+}
+
+.beeve-finding-body {
+  display: flex; flex-direction: column; gap: 5px;
+}
+.beeve-finding-label {
+  font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(0,0,0,0.5); font-family: -apple-system, sans-serif; font-weight: 600;
+}
+.beeve-finding-body p {
+  font-size: 13px; line-height: 1.6; font-weight: 400;
+  color: rgba(0,0,0,0.65); font-family: -apple-system, sans-serif;
+  margin: 0;
+}
+
+.beeve-viz-area {
+  position: relative;
+  min-height: 380px;
+  background: var(--black);
+  overflow: hidden;
+}
+.beeve-viz-label {
+  position: absolute;
+  bottom: 10px; left: 14px;
+  font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: rgba(255,255,255,0.25); font-family: -apple-system, sans-serif;
+  pointer-events: none; z-index: 5;
+}
+
+.beeve-viz-caption {
+  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--black); font-family: -apple-system, sans-serif;
+  text-align: center; margin-top: 10px;
+}
+
+@media(max-width:900px) {
+  .section-beeve { padding: 72px 24px; }
+  .beeve-grid { grid-template-columns: 1fr; gap: 40px; }
+  .beeve-viz-area { min-height: 280px; }
+  .beeve-header { gap: 14px; }
+}
+
+.beeve-loss-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: #1a1a1a;
+  border: 1px solid #252525;
+  margin-top: 2px;
+}
+.beeve-loss-block {
+  background: #111;
+  padding: 32px 32px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.beeve-loss-block p {
+  font-size: 14px; line-height: 1.75; font-weight: 400;
+  color: rgba(255,255,255,0.55); font-family: -apple-system, sans-serif;
+}
+
+@media(max-width:900px) {
+  .beeve-loss-grid { grid-template-columns: 1fr; }
+}
+
+.beeve-loss-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+@media(max-width:900px) {
+  .beeve-loss-grid-3 { grid-template-columns: 1fr; }
+}
+
+.beeve-arch-4grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 48px 64px;
+  align-items: start;
+}
+.beeve-arch-img-cell img {
+  width: 100%;
+  display: block;
+  object-fit: contain;
+  background: #fff;
+  padding: 20px;
+}
+.beeve-arch-text-cell {
+  display: flex; flex-direction: column; gap: 12px;
+  border-top: 1px solid #252525;
+  padding-top: 20px;
+}
+.beeve-arch-text-cell p {
+  font-size: 13px; line-height: 1.75; font-weight: 400;
+  color: rgba(255,255,255,0.55); font-family: -apple-system, sans-serif;
+}
+@media(max-width:900px) {
+  .beeve-arch-4grid { grid-template-columns: 1fr; gap: 32px; }
+}
+
+.beeve-methods-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: #1a1a1a;
+  border: 1px solid #252525;
+  margin-top: 0;
+}
+.beeve-method-card {
+  background: #111;
+  padding: 32px 32px;
+  display: flex; flex-direction: column; gap: 14px;
+}
+.beeve-method-hdr {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.beeve-method-link {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--yellow); text-decoration: none; font-family: -apple-system, sans-serif;
+  opacity: 0.7; transition: opacity 0.2s; flex-shrink: 0;
+}
+.beeve-method-link:hover { opacity: 1; }
+.beeve-method-card p {
+  font-size: 13px; line-height: 1.75; font-weight: 400;
+  color: rgba(255,255,255,0.55); font-family: -apple-system, sans-serif;
+}
+
+@media(max-width:900px) {
+  .beeve-methods-grid { grid-template-columns: 1fr; }
+}
+
+/* ─── RESULTS SECTION ─── */
+.section-beeve-results {
+  background: var(--black);
+  padding: 96px 48px;
+  border-top: 1px solid #252525;
+}
+
+.results-exp-block {
+  margin-top: 72px;
+  border-top: 1px solid var(--yellow);
+  padding-top: 40px;
+}
+.results-exp-hdr {
+  display: flex; align-items: baseline; gap: 24px;
+  margin-bottom: 48px; flex-wrap: wrap;
+}
+.results-exp-tag {
+  font-family: 'Times New Roman', serif;
+  font-size: 22px; font-weight: 700; color: var(--yellow);
+  flex-shrink: 0;
+}
+.results-exp-meta {
+  font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(255,255,255,0.3); font-family: -apple-system, sans-serif;
+}
+
+.results-sub-section {
+  margin-bottom: 56px;
+  padding-bottom: 56px;
+  border-bottom: 1px solid #1a1a1a;
+}
+.results-sub-section:last-child { border-bottom: none; }
+.results-sub-label {
+  font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(245,194,0,0.6); font-family: -apple-system, sans-serif; font-weight: 600;
+  display: block; margin-bottom: 14px;
+}
+.results-body {
+  font-size: 14px; line-height: 1.75; color: rgba(255,255,255,0.55);
+  font-family: -apple-system, sans-serif; max-width: 720px; margin-bottom: 28px;
+}
+
+.results-fig-full { width: 100%; }
+.results-fig-full img {
+  width: 100%; display: block;
+  background: #fff; padding: 24px;
+}
+.results-fig-2col {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 2px; background: #252525;
+}
+.results-fig-cell { background: var(--black); }
+.results-fig-cell img {
+  width: 100%; display: block;
+  background: #fff; padding: 20px;
+}
+.results-fig-cap {
+  display: block; font-size: 9px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: rgba(255,255,255,0.25);
+  font-family: -apple-system, sans-serif;
+  padding: 10px 0 4px;
+}
+
+.results-text-fig {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+  margin-bottom: 32px;
+}
+.results-side-fig img {
+  width: 100%; display: block;
+  background: #fff; padding: 16px;
+}
+
+@media(max-width:900px) {
+  .results-text-fig { grid-template-columns: 1fr; gap: 24px; }
+}
+
+.results-table-wrap { overflow-x: auto; }
+.results-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 12px; font-family: -apple-system, sans-serif;
+}
+.results-table th {
+  padding: 10px 14px; text-align: left;
+  font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: rgba(245,194,0,0.6); font-weight: 600;
+  border-bottom: 1px solid #252525; white-space: nowrap;
+}
+.results-table td {
+  padding: 9px 14px; border-bottom: 1px solid #1a1a1a;
+  color: rgba(255,255,255,0.6);
+}
+.results-table tr:last-child td { border-bottom: none; }
+.results-table .rt-qr  { color: #16a34a; font-size: 11px; }
+.results-table .rt-qnl { color: #e74c3c; font-size: 11px; }
+.results-table .rt-num { color: var(--yellow); font-weight: 700; font-family: 'Times New Roman', serif; font-size: 15px; }
+
+.results-viz-link {
+  margin-top: 64px;
+  padding-top: 48px;
+  border-top: 1px solid #252525;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.results-viz-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--yellow); text-decoration: none;
+  border-bottom: 1px solid rgba(245,194,0,0.3);
+  padding-bottom: 3px; width: fit-content;
+  font-family: -apple-system, sans-serif; font-weight: 600;
+  transition: border-color 0.2s, opacity 0.2s;
+}
+.results-viz-btn:hover { border-color: var(--yellow); opacity: 0.7; }
+.results-viz-link p {
+  font-size: 13px; color: rgba(255,255,255,0.4);
+  font-family: -apple-system, sans-serif;
+}
+
+@media(max-width:900px) {
+  .section-beeve-results { padding: 72px 24px; }
+  .results-fig-2col { grid-template-columns: 1fr; }
+  .results-exp-hdr { flex-direction: column; gap: 8px; }
+}
+
+/* ─── BEEVE ARCHITECTURE SECTION (black) ─── */
+.section-beeve-arch {
+  background: var(--black);
+  padding: 96px 48px;
+  border-top: 1px solid #252525;
+}
+
+.beeve-arch-fig {
+  margin-top: 56px;
+  background: #fff;
+  padding: 32px 40px;
+  border: 1px solid #252525;
+}
+.beeve-arch-fig img {
+  width: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+@media(max-width:900px) {
+  .section-beeve-arch { padding: 72px 24px; }
+  .beeve-arch-fig { padding: 20px; }
+}
+
+/* ─── LANGUAGE SWITCHING ANIMATION ─── */
+body.language-switching .hero-inner,
+body.language-switching .back-link {
+  opacity: 0.08; transform: translateY(8px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+body.language-settling .hero-inner,
+body.language-settling .back-link {
+  animation: langSettle 0.45s cubic-bezier(.2,.8,.2,1) both;
+}
+@keyframes langSettle {
+  from { opacity: 0.08; transform: translateY(8px); }
+  to   { opacity: 1;    transform: translateY(0); }
+}
+
+</style>
+<!-- BeeVe UMAP data — generated by extract_beeve_umap.py -->
+<script src="project_assets/beeve/umap_data.js"></script>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<nav id="mainNav">
+  <a class="nav-logo" dir="rtl" lang="ar" id="navLogo" role="button" style="cursor:pointer;">نحل</a>
+  <a class="nav-back-sticky" href="work.html#project-beebetter" id="navBackBtn">
+    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2L3 6.5l5 4.5"/></svg>
+    <span id="nav-back-text">Back to Work</span>
+  </a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+
+  <a href="work.html#project-beebetter" class="back-link">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2L4 7l5 5"/></svg>
+    <span id="back-link-text">Back to Work</span>
+  </a>
+
+  <div class="hero-inner">
+
+    <!-- BeeBetter column -->
+    <div class="hero-col-beebetter">
+      <span class="hero-eyebrow">Multi-modal Honeybee Monitoring</span>
+      <h1 class="hero-title">Bee<em>Better</em></h1>
+      <p class="hero-tagline">A multi-modal beehive monitoring system for honeybee health and hazard detection, combining predator detection and acoustic analysis.</p>
+      <div class="hero-paper-block">
+        <span class="paper-project-tag">ICSPIS 2024 · IEEE</span>
+        <div class="hero-paper-row">
+          <a class="hero-paper-link" href="https://ieeexplore.ieee.org/document/10812634" target="_blank" rel="noopener">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 11L11 2M11 2H5M11 2v6"/></svg>
+            Read the Paper
+          </a>
+          <a class="hero-pub-logo" href="https://ieeexplore.ieee.org/document/10812634" target="_blank" rel="noopener" title="IEEE Xplore · ICSPIS 2024">
+            <img src="project_assets/xplor_logo.png" alt="IEEE Xplore"/>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- BeeVe column -->
+    <div class="hero-col-beeve">
+      <div class="hero-ext-row">
+        <img src="project_assets/beeve_logo.png" alt="BeeVe" class="hero-ext-logo"/>
+        <div class="hero-ext-text">
+          <span class="hero-ext-name">Bee<span style="color:var(--white);">Ve</span></span>
+          <span class="hero-ext-desc">Vector-Quantized Sound Analysis Extension</span>
+        </div>
+      </div>
+      <span class="hero-eyebrow-dim" style="display:none;"></span>
+      <p class="hero-tagline">A VQ-VAE encoder applied to PaSST audio representations for unsupervised acoustic pattern discovery in honeybee recordings. A discrete codebook of learned tokens separates queen-right from queen-less colonies without supervision.</p>
+      <div class="hero-paper-block">
+        <span class="paper-project-tag">arXiv Preprint · MSc Thesis</span>
+        <div class="hero-paper-row">
+          <a class="hero-paper-link" href="https://arxiv.org/abs/2605.07903" target="_blank" rel="noopener">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 11L11 2M11 2H5M11 2v6"/></svg>
+            Read the Preprint
+          </a>
+          <a class="hero-pub-logo" href="https://arxiv.org/abs/2605.07903" target="_blank" rel="noopener" title="arXiv Preprint · BeeVe">
+            <img src="project_assets/arxiv_x_logo.png" alt="arXiv"/>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Research Team — spans both columns -->
+    <div class="hero-team-section">
+      <p class="hero-team-label">Research Team</p>
+      <div class="hero-team-grid">
+        <div class="team-card supervisor">
+          <span class="team-role">Supervisor</span>
+          <span class="team-name">Nidhal Abdulaziz</span>
+        </div>
+        <div class="team-card lead">
+          <span class="team-role">Lead Author</span>
+          <span class="team-name">Hamze Hammami</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="hero-scroll">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M8 2v10M4 9l4 4 4-4"/></svg>
+    Scroll
+  </div>
+
+</section>
+
+<!-- PLACEHOLDER SECTIONS -->
+<section class="section-problem" id="problem">
+  <div class="section-inner">
+
+    <div class="problem-top-grid">
+      <div class="problem-top-left">
+        <span class="section-label-tag">The Problem</span>
+        <h2 class="section-heading">Honeybee colonies are disappearing at an alarming rate.</h2>
+        <p class="section-body-text">Honeybees are the planet's most critical pollinators, responsible for the majority of crop yields and wild flora. Over the past decade their colonies have seen accelerating decline due to biological threats, environmental stress, and a beekeeping industry still relying on technology from the 1860s.</p>
+        <div class="problem-stats">
+          <div class="stat-block">
+            <span class="stat-num">40%</span>
+            <span class="stat-desc">yearly increase in colony decline across reported regions</span>
+          </div>
+          <div class="stat-block">
+            <span class="stat-num">50%</span>
+            <span class="stat-desc">drop in honey production over the same period</span>
+          </div>
+          <div class="stat-block">
+            <span class="stat-num">80%+</span>
+            <span class="stat-desc">of beekeepers reported fewer honeybees within a ten year period</span>
+          </div>
+        </div>
+      </div>
+      <div class="problem-bee-area" id="beeArea"></div>
+    </div>
+
+    <div class="problem-grid">
+
+      <div>
+        <span class="problem-col-label">Key Threats</span>
+        <p class="tech-gap-body">Colony decline is driven by several compounding threats. The Varroa destructor mite spreads viruses and causes physical deformities that progressively weaken colonies. Invasive hornets and beetles attack bees directly and damage hive structures. When a colony loses its queen, bees exhibit distinct acoustic distress patterns that, without early detection, lead to hive abandonment. These biological pressures are compounded by seasonal stress, with losses peaking in winter when hives are hardest to inspect.</p>
+      </div>
+
+      <div>
+        <span class="problem-col-label">The Technology Gap</span>
+        <div class="tech-gap-quote">
+          <p>"The Langstroth hive was invented in the 1860s and has remained the standard choice for beekeepers worldwide. Why hasn't this technology advanced?"</p>
+        </div>
+        <p class="tech-gap-body">While innovations from the same era have long been superseded, beekeeping practice remains a basic wooden box requiring manual inspection and often left entirely unattended. IoT systems, machine learning, and robotics are the natural next step. The absence of automated monitoring means threats go undetected until it is too late for the colony, and beekeepers have no real-time visibility into hive conditions between visits.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+<section class="section-bb-core" id="beebetter-core">
+  <div class="section-inner">
+
+    <div class="bb-core-top">
+      <div class="bb-core-left">
+        <span class="section-label-tag" style="color:rgba(245,194,0,0.5);">BeeBetter Core</span>
+        <h2 class="section-heading" style="color:var(--white);max-width:680px;">A multi-modal machine learning system for hive health and hazard detection.</h2>
+        <p class="section-body-text" style="color:rgba(255,255,255,0.6);max-width:640px;margin-bottom:0;">BeeBetter combines computer vision and audio classification through three models working together: YOLOv8 for bee and predator detection, VGG-Net for individual bee health classification, and a custom CRNN for queen state detection from hive acoustics. IoT sensors track temperature, CO₂, weight, and air quality, feeding a continuous early-warning system for colony threats.</p>
+      </div>
+      <div class="bb-core-right" id="bbBeeArea">
+        <div class="yolo-bbox" id="bboxEl">
+          <span class="yolo-label" id="yoloConf">bee 0.96</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fake bees + STFT — full width, margin to margin -->
+    <div class="bb-wide-imgs">
+      <div class="bb-wide-img">
+        <img src="project_assets/bb_fake_bees.png" alt="Bee vs impostor classification"/>
+        <div class="bb-wide-caption">
+          <span class="bb-fig-label">Visual Detection</span>
+          <p>YOLOv8 correctly identifies the honeybee among four visually similar insects. A wasp, moth, and fly are flagged as impostors despite their yellow-and-black markings.</p>
+        </div>
+      </div>
+      <div class="bb-wide-img">
+        <img src="project_assets/bb_stft.png" alt="STFT queen vs queen-less"/>
+        <div class="bb-wide-caption">
+          <span class="bb-fig-label">Acoustic Analysis</span>
+          <p>Short-Time Fourier Transform reveals clear frequency differences between a queen-right and a queen-less colony, forming the input to the CRNN classifier.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CRNN architecture — full width landscape -->
+    <div class="bb-figures">
+
+      <div class="bb-fig bb-fig-landscape">
+        <div class="bb-fig-img bb-fig-img-landscape">
+          <img src="project_assets/bb_crnn.png" alt="CRNN architecture"/>
+        </div>
+        <div class="bb-fig-caption">
+          <span class="bb-fig-label">CRNN Architecture</span>
+          <p>Three convolutional blocks extract spectral features from the STFT input, followed by a bidirectional LSTM that captures temporal patterns and outputs a queen state classification.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Queenless detection video -->
+    <div class="bb-video-section">
+      <span class="bb-fig-label" style="margin-bottom:14px;display:block;">Queen State Detection · Live</span>
+      <p style="color:rgba(255,255,255,0.5);font-size:13px;font-family:-apple-system,sans-serif;max-width:600px;line-height:1.65;margin-bottom:24px;">Since the initial paper the CRNN has been further trained and validated. The video below shows actual real-time queen state detection running on hive audio recordings.</p>
+      <div class="bb-video-wrap">
+        <video autoplay loop muted playsinline>
+          <source src="project_assets/bb_detection.mp4" type="video/mp4"/>
+        </video>
+      </div>
+    </div>
+
+    <!-- Detection video -->
+
+  </div>
+</section>
+<section class="section-beeve" id="beeve">
+  <div class="section-inner">
+
+    <!-- BeeVe logo + label -->
+    <div class="beeve-header">
+      <img src="project_assets/beeve_logo.png" alt="BeeVe" class="beeve-logo-mark"/>
+      <div>
+        <span class="section-label-tag" style="color:rgba(0,0,0,0.45);">BeeVe · Sound Module Extension</span>
+        <div class="beeve-name">BeeVe</div>
+      </div>
+    </div>
+
+    <!-- Historical context -->
+    <div class="beeve-history">
+      <span class="problem-col-label" style="color:rgba(0,0,0,0.45);">Early Human Studies</span>
+      <p class="beeve-history-text">Humans have been listening to bee sounds for over a century. Early attempts to record animal acoustics date to the late 19th century, and a landmark moment came when Karl von Frisch decoded the waggle dance in the 1940s, demonstrating that bee behaviour encodes structured spatial information and earning the Nobel Prize in 1973. Later work by Kirchner (1993) confirmed acoustic communication within hives, and researchers including Ferrari et al. (2008) and Kanelis et al. (2023) identified acoustic correlates for swarming and queen loss using supervised classifiers trained on labelled recordings. BeeBetter's CRNN follows this same direction. The gap is that all prior methods assume labels, predefined conditions, and human annotation. They answer specific questions but cannot discover anything the researcher did not already know to look for.</p>
+    </div>
+
+    <!-- Two-column: text left, 3D UMAP right -->
+    <div class="beeve-grid">
+      <div class="beeve-left">
+        <h2 class="section-heading" style="color:var(--black);">Can honeybee buzzing be decoded without any labels?</h2>
+        <p class="section-body-text" style="color:rgba(0,0,0,0.75);">Honeybee buzzing is not a language. It arises from mechanical muscle vibrations reflecting the collective physiological condition of the colony, not communicative intent. No existing bioacoustic framework applies to it, yet evidence suggests the signal carries structured information about colony health.</p>
+        <p class="section-body-text" style="color:rgba(0,0,0,0.75);margin-bottom:0;">BeeVe asks whether repeatable acoustic patterns exist in this signal and whether they can be discovered entirely without supervision. Using PaSST as a frozen audio encoder, a Vector-Quantized Variational Autoencoder is trained on five hours of hive recordings with no labels used at any stage. The result is a discrete codebook, a learned vocabulary of recurring acoustic patterns that emerges purely from data.</p>
+      </div>
+      <div class="beeve-viz-col">
+        <div class="beeve-viz-area" id="beeveLatent"></div>
+        <p class="beeve-viz-caption">UMAP Latent Space</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+<section class="section-beeve-arch" id="beeve-methodology">
+  <div class="section-inner">
+
+    <span class="section-label-tag" style="color:rgba(245,194,0,0.5);">Architecture · Methodology</span>
+    <h2 class="section-heading" style="color:var(--white);max-width:700px;">From raw hive audio to non-semantic acoustic states.</h2>
+    <p class="section-body-text" style="color:rgba(255,255,255,0.55);max-width:660px;">The pipeline begins with the UrBAN dataset, five hours of real-world hive recordings, and passes each file through PaSST, a frozen spectrogram transformer pretrained on AudioSet, to extract 1295-dimensional feature vectors at 23ms intervals. A Vector-Quantized Variational Autoencoder then learns to compress these into a finite codebook of discrete tokens entirely without labels. The resulting vocabulary is decoded and validated post-hoc against known queen status, revealing structured separation without any supervision.</p>
+
+    <div class="beeve-arch-fig">
+      <img src="project_assets/beeve_methodology.png" alt="BeeVe methodology pipeline"/>
+    </div>
+
+    <!-- Loss function + unsupervised mechanism -->
+    <div class="beeve-loss-grid">
+
+      <div class="beeve-loss-block">
+        <span class="bb-fig-label">Training Objective</span>
+        <p>The VQ-VAE is trained using a composite loss consisting of a reconstruction term and a combined quantization term. The outer weight λ = 0.1 ensures the reconstruction term remains the dominant training signal, with quantization kept as a regulariser to prevent the codebook from collapsing in early training. Training proceeds in two phases: for the first ten epochs only the reconstruction loss is active, allowing the encoder and decoder to establish a meaningful representation before quantization is introduced. After epoch 10 the full loss is applied.</p>
+      </div>
+
+      <div class="beeve-loss-block">
+        <span class="bb-fig-label">Unsupervised Learning</span>
+        <p>No labels are used at any stage of training. The codebook is updated by exponential moving average with decay α = 0.99. A diversity loss encourages uniform utilisation of the codebook through entropy regularisation, preventing codebook collapse. Queen status is used only for post-hoc evaluation.</p>
+      </div>
+
+    </div>
+
+    <!-- Core methods: UrBAN + PaSST -->
+    <div class="beeve-core-methods">
+      <span class="section-label-tag" style="color:rgba(245,194,0,0.5);margin-top:64px;display:block;">Core Methods</span>
+      <div class="beeve-methods-grid">
+
+        <div class="beeve-method-card">
+          <div class="beeve-method-hdr">
+            <span class="bb-fig-label">UrBAN Dataset</span>
+            <a class="beeve-method-link" href="https://www.nature.com/articles/s41597-025-04738-1" target="_blank" rel="noopener">
+              Scientific Data 2025
+              <svg width="11" height="11" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 11L11 2M11 2H5M11 2v6"/></svg>
+            </a>
+          </div>
+          <p>Acoustic data equivalent to approximately five hours of hive recordings was sampled from the UrBAN dataset. The UrBAN dataset contains well over 1000 hours of honey-bee hive audio collected under real-world conditions. Annotations are used only to ensure that recordings from multiple conditions are represented in the experiment and are not used as labels for training.</p>
+        </div>
+
+        <div class="beeve-method-card">
+          <div class="beeve-method-hdr">
+            <span class="bb-fig-label">PaSST · Patchout Spectrogram Transformer</span>
+            <a class="beeve-method-link" href="https://arxiv.org/abs/2110.05069" target="_blank" rel="noopener">
+              arXiv 2110.05069
+              <svg width="11" height="11" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 11L11 2M11 2H5M11 2v6"/></svg>
+            </a>
+          </div>
+          <p>Audio is loaded at 22,050 Hz before feature extraction. The model variant passt_s_swa_p16_128_ap476 is used with pretrained weights and no fine-tuning. Timestamp embeddings are extracted at approximately 23 ms intervals, yielding one 1295-dimensional feature vector per frame.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Encoder + Decoder architecture -->
+    <div class="beeve-enc-dec">
+      <span class="section-label-tag" style="color:rgba(245,194,0,0.5);margin-top:64px;display:block;">Model Architecture</span>
+
+      <div class="beeve-arch-4grid">
+
+        <div class="beeve-arch-img-cell">
+          <img src="project_assets/beeve_arch.png" alt="VQ-VAE architecture"/>
+        </div>
+
+        <div class="beeve-arch-text-cell">
+          <span class="bb-fig-label">Encoder</span>
+          <p>Compresses PaSST embeddings into a 128-dimensional continuous latent representation through five fully connected blocks (1295 → 1024 → 512 → 512 → 128) with LayerNorm, GELU activation, dropout, and a residual connection at the 512 → 512 stage.</p>
+        </div>
+
+        <div class="beeve-arch-text-cell">
+          <span class="bb-fig-label">Vector Quantizer</span>
+          <p>Maps the latent representation to the nearest entry in a learned codebook C = {e₁, e₂, …, eₖ}, where K ∈ {32, 64} depending on the experiment. Encoder outputs and codebook entries are L2-normalized before distance computation. Gradients bypass the non-differentiable quantization step via straight-through estimation, and the codebook is updated by EMA with decay α = 0.99.</p>
+        </div>
+
+        <div class="beeve-arch-text-cell">
+          <span class="bb-fig-label">Decoder</span>
+          <p>Reconstructs the original 1295-dimensional space from the quantized representation through four stages (128 → 512 → 512 → 1024 → 1295) with LayerNorm, GELU, dropout, a residual connection at the first stage, and a final linear projection without activation.</p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+<section class="section-beeve-results" id="results">
+  <div class="section-inner">
+
+    <span class="section-label-tag" style="color:rgba(245,194,0,0.5);">Experimental Results</span>
+    <h2 class="section-heading" style="color:var(--white);max-width:700px;">Three experiments. Consistent structure.</h2>
+    <p class="section-body-text" style="color:rgba(255,255,255,0.55);max-width:660px;margin-bottom:72px;">Three full-scale experiments were conducted to assess stability across codebook sizes and random seeds. E1 baseline uses five hours of data with a codebook of 64 and seed 0. E1 baseline seed1 repeats the baseline with a different random seed. E2 small codebook uses three hours of data with a codebook of 32.</p>
+
+    <!-- ── STATE VALIDATION ── -->
+    <div class="results-sub-section">
+      <span class="results-sub-label">State Validation</span>
+
+      <div class="results-text-fig">
+        <p class="results-body" style="margin-bottom:0;">The UMAP projection shows queenright frames forming a single connected manifold (green) while queenless frames appear as three isolated clusters (red) spatially separated from it, with no label supervision at any stage of training. JSD values range from 0.609 to 0.688 across all experiments, confirming that the two conditions occupy distinctly different regions of the learned token space. The scattered red points within the green mass represent the queenless outliers, below 2% across all experiments, indicating the model can generally differentiate between the two conditions.</p>
+        <div class="results-side-fig">
+          <img src="project_assets/beeve_umap_state.png" alt="UMAP latent space state separation"/>
+          <span class="results-fig-cap">2D latent projections coloured by queen status</span>
+        </div>
+      </div>
+
+      <div class="results-table-wrap" style="margin-top:32px;">
+        <span class="bb-fig-label" style="margin-bottom:12px;display:block;">State Validation Metrics Across All Experiments</span>
+        <table class="results-table">
+          <thead>
+            <tr><th>Experiment</th><th>Condition</th><th>JSD</th><th>Active Tokens</th><th>Entropy (bits)</th><th>Top Token (%)</th><th>Silhouette</th><th>QNL Outliers</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td rowspan="2">E1 baseline</td><td class="rt-qr">queenright</td>
+              <td rowspan="2" class="rt-num">0.609</td><td>13/64</td><td>2.042</td><td>39.04</td><td rowspan="2">0.046</td><td rowspan="2">1.57%</td>
+            </tr>
+            <tr><td class="rt-qnl">queenless</td><td>5/64</td><td>1.134</td><td>58.00</td></tr>
+            <tr>
+              <td rowspan="2">E1 baseline seed1</td><td class="rt-qr">queenright</td>
+              <td rowspan="2" class="rt-num">0.688</td><td>13/64</td><td>2.210</td><td>27.68</td><td rowspan="2">0.016</td><td rowspan="2">1.57%</td>
+            </tr>
+            <tr><td class="rt-qnl">queenless</td><td>6/64</td><td>1.187</td><td>56.30</td></tr>
+            <tr>
+              <td rowspan="2">E2 small codebook</td><td class="rt-qr">queenright</td>
+              <td rowspan="2" class="rt-num">0.663</td><td>16/32</td><td>2.398</td><td>19.94</td><td rowspan="2">0.188</td><td rowspan="2">1.70%</td>
+            </tr>
+            <tr><td class="rt-qnl">queenless</td><td>6/32</td><td>1.247</td><td>56.45</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── SUB-STATES ── -->
+    <div class="results-sub-section">
+      <span class="results-sub-label">Queenless Sub-states</span>
+      <p class="results-body">The PCA projection of queenless-only embeddings reveals three spatially distinct regions corresponding to sub-states A, B and C, confirming that the queenless condition is not acoustically uniform. Sub-state A (57.6%) occupies the left of the PC1 axis, Sub-state B (22.0%) sits in the middle, and Sub-state C (20.4%) extends to the right. PC1 alone captures 73.9% of the variance within the queenless condition. The UMAP projection overlays all embeddings, with queenright in grey and the three queenless sub-states as coloured clusters. Each sub-state forms an isolated region completely separated from the queenright manifold, discovered without any supervision.</p>
+
+      <div class="results-fig-2col">
+        <div class="results-fig-cell">
+          <img src="project_assets/beeve_pca_substates.png" alt="PCA queenless sub-states"/>
+          <span class="results-fig-cap">PCA projection of queenless embeddings coloured by sub-state</span>
+        </div>
+        <div class="results-fig-cell">
+          <img src="project_assets/beeve_umap_qnl.png" alt="UMAP QNL sub-state"/>
+          <span class="results-fig-cap">UMAP projection coloured by QNL sub-state assignment</span>
+        </div>
+      </div>
+
+      <div class="results-table-wrap" style="margin-top:32px;">
+        <span class="bb-fig-label" style="margin-bottom:12px;display:block;">Sub-state Statistics Across All Experiments</span>
+        <table class="results-table">
+          <thead>
+            <tr><th>Experiment</th><th>Sub-A Size</th><th>Dom. Token</th><th>Purity</th><th>Sub-B Size</th><th>Dom. Token</th><th>Purity</th><th>Sub-C Size</th><th>Dom. Token</th><th>Purity</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>E1 baseline</td><td>57.6%</td><td>T0</td><td>97.5%</td><td>22.0%</td><td>T10</td><td>53.6%</td><td>20.4%</td><td>T19</td><td>90.8%</td></tr>
+            <tr><td>E1 baseline seed1</td><td>57.4%</td><td>T1</td><td>97.9%</td><td>23.0%</td><td>T8</td><td>88.7%</td><td>19.5%</td><td>T5</td><td>73.1%</td></tr>
+            <tr><td>E2 small codebook</td><td>57.1%</td><td>T12</td><td>97.7%</td><td>21.6%</td><td>T3</td><td>89.3%</td><td>21.3%</td><td>T11</td><td>41.9%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── TEMPORAL ── -->
+    <div class="results-sub-section">
+      <span class="results-sub-label">Token Temporal Structure</span>
+
+      <div class="results-text-fig">
+        <p class="results-body" style="margin-bottom:0;">The chi-squared independence test rejects the null hypothesis of token independence at p ≪ 0.001 across all experiments. Outgoing transition entropy averages 2.08–2.42 bits against a maximum possible 3.70–3.91 bits (H/H_max = 0.56–0.65), indicating structured but non-deterministic transitions. Approximately half of all frame-to-frame transitions are self-transitions (51–58%), and when transitions do occur they follow structured pathways rather than distributing randomly across the codebook.</p>
+        <div class="results-side-fig">
+          <img src="project_assets/beeve_transition.png" alt="Token transition probability matrix"/>
+          <span class="results-fig-cap">Token transition probability matrix · baseline experiment</span>
+        </div>
+      </div>
+
+      <div class="results-table-wrap" style="margin-top:32px;">
+        <span class="bb-fig-label" style="margin-bottom:12px;display:block;">Temporal Token Sequence Statistics</span>
+        <table class="results-table">
+          <thead>
+            <tr><th>Experiment</th><th>Active Tokens</th><th>Self-transitions</th><th>Transition Entropy H (bits)</th><th>H/H_max</th><th>Chi-squared</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>E1 baseline</td><td>15/64</td><td>51%</td><td>2.35 ± 0.86</td><td>0.60</td><td class="rt-num" style="font-size:13px;">p ≪ 0.001</td></tr>
+            <tr><td>E1 baseline seed1</td><td>13/64</td><td>54%</td><td>2.08 ± 0.74</td><td>0.56</td><td class="rt-num" style="font-size:13px;">p ≪ 0.001</td></tr>
+            <tr><td>E2 small codebook</td><td>13/32</td><td>58%</td><td>2.42 ± 0.58</td><td>0.65</td><td class="rt-num" style="font-size:13px;">p ≪ 0.001</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Visualizer link -->
+    <div class="results-viz-link">
+      <a href="https://hamze-hammami.github.io/beeve-visualizer/" target="_blank" rel="noopener" class="results-viz-btn">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 11L11 2M11 2H5M11 2v6"/></svg>
+        Explore the BeeVe Visualizer
+      </a>
+      <p>Interactive 3D latent space, token gallery, real audio playback and transition analysis.</p>
+    </div>
+
+  </div>
+</section>
+<section class="section-ph" style="background:var(--yellow);color:rgba(0,0,0,0.25);">Discussion</section>
+
+<footer style="background:#111111;border-top:1px solid #252525;padding:32px 48px;">
+  <p style="color:#444;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;font-family:-apple-system,sans-serif;">Hamze Hammami</p>
+</footer>
+
+<script>
+// Cursor
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('ring');
+const YELLOW_SECTIONS = ['.section-problem', '.section-beeve'];
+
+function updateCursorColor(x, y) {
+  const el = document.elementFromPoint(x, y);
+  const onYellow = el && YELLOW_SECTIONS.some(sel => el.closest(sel));
+  const col = onYellow ? '#0e0e0e' : 'var(--yellow)';
+  cursor.style.background = col;
+  ring.style.borderColor  = col;
+}
+
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top  = e.clientY + 'px';
+  ring.style.left   = e.clientX + 'px';
+  ring.style.top    = e.clientY + 'px';
+  updateCursorColor(e.clientX, e.clientY);
+});
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.width  = '20px'; cursor.style.height = '20px';
+    ring.style.opacity  = '0.12';
+  });
+  el.addEventListener('mouseleave', () => {
+    cursor.style.width  = '12px'; cursor.style.height = '12px';
+    ring.style.opacity  = '0.3';
+  });
+});
+
+// Scroll progress
+const bar = document.getElementById('scrollProgress');
+window.addEventListener('scroll', () => {
+  const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+  bar.style.width = Math.min(100, pct) + '%';
+});
+
+// Sticky back link
+const navBack = document.getElementById('navBackBtn');
+const heroEl  = document.getElementById('top');
+new IntersectionObserver(entries => {
+  navBack.classList.toggle('visible', !entries[0].isIntersecting);
+}, { threshold: 0.1 }).observe(heroEl);
+
+// Language toggle — short word default, full phrase typed on hover, click switches
+(function() {
+  const logo = document.querySelector('.nav-logo');
+  if (!logo) return;
+
+  const exactText = {
+    'Back to Work':                    'العودة إلى الأعمال',
+    'Multi-modal Honeybee Monitoring': 'مراقبة خلايا النحل متعددة الوسائط',
+    'Vector-Quantized Sound Analysis Extension': 'امتداد تحليل الصوت الكمي المتجه',
+    'A multi-modal beehive monitoring system for honeybee health and hazard detection, combining predator detection and acoustic analysis.':
+      'نظام متعدد الوسائط لمراقبة خلايا النحل للكشف عن الصحة والمخاطر، يجمع بين الكشف عن المفترسات والتحليل الصوتي.',
+    'A VQ-VAE encoder applied to PaSST audio representations for unsupervised acoustic pattern discovery in honeybee recordings. A discrete codebook of learned tokens separates queen-right from queen-less colonies without supervision.':
+      'مشفِّر VQ-VAE مطبَّق على تمثيلات صوت PaSST لاكتشاف الحالات الصوتية دون إشراف. قاموس رموز منفصل يفصل بين مستعمرات ذات ملكة وبدونها دون تسميات، ويكشف عن حالات صوتية فرعية محتملة.',
+    'Read the Paper':    'اقرأ الورقة',
+    'Read the Preprint': 'اقرأ ما قبل الطباعة',
+    'Research Team':  'فريق البحث',
+    'Supervisor':     'المشرف',
+    'Lead Author':    'المؤلف الرئيسي',
+    'Nidhal Abdulaziz': 'نضال عبد العزيز',
+    'Hamze Hammami':    'حمزة حمامي',
+    'Scroll': 'انزل',
+    // Problem section
+    'The Problem': 'المشكلة',
+    'Honeybee colonies are disappearing at an alarming rate.': 'مستعمرات نحل العسل تتراجع بوتيرة مثيرة للقلق.',
+    'Honeybees are the planet\'s most critical pollinators, responsible for the majority of crop yields and wild flora. Over the past decade their colonies have seen accelerating decline due to biological threats, environmental stress, and a beekeeping industry still relying on technology from the 1860s.':
+      'نحل العسل هو أهم الملقحات على هذا الكوكب، إذ يضمن غالبية محاصيل الغذاء والنباتات البرية. شهدت مستعمراتها خلال العقد الماضي تراجعاً متسارعاً بسبب التهديدات البيولوجية والضغوط البيئية، فضلاً عن صناعة تربية نحل لا تزال تعتمد على تكنولوجيا تعود إلى القرن التاسع عشر.',
+    'yearly increase in colony decline across reported regions': 'زيادة سنوية في تراجع المستعمرات عبر المناطق المرصودة',
+    'drop in honey production over the same period': 'انخفاض في إنتاج العسل خلال الفترة ذاتها',
+    'of beekeepers reported fewer honeybees within a ten year period': 'من مربي النحل أبلغوا عن انخفاض في أعداد النحل خلال عشر سنوات',
+    'Key Threats': 'التهديدات الرئيسية',
+    'Varroa Destructor': 'حلم فاروا المدمر',
+    'A parasitic mite that spreads viruses and causes physical deformities in honeybees, progressively weakening the colony\'s capacity to survive and reproduce.':
+      'طفيلي ينشر الفيروسات ويسبب تشوهات جسدية في نحل العسل، مما يُضعف قدرة المستعمرة على البقاء والتكاثر تدريجياً.',
+    'Hornets and Beetles': 'الدبابير والخنافس',
+    'Invasive predators that attack bees directly and damage hive structures, posing acute risks to colony health. Asian hornets are among the most destructive.':
+      'مفترسات غازية تهاجم النحل مباشرة وتتلف هياكل الخلية، مما يُشكل تهديدات حادة لصحة المستعمرة. الدبابير الآسيوية من أشد هذه التهديدات فتكاً.',
+    'Queen-less Colonies': 'مستعمرات بدون ملكة',
+    'When a hive loses its queen, bees exhibit distinct acoustic distress patterns. Without early detection the colony typically abandons the hive entirely.':
+      'حين تفقد الخلية ملكتها، يُصدر النحل أنماطاً صوتية مميزة للضائقة. بدون كشف مبكر، تهجر المستعمرة الخلية في الغالب بشكل كامل.',
+    'Seasonal and Environmental Stress': 'الضغوط الموسمية والبيئية',
+    'Colony losses peak in winter months due to cold exposure and the practical difficulty of inspecting hives during that period, compounding all other threats.':
+      'تبلغ خسائر المستعمرات ذروتها في أشهر الشتاء بسبب البرودة وصعوبة فحص الخلايا، مما يُفاقم جميع التهديدات الأخرى.',
+    'The Technology Gap': 'الفجوة التكنولوجية',
+    '"The Langstroth hive was invented in the 1860s and has remained the standard choice for beekeepers worldwide. Why hasn\'t this technology advanced?"':
+      '"اخترعت خلية لانغستروث في ستينيات القرن التاسع عشر وظلت الخيار القياسي لمربي النحل حول العالم. لماذا لم تتطور هذه التكنولوجيا؟"',
+    'While innovations from the same era have long been superseded, beekeeping practice remains a basic wooden box requiring manual inspection and often left entirely unattended. IoT systems, machine learning, and robotics are the natural next step. The absence of automated monitoring means threats go undetected until it is too late for the colony, and beekeepers have no real-time visibility into hive conditions between visits.':
+      'بينما تجاوزت الابتكارات من الحقبة ذاتها منذ زمن طويل، تبقى ممارسة تربية النحل صندوقاً خشبياً بسيطاً يستلزم الفحص اليدوي ويُترك دون رقابة في أغلب الأحيان. أنظمة إنترنت الأشياء والتعلم الآلي والروبوتات هي الخطوة الطبيعية التالية.',
+  };
+
+  function storeOriginals() {
+    document.querySelectorAll('body *').forEach(el => {
+      if (!el.dataset.enText && el.children.length === 0)
+        el.dataset.enText = el.textContent;
+    });
+  }
+
+  let typingTimer = null;
+  let isSwitching = false;
+  let logoHovering = false;
+  let suppressHoverUntilLeave = false;
+  let arabic = false;
+  let logoTypeRun = 0;
+
+  // Short word shown at rest
+  const shortWord = () => arabic ? 'Bee' : 'نحل';
+  const shortDir  = () => arabic ? 'ltr' : 'rtl';
+
+  // Full phrase shown on hover
+  const hoverPhrase = () => arabic ? 'Change to English' : 'تغيير اللغة إلى العربية؟';
+  const hoverDir    = () => arabic ? 'ltr' : 'rtl';
+
+  function typeLogo(text, dir, done) {
+    const run = ++logoTypeRun;
+    clearInterval(typingTimer);
+    logo.dir = dir;
+    const current = logo.textContent;
+    let i = current.length;
+    typingTimer = setInterval(() => {
+      if (run !== logoTypeRun) { clearInterval(typingTimer); return; }
+      if (i > 0) { logo.textContent = current.slice(0, --i); return; }
+      clearInterval(typingTimer);
+      let j = 0;
+      typingTimer = setInterval(() => {
+        if (run !== logoTypeRun) { clearInterval(typingTimer); return; }
+        logo.textContent = text.slice(0, ++j);
+        if (j >= text.length) { clearInterval(typingTimer); if (done) done(); }
+      }, 34);
+    }, 24);
+  }
+
+  function applyArabicText() {
+    document.documentElement.lang = 'ar';
+    document.documentElement.dir = 'rtl';
+    document.body.classList.add('arabic-mode');
+    document.querySelectorAll('body *').forEach(el => {
+      if (el.children.length === 0 && el.dataset.enText) {
+        const key = el.dataset.enText.trim();
+        if (exactText[key]) el.textContent = exactText[key];
+      }
+    });
+  }
+
+  function applyEnglishText() {
+    document.documentElement.lang = 'en';
+    document.documentElement.dir = 'ltr';
+    document.body.classList.remove('arabic-mode');
+    document.querySelectorAll('body *').forEach(el => {
+      if (el.dataset.enText && el.children.length === 0)
+        el.textContent = el.dataset.enText;
+    });
+  }
+
+  function setLogoDefault() {
+    logo.textContent = shortWord();
+    logo.lang = arabic ? 'en' : 'ar';
+    logo.dir  = shortDir();
+  }
+
+  function isNearLogo(event) {
+    const rect = logo.getBoundingClientRect();
+    return (
+      event.clientX >= rect.left - 44 && event.clientX <= rect.right  + 44 &&
+      event.clientY >= rect.top  - 22 && event.clientY <= rect.bottom + 22
+    );
+  }
+
+  function beginLanguageHover() {
+    if (isSwitching || suppressHoverUntilLeave || logoHovering) return;
+    logoHovering = true;
+    typeLogo(hoverPhrase(), hoverDir());
+  }
+
+  function endLanguageHover(force) {
+    if (isSwitching && !force) return;
+    if (!logoHovering && !force) return;
+    logoHovering = false;
+    typeLogo(shortWord(), shortDir());
+  }
+
+  logo.addEventListener('click', e => {
+    e.preventDefault();
+    if (isSwitching) return;
+    isSwitching = true;
+    logoHovering = false;
+    suppressHoverUntilLeave = true;
+    ++logoTypeRun;
+    clearInterval(typingTimer);
+
+    document.body.classList.remove('language-settling');
+    document.body.classList.add('language-switching');
+
+    setTimeout(() => {
+      arabic = !arabic;
+      if (arabic) applyArabicText(); else applyEnglishText();
+
+      document.body.classList.remove('language-switching');
+      document.body.classList.add('language-settling');
+
+      typeLogo(shortWord(), shortDir(), () => {
+        document.body.classList.remove('language-settling');
+        isSwitching = false;
+        suppressHoverUntilLeave = true;
+      });
+    }, 320);
+  });
+
+  storeOriginals();
+  setLogoDefault();
+
+  document.addEventListener('mousemove', e => {
+    const inside = isNearLogo(e);
+    if (!inside) {
+      if (logoHovering && !isSwitching) endLanguageHover(false);
+      suppressHoverUntilLeave = false;
+    } else {
+      if (!isSwitching && !suppressHoverUntilLeave) beginLanguageHover();
+    }
+  }, { passive: true });
+})();
+// 3D bee handled by module script below
+</script>
+
+<script type="module">
+import * as THREE from 'https://cdn.skypack.dev/three@0.129.0/build/three.module.js';
+import { GLTFLoader } from 'https://cdn.skypack.dev/three@0.129.0/examples/jsm/loaders/GLTFLoader.js';
+
+const container = document.getElementById('beeArea');
+if (container) {
+  const W = container.offsetWidth  || 400;
+  const H = container.offsetHeight || 420;
+
+  const scene  = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(28, W / H, 0.1, 100);
+  camera.position.z = 5.5;
+
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  renderer.setSize(W, H);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.domElement.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;';
+  container.appendChild(renderer.domElement);
+
+  scene.add(new THREE.AmbientLight(0xffffff, 1.6));
+  const dir = new THREE.DirectionalLight(0xffd060, 1.4);
+  dir.position.set(4, 6, 5);
+  scene.add(dir);
+
+  const CENTER_X = -0.493;
+  const CENTER_Y = -1.234;
+
+  let bee = null, mixer = null;
+
+  new GLTFLoader().load('https://bee.vercel.app/demon_bee_full_texture.glb',
+    gltf => {
+      bee = gltf.scene;
+      bee.scale.setScalar(1.05);
+      bee.traverse(child => {
+        if (child.isMesh && child.material) {
+          child.material = child.material.clone();
+          child.material.color.setHex(0xf5c200);
+          child.material.emissive.setHex(0xe8a800);
+          child.material.emissiveIntensity = 0.25;
+          child.material.roughness = 0.55;
+          child.material.metalness = 0.05;
+        }
+      });
+      bee.rotation.set(0.15, 0.55, -0.08);
+      scene.add(bee);
+      if (gltf.animations.length) {
+        mixer = new THREE.AnimationMixer(bee);
+        mixer.clipAction(gltf.animations[0]).play();
+      }
+    }
+  );
+
+  const clock  = new THREE.Clock();
+  let   active = false;
+  new IntersectionObserver(e => { active = e[0].isIntersecting; }, { threshold: 0.1 }).observe(container);
+
+  (function loop() {
+    requestAnimationFrame(loop);
+    const dt = clock.getDelta();
+    if (mixer) mixer.update(dt);
+    if (bee) {
+      const t = clock.elapsedTime;
+      bee.position.set(
+        Math.sin(t * 0.38) * 0.22 + CENTER_X,
+        Math.sin(t * 0.26 + 1.1) * 0.12 + CENTER_Y,
+        0
+      );
+    }
+    renderer.render(scene, camera);
+  })();
+
+  window.addEventListener('resize', () => {
+    const w = container.offsetWidth, h = container.offsetHeight;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+  });
+}
+// ── BeeBetter Core detection bee ──────────────────────────────────────
+const bbArea = document.getElementById('bbBeeArea');
+const bbBox  = document.getElementById('bboxEl');
+
+if (bbArea) {
+  const bW = bbArea.offsetWidth  || 500;
+  const bH = bbArea.offsetHeight || 360;
+
+  const bbScene  = new THREE.Scene();
+  const bbCamera = new THREE.PerspectiveCamera(28, bW / bH, 0.1, 100);
+  bbCamera.position.z = 5;
+
+  const bbRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  bbRenderer.setSize(bW, bH);
+  bbRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  bbRenderer.domElement.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;';
+  bbArea.appendChild(bbRenderer.domElement);
+
+  bbScene.add(new THREE.AmbientLight(0xffffff, 1.6));
+  const bbDir = new THREE.DirectionalLight(0xffffff, 1.2);
+  bbDir.position.set(3, 5, 5);
+  bbScene.add(bbDir);
+
+  // Baked positions
+  const BB_CX = 0.077, BB_CY = -0.609;
+  const BBOX_LEFT0 = 134, BBOX_TOP0 = 72, BBOX_W = 280, BBOX_H = 200;
+
+  // Set initial bbox size
+  if (bbBox) {
+    bbBox.style.left   = BBOX_LEFT0 + 'px';
+    bbBox.style.top    = BBOX_TOP0  + 'px';
+    bbBox.style.width  = BBOX_W + 'px';
+    bbBox.style.height = BBOX_H + 'px';
+    bbBox.style.pointerEvents = 'none';
+  }
+
+  let bbBee = null, bbMixer = null;
+
+  new GLTFLoader().load('https://bee.vercel.app/demon_bee_full_texture.glb', gltf => {
+    bbBee = gltf.scene;
+    bbBee.scale.setScalar(0.85);
+    bbBee.traverse(child => {
+      if (child.isMesh && child.material) {
+        child.material = child.material.clone();
+        child.material.color.setHex(0xf5c200);
+        child.material.emissive.setHex(0xe8a800);
+        child.material.emissiveIntensity = 0.2;
+      }
+    });
+    bbBee.rotation.set(0.1, Math.PI * 0.55, -0.05);
+    bbScene.add(bbBee);
+    if (gltf.animations.length) {
+      bbMixer = new THREE.AnimationMixer(bbBee);
+      bbMixer.clipAction(gltf.animations[0]).play();
+    }
+  });
+
+  const bbClock = new THREE.Clock();
+  let bbActive = false;
+  new IntersectionObserver(e => { bbActive = e[0].isIntersecting; }, { threshold: 0.1 }).observe(bbArea);
+
+  const bbRef  = new THREE.Vector3(BB_CX, BB_CY, 0);
+  const bbVec  = new THREE.Vector3();
+  const confEl = document.getElementById('yoloConf');
+  let confTimer = 0;
+
+  (function bbLoop() {
+    requestAnimationFrame(bbLoop);
+    const dt = bbClock.getDelta();
+    if (bbMixer) bbMixer.update(dt);
+    if (bbBee) {
+      const t = bbClock.elapsedTime;
+      const bx = Math.sin(t * 0.3) * 0.2 + BB_CX;
+      const by = Math.sin(t * 0.22 + 0.8) * 0.12 + BB_CY;
+      bbBee.position.set(bx, by, 0);
+
+      // Update confidence randomly every ~0.6s
+      confTimer += dt;
+      if (confEl && confTimer > 0.6) {
+        confTimer = 0;
+        const conf = (0.60 + Math.random() * 0.39).toFixed(2);
+        confEl.textContent = 'bee ' + conf;
+      }
+
+      if (bbBox) {
+        const cW = bbArea.offsetWidth, cH = bbArea.offsetHeight;
+        bbVec.copy(bbRef).project(bbCamera);
+        const refSX = (bbVec.x + 1) / 2 * cW;
+        const refSY = (-bbVec.y + 1) / 2 * cH;
+        bbVec.set(bx, by, 0).project(bbCamera);
+        const curSX = (bbVec.x + 1) / 2 * cW;
+        const curSY = (-bbVec.y + 1) / 2 * cH;
+        bbBox.style.left = (BBOX_LEFT0 + (curSX - refSX)) + 'px';
+        bbBox.style.top  = (BBOX_TOP0  + (curSY - refSY)) + 'px';
+      }
+    }
+    bbRenderer.render(bbScene, bbCamera);
+  })();
+
+  window.addEventListener('resize', () => {
+    const w = bbArea.offsetWidth, h = bbArea.offsetHeight;
+    bbCamera.aspect = w / h;
+    bbCamera.updateProjectionMatrix();
+    bbRenderer.setSize(w, h);
+  });
+}
+</script>
+<script type="module">
+// ── BeeVe UMAP latent space — token-coloured rotating point cloud ──────
+import * as THREE from 'https://cdn.skypack.dev/three@0.129.0/build/three.module.js';
+
+const PLOTLY_Q = [
+  '#636EFA','#EF553B','#00CC96','#AB63FA','#FFA15A',
+  '#19D3F3','#FF6692','#B6E880','#FF97FF','#FECB52',
+  '#72B7B2','#EECA3B','#54A24B','#F58518','#E45756',
+  '#4C78A8','#B279A2','#FF9DA6','#9D755D','#BAB0AC'
+];
+
+function hex2rgb(h) {
+  const n = parseInt(h.slice(1), 16);
+  return [(n >> 16 & 255) / 255, (n >> 8 & 255) / 255, (n & 255) / 255];
+}
+
+// ── Synthetic fallback ────────────────────────────────────────────────
+let _seed = 42;
+function rng() { _seed = (_seed * 1664525 + 1013904223) & 0xffffffff; return ((_seed >>> 0) / 0xffffffff); }
+
+function buildSynthetic() {
+  const pts = [];
+  const QR_TOKENS = 15;
+  for (let ti = 0; ti < QR_TOKENS; ti++) {
+    const angle = (ti / QR_TOKENS) * Math.PI * 1.4 - 0.3;
+    const cx = Math.cos(angle) * 1.1, cy = Math.sin(angle) * 0.9, cz = (ti / QR_TOKENS) * 0.6 - 0.3;
+    for (let p = 0; p < 280; p++)
+      pts.push({ x: cx + (rng()-.5)*.28, y: cy + (rng()-.5)*.22, z: cz + (rng()-.5)*.18, tok: ti });
+  }
+  [[2.2,.5,.8],[2.6,-.4,.2],[2.0,-1.,-.4]].forEach(([ocx,ocy,ocz], si) => {
+    for (let p = 0; p < [560,210,200][si]; p++) {
+      const r=rng()*.22, th=rng()*Math.PI*2, ph=rng()*Math.PI;
+      pts.push({ x:ocx+r*Math.sin(ph)*Math.cos(th), y:ocy+r*Math.sin(ph)*Math.sin(th), z:ocz+r*Math.cos(ph), tok:15+si });
+    }
+  });
+  for (let p=0; p<90; p++)
+    pts.push({ x:1.5+(rng()-.5)*.5, y:-.5+(rng()-.5)*.3, z:.3+(rng()-.5)*.3, tok:18 });
+  return pts;
+}
+
+function ptsToBuffers(pts) {
+  const N = pts.length;
+  const positions = new Float32Array(N * 3);
+  const colors    = new Float32Array(N * 3);
+  pts.forEach((p, i) => {
+    positions[i*3]=p.x; positions[i*3+1]=p.y; positions[i*3+2]=p.z;
+    const [r,g,b] = hex2rgb(PLOTLY_Q[p.tok % PLOTLY_Q.length]);
+    colors[i*3]=r; colors[i*3+1]=g; colors[i*3+2]=b;
+  });
+  return { positions, colors };
+}
+
+// ── Real data loader ──────────────────────────────────────────────────
+// Subsample to at most MAX_PTS points for performance
+const MAX_PTS = 8000;
+function fromVizData(data) {
+  const F = data.frames;
+  const tokens = F.token;
+  const umap   = F.x_umap; // flat Float32 N*3
+  const N = tokens.length;
+  const step = Math.max(1, Math.floor(N / MAX_PTS));
+
+  // Normalise UMAP coords to roughly [-1.5, 1.5]
+  let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity,minZ=Infinity,maxZ=-Infinity;
+  for (let i=0; i<N; i+=step) {
+    const x=umap[i*3], y=umap[i*3+1], z=umap[i*3+2];
+    if(x<minX)minX=x; if(x>maxX)maxX=x;
+    if(y<minY)minY=y; if(y>maxY)maxY=y;
+    if(z<minZ)minZ=z; if(z>maxZ)maxZ=z;
+  }
+  const scl = 3.0 / Math.max(maxX-minX, maxY-minY, maxZ-minZ, 0.001);
+  const mx=(minX+maxX)/2, my=(minY+maxY)/2, mz=(minZ+maxZ)/2;
+
+  const pts = [];
+  for (let i=0; i<N; i+=step) {
+    pts.push({
+      x: (umap[i*3]   - mx) * scl,
+      y: (umap[i*3+1] - my) * scl,
+      z: (umap[i*3+2] - mz) * scl,
+      tok: tokens[i]
+    });
+  }
+  return pts;
+}
+
+// ── Scene setup ───────────────────────────────────────────────────────
+const wrap = document.getElementById('beeveLatent');
+if (wrap) {
+
+  const W = wrap.offsetWidth || 480;
+  const H = wrap.offsetHeight || 380;
+
+  const scene  = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(52, W / H, 0.01, 50);
+  camera.position.set(0, 0, 3.2);
+
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  renderer.setSize(W, H);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor(0x000000, 0);
+  renderer.domElement.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;';
+  wrap.appendChild(renderer.domElement);
+
+  let cloud = null;
+
+  function buildCloud(pts) {
+    if (cloud) { scene.remove(cloud); cloud.geometry.dispose(); }
+    const { positions, colors } = ptsToBuffers(pts);
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geo.setAttribute('color',    new THREE.BufferAttribute(colors, 3));
+    cloud = new THREE.Points(geo, new THREE.PointsMaterial({
+      vertexColors: true, size: 0.022,
+      sizeAttenuation: true, transparent: true, opacity: 0.82
+    }));
+    scene.add(cloud);
+  }
+
+  // Load from window.BEEVE_UMAP (set by umap_data.js script tag), fall back to synthetic
+  function initCloud() {
+    if (window.BEEVE_UMAP) {
+      const d = window.BEEVE_UMAP;
+      const pts = d.tok.map((tok, i) => ({ x: d.x[i], y: d.y[i], z: d.z[i], tok }));
+      buildCloud(pts);
+    } else {
+      buildCloud(buildSynthetic());
+    }
+  }
+  initCloud();
+
+  const clock = new THREE.Clock();
+  let active = false;
+  new IntersectionObserver(e => { active = e[0].isIntersecting; }, { threshold: 0.1 }).observe(wrap);
+
+  (function loop() {
+    requestAnimationFrame(loop);
+    if (!active) return;
+    const t = clock.getElapsedTime();
+    if (cloud) {
+      cloud.rotation.y = t * 0.18;
+      cloud.rotation.x = Math.sin(t * 0.07) * 0.18;
+    }
+    renderer.render(scene, camera);
+  })();
+
+  window.addEventListener('resize', () => {
+    const w = wrap.offsetWidth, h = wrap.offsetHeight;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+  });
+}
+</script>
+</body>

@@ -1,0 +1,16 @@
+{
+  "experiments": [
+    {
+      "name": "E1_baseline",
+      "data": "experiments/E1_baseline/viz_data.json"
+    },
+    {
+      "name": "E1_baseline_seed1",
+      "data": "experiments/E1_baseline_seed1/viz_data.json"
+    },
+    {
+      "name": "E2_small_codebook",
+      "data": "experiments/E2_small_codebook/viz_data.json"
+    }
+  ]
+}
