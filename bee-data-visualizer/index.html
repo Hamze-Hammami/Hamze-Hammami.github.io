@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <link rel="icon" href="data:,">
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>BeeVe Visualizer</title>
+<title>Bee Data Visualizer</title>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -144,11 +144,11 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);
 </style>
 </head>
 <body>
-<div id="loading"><div class="spin"></div><h2>BeeVe</h2><p id="lmsg">Loading…</p></div>
+<div id="loading"><div class="spin"></div><h2>BeeData</h2><p id="lmsg">Loading…</p></div>
 
 <div id="root">
   <div id="hdr">
-    <div id="hdr-brand">🐝 BeeVe <span>Visualizer</span></div>
+    <div id="hdr-brand">🐝 BeeData <span>Visualizer</span></div>
 
     <select id="exp-sel"></select>
 
@@ -1000,13 +1000,13 @@ function buildFileSelector(){
   const sel=document.getElementById('file-sel');
   sel.innerHTML='<option value="">— select recording —</option>';
   (DATA.meta.files||[]).forEach((f,i)=>{
-    if(typeof f==='object'&&!f.audio_path) return;
     const stem=typeof f==='object'?f.stem:f;
     const q=typeof f==='object'?f.queen:'';
+    const isSelected=typeof f==='object'&&f.selected;
     const o=document.createElement('option');
     o.value=i;
     const qLabel=q==='queenright'?'QR':q==='queenless'?'QNL':'?';
-    o.textContent=stem.replace('PaSST_','').substring(0,26)+` [${qLabel}]`;
+    o.textContent=(isSelected?'★ ':'')+stem.replace('PaSST_','').substring(0,26)+` [${qLabel}]`;
     sel.appendChild(o);
   });
   sel.addEventListener('change',()=>{
