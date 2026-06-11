@@ -20,22 +20,24 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);
 
 /* ── Header ── */
 #hdr{display:flex;align-items:center;gap:0;padding:0;
-  background:var(--bg2);border-bottom:1px solid var(--bd);overflow:hidden}
+  background:var(--bg2);border-bottom:1px solid var(--bd);overflow-x:auto;overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none}
+#hdr::-webkit-scrollbar{display:none}
 #hdr-brand{font-size:13px;font-weight:700;color:var(--amber);padding:0 14px;
   border-right:1px solid var(--bd);height:100%;display:flex;align-items:center;
-  white-space:nowrap}
+  white-space:nowrap;flex-shrink:0}
 #hdr-brand span{color:var(--teal)}
 .hdr-group{display:flex;align-items:center;gap:2px;padding:0 8px;
-  border-right:1px solid var(--bd);height:100%}
+  border-right:1px solid var(--bd);height:100%;flex-shrink:0}
 .tb{padding:3px 11px;border-radius:4px;border:1px solid transparent;
   background:transparent;color:var(--text2);font-size:11px;cursor:pointer;
-  transition:all .12s;height:26px}
+  transition:all .12s;height:26px;white-space:nowrap}
 .tb:hover{border-color:var(--bd);color:var(--text)}
 .tb.on{background:var(--amber);color:#000;font-weight:700}
 .tb.on-state{background:var(--green);color:#fff;font-weight:700}
 #exp-sel{background:var(--bg3);border:1px solid var(--bd);border-radius:4px;
   color:var(--text);font-size:11px;padding:3px 8px;cursor:pointer;
-  display:none;margin:0 10px}
+  display:none;margin:0 10px;flex-shrink:0}
 
 /* ── Main ── */
 #main{display:grid;grid-template-columns:1fr 220px;overflow:hidden;background:var(--bg)}
@@ -50,25 +52,31 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);
   color:var(--muted);line-height:1.8;pointer-events:none}
 #info b{color:var(--text2)}
 
+/* ── Gallery toggle button (mobile only) ── */
+#gal-toggle{display:none}
+
 /* ── Audio panel ── */
 #audio{background:var(--bg2);border-top:1px solid var(--bd);
   display:grid;grid-template-rows:36px 70px 28px 28px 34px;padding:0}
 /* Row 1: controls */
 #audio-ctrl{display:flex;align-items:center;gap:8px;padding:0 12px;
-  border-bottom:1px solid var(--bd)}
+  border-bottom:1px solid var(--bd);overflow-x:auto;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none}
+#audio-ctrl::-webkit-scrollbar{display:none}
 #file-sel{flex:0 0 auto;max-width:240px;background:var(--bg3);border:1px solid var(--bd);
   border-radius:4px;color:var(--text);font-size:11px;padding:3px 7px;cursor:pointer}
-#pbtn{padding:3px 14px;border-radius:4px;border:1px solid var(--bd);
+#pbtn{flex-shrink:0;padding:3px 14px;border-radius:4px;border:1px solid var(--bd);
   background:var(--bg3);color:var(--text2);font-size:12px;font-weight:700;
   cursor:pointer;transition:all .12s}
 #pbtn:hover{border-color:var(--green);color:var(--green)}
 #pbtn.on{background:var(--green);border-color:var(--green);color:#fff}
 #pbtn:disabled{opacity:.3;cursor:not-allowed}
-.mode-btn{padding:3px 10px;border-radius:4px;border:1px solid var(--bd);
-  background:var(--bg3);color:var(--text2);font-size:10px;cursor:pointer;transition:all .12s}
+.mode-btn{flex-shrink:0;padding:3px 10px;border-radius:4px;border:1px solid var(--bd);
+  background:var(--bg3);color:var(--text2);font-size:10px;cursor:pointer;transition:all .12s;
+  white-space:nowrap}
 .mode-btn.on{background:var(--teal);border-color:var(--teal);color:#fff}
 #tdsp{font-size:10px;color:var(--text2);font-variant-numeric:tabular-nums;
-  margin-left:auto;white-space:nowrap}
+  margin-left:auto;white-space:nowrap;flex-shrink:0}
 /* Row 2: cochleagram */
 #coch-wrap{position:relative;overflow:hidden;background:#080810}
 #coch{position:absolute;inset:0;width:100%;height:100%}
@@ -85,11 +93,10 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);
   border-top:1px solid var(--bd)}
 #scrubber{flex:1;-webkit-appearance:none;appearance:none;height:3px;
   background:var(--bd);border-radius:2px;cursor:pointer;outline:none}
-#scrubber::-webkit-slider-thumb{-webkit-appearance:none;width:11px;height:11px;
+#scrubber::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;
   border-radius:50%;background:var(--amber);cursor:pointer}
-#scrubber::-moz-range-thumb{width:11px;height:11px;border-radius:50%;
+#scrubber::-moz-range-thumb{width:18px;height:18px;border-radius:50%;
   background:var(--amber);cursor:pointer;border:none}
-/* Row 5: token legend */
 /* ── Sidebar ── */
 #sidebar{background:var(--bg2);border-left:1px solid var(--bd);
   display:flex;flex-direction:column;overflow:hidden}
@@ -113,7 +120,9 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);
 .tc-btn:disabled{opacity:.3;cursor:not-allowed;pointer-events:none}
 
 #tok-legend{display:flex;align-items:center;gap:6px;padding:0 12px;
-  overflow-x:auto;border-top:1px solid var(--bd)}
+  overflow-x:auto;border-top:1px solid var(--bd);-webkit-overflow-scrolling:touch;
+  scrollbar-width:none}
+#tok-legend::-webkit-scrollbar{display:none}
 .tl-item{display:flex;align-items:center;gap:3px;cursor:pointer;
   padding:2px 5px;border-radius:3px;flex-shrink:0;transition:all .15s}
 .tl-item:hover{background:var(--bg3)}
@@ -141,10 +150,124 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);
 @keyframes sp{to{transform:rotate(360deg)}}
 ::-webkit-scrollbar{height:3px}
 ::-webkit-scrollbar-thumb{background:var(--bd)}
+
+/* ══════════════════════════════════════
+   MOBILE BOTTOM SHEET
+══════════════════════════════════════ */
+#mob-sheet-overlay{
+  display:none;position:fixed;inset:0;z-index:299;
+  background:rgba(0,0,0,.5);
+}
+#mob-sheet-overlay.open{display:block}
+#mob-sheet{
+  position:fixed;left:0;right:0;bottom:0;z-index:300;
+  background:var(--bg2);border-top:1px solid var(--bd);
+  border-radius:14px 14px 0 0;
+  padding:16px 14px 28px;
+  transform:translateY(100%);
+  transition:transform .25s ease;
+  max-height:80vh;overflow-y:auto;
+}
+#mob-sheet.open{transform:translateY(0)}
+.mob-row{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.mob-label{font-size:10px;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.08em;min-width:62px;flex-shrink:0}
+.mob-btns{display:flex;gap:6px;flex-wrap:wrap}
+.mob-btn{padding:6px 14px;border-radius:6px;border:1px solid var(--bd);
+  background:var(--bg3);color:var(--text2);font-size:12px;cursor:pointer;
+  transition:all .12s;min-height:36px}
+.mob-btn.on{background:var(--amber);border-color:var(--amber);color:#000;font-weight:700}
+.mob-btn.on-teal{background:var(--teal);border-color:var(--teal);color:#fff;font-weight:700}
+.mob-sheet-handle{width:36px;height:4px;background:var(--bd);border-radius:2px;
+  margin:0 auto 16px;flex-shrink:0}
+.mob-sheet-title{font-size:11px;font-weight:700;color:var(--text2);
+  text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px}
+
+/* ══════════════════════════════════════
+   MOBILE  (max-width: 700px)
+══════════════════════════════════════ */
+@media(max-width:700px){
+  html,body{font-size:11px}
+
+  /* Root: header | canvas | audio — no sidebar column */
+  #root{grid-template-rows:40px 1fr 170px}
+
+  /* Main: canvas takes full width; sidebar hidden by default */
+  #main{grid-template-columns:1fr 0}
+
+  /* Sidebar slides in as overlay when toggled */
+  #sidebar{
+    position:fixed;top:40px;right:0;bottom:170px;
+    width:220px;z-index:200;
+    transform:translateX(100%);
+    transition:transform .22s ease;
+    border-left:1px solid var(--bd);
+    box-shadow:-4px 0 20px rgba(0,0,0,.6);
+  }
+  #sidebar.open{transform:translateX(0)}
+
+  /* Gallery toggle button — shown on mobile */
+  #gal-toggle{
+    display:flex;align-items:center;justify-content:center;
+    position:fixed;bottom:174px;right:8px;z-index:201;
+    width:36px;height:36px;border-radius:50%;
+    background:var(--bg3);border:1px solid var(--bd);
+    color:var(--amber);font-size:16px;cursor:pointer;
+    box-shadow:0 2px 8px rgba(0,0,0,.5);
+  }
+
+  /* Header: hide all desktop groups, show only brand + menu btn */
+  #hdr{height:40px;overflow:hidden}
+  #hdr-brand{font-size:12px;padding:0 10px}
+  .hdr-group{display:none}
+  #hdr-info{display:none}
+  #exp-sel{display:none!important}
+
+  /* Hamburger menu button */
+  #mob-menu-btn{
+    display:flex;align-items:center;justify-content:center;
+    margin-left:auto;margin-right:10px;
+    width:32px;height:28px;border-radius:5px;
+    background:var(--bg3);border:1px solid var(--bd);
+    color:var(--text2);font-size:16px;cursor:pointer;flex-shrink:0;
+  }
+
+  /* Experiment selector inside sheet */
+  #mob-exp-sel{
+    width:100%;background:var(--bg3);border:1px solid var(--bd);border-radius:6px;
+    color:var(--text);font-size:12px;padding:6px 10px;cursor:pointer;
+    margin-bottom:14px;min-height:36px;
+  }
+
+  /* Audio panel rows more compact */
+  #audio{grid-template-rows:34px 52px 24px 28px 32px}
+  #audio-ctrl{padding:0 8px;gap:6px}
+  #file-sel{font-size:10px;max-width:140px}
+  .mode-btn{font-size:9px;padding:2px 6px}
+
+  /* Bigger scrubber thumb for touch */
+  #scrub-row{padding:0 8px}
+  #scrubber::-webkit-slider-thumb{width:22px;height:22px}
+  #scrubber::-moz-range-thumb{width:22px;height:22px}
+
+  /* Token legend: bigger tap targets */
+  #tok-legend{padding:0 8px;gap:4px}
+  .tl-item{padding:4px 6px}
+  .tl-dot{width:10px;height:10px}
+  .tl-id{font-size:10px}
+
+  /* Tooltip: constrain to viewport */
+  #tt{max-width:calc(100vw - 20px);font-size:10px}
+
+  /* Info overlay: smaller */
+  #info{font-size:9px;top:6px;left:46px}
+}
 </style>
 </head>
 <body>
 <div id="loading"><div class="spin"></div><h2>Bee Data</h2><p id="lmsg">Loading…</p></div>
+
+<button id="gal-toggle" title="Token Gallery">🗂</button>
 
 <div id="root">
   <div id="hdr">
@@ -175,6 +298,49 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--text);
       <button class="tb" id="btn-dwell"  title="Dwell time spheres + hover info">Dwell</button>
     </div>
     <div id="hdr-info" style="padding:0 12px;font-size:10px;color:var(--muted)"></div>
+
+    <!-- Mobile only: hamburger -->
+    <button id="mob-menu-btn" style="display:none" title="Options">☰</button>
+  </div>
+
+  <!-- Mobile bottom sheet -->
+  <div id="mob-sheet-overlay"></div>
+  <div id="mob-sheet">
+    <div class="mob-sheet-handle"></div>
+    <div class="mob-sheet-title">Options</div>
+    <select id="mob-exp-sel" style="display:none"></select>
+    <div class="mob-row">
+      <span class="mob-label">Color</span>
+      <div class="mob-btns">
+        <button class="mob-btn on"  data-mob-annot="token">Token</button>
+        <button class="mob-btn"     data-mob-annot="state">State</button>
+        <button class="mob-btn"     data-mob-annot="substate">Sub-states</button>
+        <button class="mob-btn"     data-mob-annot="entropy">Entropy</button>
+      </div>
+    </div>
+    <div class="mob-row">
+      <span class="mob-label">View</span>
+      <div class="mob-btns">
+        <button class="mob-btn on"  data-mob-dim="3d">3D</button>
+        <button class="mob-btn"     data-mob-dim="2d">2D</button>
+      </div>
+    </div>
+    <div class="mob-row">
+      <span class="mob-label">Projection</span>
+      <div class="mob-btns">
+        <button class="mob-btn on"  data-mob-proj="pca">PCA</button>
+        <button class="mob-btn"     data-mob-proj="umap">UMAP</button>
+        <button class="mob-btn"     data-mob-proj="tsne">t-SNE</button>
+      </div>
+    </div>
+    <div class="mob-row">
+      <span class="mob-label">Overlays</span>
+      <div class="mob-btns">
+        <button class="mob-btn" id="mob-btn-postquant">Post-Quant</button>
+        <button class="mob-btn" id="mob-btn-arrows">Arrows</button>
+        <button class="mob-btn" id="mob-btn-dwell">Dwell</button>
+      </div>
+    </div>
   </div>
 
   <div id="main">
@@ -475,6 +641,19 @@ function init3D(){
     hideTT();
   });
   renderer.domElement.addEventListener('mouseleave',hideTT);
+
+  // Touch support: tap on canvas to show tooltip
+  renderer.domElement.addEventListener('touchstart', e=>{
+    if(e.touches.length!==1) return;
+    const rect=wrap.getBoundingClientRect();
+    const touch=e.touches[0];
+    mouse.x=((touch.clientX-rect.left)/rect.width)*2-1;
+    mouse.y=-((touch.clientY-rect.top)/rect.height)*2+1;
+    rc.setFromCamera(mouse,cam);
+    const hits=rc.intersectObject(ptsMesh);
+    if(hits.length){ showTT(getFrame(hits[0].index),touch.clientX,touch.clientY); }
+    else hideTT();
+  },{passive:true});
 
   window.addEventListener('resize',onResize);
   renderLoop();
@@ -1645,6 +1824,127 @@ function css2rgb(css){
 function fmt(s){
   const m=Math.floor(s/60),ss=Math.floor(s%60);
   return `${m}:${ss.toString().padStart(2,'0')}`;
+}
+
+// ═══════════════════════════════════════════
+// Mobile bottom sheet
+// ═══════════════════════════════════════════
+const isMobile = ()=>window.innerWidth<=700;
+
+// Show/hide hamburger button based on viewport
+function syncMobMenuVisibility(){
+  const btn=document.getElementById('mob-menu-btn');
+  if(btn) btn.style.display=isMobile()?'flex':'none';
+}
+syncMobMenuVisibility();
+window.addEventListener('resize', syncMobMenuVisibility);
+
+function openSheet(){
+  document.getElementById('mob-sheet').classList.add('open');
+  document.getElementById('mob-sheet-overlay').classList.add('open');
+}
+function closeSheet(){
+  document.getElementById('mob-sheet').classList.remove('open');
+  document.getElementById('mob-sheet-overlay').classList.remove('open');
+}
+
+document.getElementById('mob-menu-btn')?.addEventListener('click', openSheet);
+document.getElementById('mob-sheet-overlay')?.addEventListener('click', closeSheet);
+
+// Sync mob-sheet buttons → fire the real desktop button click (which already has the logic wired)
+function mobBtnGroup(attr, desktopAttr){
+  document.querySelectorAll(`[data-mob-${attr}]`).forEach(b=>{
+    b.addEventListener('click',()=>{
+      const val=b.dataset[`mob${attr.charAt(0).toUpperCase()+attr.slice(1)}`];
+      // Click the matching desktop button
+      const desktop=document.querySelector(`[data-${desktopAttr}="${val}"]`);
+      if(desktop) desktop.click();
+      // Update mob button states
+      document.querySelectorAll(`[data-mob-${attr}]`).forEach(x=>x.classList.toggle('on',x===b));
+      closeSheet();
+    });
+  });
+}
+mobBtnGroup('annot','annot');
+mobBtnGroup('dim','dim');
+mobBtnGroup('proj','proj');
+
+// Overlay toggles in sheet
+document.getElementById('mob-btn-postquant')?.addEventListener('click',()=>{
+  document.getElementById('btn-postquant')?.click();
+  const on=document.getElementById('btn-postquant')?.classList.contains('on');
+  document.getElementById('mob-btn-postquant').classList.toggle('on', on);
+  closeSheet();
+});
+document.getElementById('mob-btn-arrows')?.addEventListener('click',()=>{
+  document.getElementById('btn-arrows')?.click();
+  const on=document.getElementById('btn-arrows')?.classList.contains('on');
+  document.getElementById('mob-btn-arrows').classList.toggle('on', on);
+  closeSheet();
+});
+document.getElementById('mob-btn-dwell')?.addEventListener('click',()=>{
+  document.getElementById('btn-dwell')?.click();
+  const on=document.getElementById('btn-dwell')?.classList.contains('on');
+  document.getElementById('mob-btn-dwell').classList.toggle('on', on);
+  closeSheet();
+});
+
+// Mirror experiment selector into sheet
+const expSelOrig=document.getElementById('exp-sel');
+const mobExpSel=document.getElementById('mob-exp-sel');
+if(expSelOrig && mobExpSel){
+  const syncMobExpSel=()=>{
+    if(expSelOrig.options.length>1){
+      mobExpSel.innerHTML=expSelOrig.innerHTML;
+      mobExpSel.style.display='block';
+      mobExpSel.value=expSelOrig.value;
+    }
+  };
+  // Observe changes to exp-sel options
+  new MutationObserver(syncMobExpSel).observe(expSelOrig,{childList:true});
+  mobExpSel.addEventListener('change',()=>{
+    expSelOrig.value=mobExpSel.value;
+    expSelOrig.dispatchEvent(new Event('change'));
+    closeSheet();
+  });
+}
+
+// ═══════════════════════════════════════════
+// Touch support for scrubber
+// ═══════════════════════════════════════════
+scrubEl.addEventListener('touchstart', ()=>{
+  if(!audioEl) return;
+  isSeeking=true;
+  wasPlaying=!audioEl.paused;
+  if(wasPlaying) audioEl.pause();
+},{passive:true});
+
+scrubEl.addEventListener('touchend', ()=>{
+  if(!audioEl||!isSeeking) return;
+  isSeeking=false;
+  if(wasPlaying){
+    audioEl.play().catch(()=>{});
+    if(!syncRAF) syncLoop();
+  }
+},{passive:true});
+
+// ═══════════════════════════════════════════
+// Mobile gallery toggle
+// ═══════════════════════════════════════════
+const galToggleBtn = document.getElementById('gal-toggle');
+const sidebarEl = document.getElementById('sidebar');
+if(galToggleBtn && sidebarEl){
+  galToggleBtn.addEventListener('click', ()=>{
+    sidebarEl.classList.toggle('open');
+    galToggleBtn.textContent = sidebarEl.classList.contains('open') ? '✕' : '🗂';
+  });
+  // Close sidebar when tapping outside it on mobile
+  document.getElementById('canvas-area')?.addEventListener('click', ()=>{
+    if(sidebarEl.classList.contains('open')){
+      sidebarEl.classList.remove('open');
+      galToggleBtn.textContent='🗂';
+    }
+  });
 }
 
 // ═══════════════════════════════════════════
