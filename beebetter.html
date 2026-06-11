@@ -49,6 +49,10 @@ body {
   opacity: 0.3;
   transition: width 0.3s, height 0.3s, opacity 0.3s;
 }
+@media (hover: none), (pointer: coarse) {
+  body { cursor: auto; }
+  .cursor, .cursor-ring { display: none; }
+}
 
 /* ─── SCROLL PROGRESS ─── */
 .scroll-progress {
@@ -1438,31 +1442,33 @@ const cursor = document.getElementById('cursor');
 const ring   = document.getElementById('ring');
 const YELLOW_SECTIONS = ['.section-problem', '.section-beeve'];
 
-function updateCursorColor(x, y) {
-  const el = document.elementFromPoint(x, y);
-  const onYellow = el && YELLOW_SECTIONS.some(sel => el.closest(sel));
-  const col = onYellow ? '#0e0e0e' : 'var(--yellow)';
-  cursor.style.background = col;
-  ring.style.borderColor  = col;
-}
+if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  function updateCursorColor(x, y) {
+    const el = document.elementFromPoint(x, y);
+    const onYellow = el && YELLOW_SECTIONS.some(sel => el.closest(sel));
+    const col = onYellow ? '#0e0e0e' : 'var(--yellow)';
+    cursor.style.background = col;
+    ring.style.borderColor  = col;
+  }
 
-document.addEventListener('mousemove', e => {
-  cursor.style.left = e.clientX + 'px';
-  cursor.style.top  = e.clientY + 'px';
-  ring.style.left   = e.clientX + 'px';
-  ring.style.top    = e.clientY + 'px';
-  updateCursorColor(e.clientX, e.clientY);
-});
-document.querySelectorAll('a, button').forEach(el => {
-  el.addEventListener('mouseenter', () => {
-    cursor.style.width  = '20px'; cursor.style.height = '20px';
-    ring.style.opacity  = '0.12';
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top  = e.clientY + 'px';
+    ring.style.left   = e.clientX + 'px';
+    ring.style.top    = e.clientY + 'px';
+    updateCursorColor(e.clientX, e.clientY);
   });
-  el.addEventListener('mouseleave', () => {
-    cursor.style.width  = '12px'; cursor.style.height = '12px';
-    ring.style.opacity  = '0.3';
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width  = '20px'; cursor.style.height = '20px';
+      ring.style.opacity  = '0.12';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width  = '12px'; cursor.style.height = '12px';
+      ring.style.opacity  = '0.3';
+    });
   });
-});
+}
 
 // Scroll progress
 const bar = document.getElementById('scrollProgress');
